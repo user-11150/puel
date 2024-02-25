@@ -133,10 +133,18 @@
   },
   "active": "86acb10021ca1b91",
   "lastOpenFiles": [
-    "main.py",
-    "requirements.txt",
+    "frontend",
+    "static/index.html",
+    "static",
+    "server/handlers/__pycache__/Frontend.cpython-39.pyc",
+    "server/handlers/__pycache__/__init__.cpython-39.pyc",
+    "server/handlers/__pycache__/urls.cpython-39.pyc",
+    "server/handlers/__pycache__",
+    "server/__pycache__/constants.cpython-39.pyc",
+    "server/__pycache__/core.cpython-39.pyc",
+    "server/__pycache__",
+    "server/handlers/Frontend.py",
     "README.en.md",
-    "LICENSE",
     "README.md"
   ]
 }
