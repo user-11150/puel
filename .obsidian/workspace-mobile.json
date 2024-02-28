@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/whatsnew/0.2.1.md",
+                "file": "docs/whatsnew/0.1.x.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "docs/whatsnew/0.2.1.md",
+            "file": "docs/whatsnew/0.1.x.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
         "state": {
           "type": "outgoing-link",
           "state": {
-            "file": "docs/whatsnew/0.2.1.md",
+            "file": "docs/whatsnew/0.1.x.md",
             "linksCollapsed": false,
             "unlinkedCollapsed": true
           }
@@ -114,7 +114,7 @@
         "state": {
           "type": "outline",
           "state": {
-            "file": "docs/whatsnew/0.2.1.md"
+            "file": "docs/whatsnew/0.1.x.md"
           }
         }
       }
@@ -133,21 +133,22 @@
   },
   "active": "86acb10021ca1b91",
   "lastOpenFiles": [
+    "server/__pycache__/constants.cpython-39.pyc",
+    "server/handlers/__pycache__/Frontend.cpython-39.pyc",
+    "server/handlers/__pycache__/urls.cpython-39.pyc",
+    "server/handlers/__pycache__/__init__.cpython-39.pyc",
+    "server/__pycache__/core.cpython-39.pyc",
+    "mypy_cache/main/3.11/main.meta.json",
+    "mypy_cache/main/3.11/main.data.json",
+    "mypy_cache/main/3.11/server/core.meta.json",
+    "mypy_cache/main/3.11/server/core.data.json",
+    "mypy_cache/main/3.11/server/handlers/urls.meta.json",
+    "mypy_cache/main/3.11/server/handlers/urls.data.json",
     "docs/whatsnew/0.2.0.md",
     "docs/whatsnew/0.2.1.md",
     "docs/whatsnew/0.1.x.md",
     "README.md",
-    "docs/whatsnew",
     "docs/Untitled.md",
-    "docs",
-    "frontend",
-    "static/index.html",
-    "static",
-    "server/handlers/__pycache__/Frontend.cpython-39.pyc",
-    "server/handlers/__pycache__/__init__.cpython-39.pyc",
-    "server/handlers/__pycache__/urls.cpython-39.pyc",
-    "server/handlers/__pycache__",
-    "server/__pycache__/constants.cpython-39.pyc",
     "README.en.md"
   ]
 }

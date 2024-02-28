@@ -4,11 +4,11 @@ from .constants import PORT
 
 import asyncio
 
-async def run_app():
+async def run_app() -> None:
     event = asyncio.Event()
-    app = Application(urls)
+    app = Application(urls) # type: ignore
     app.listen(PORT)
     await event.wait()
 
-def main():
+def main() -> None:
     asyncio.run(run_app())

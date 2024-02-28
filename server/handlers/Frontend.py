@@ -12,7 +12,7 @@ class Frontend(RequestHandler):
     """
     处理请求静态资源
     """
-    async def get(self):
+    async def get(self) -> None:
         """
         处理请求静态资源
         """
