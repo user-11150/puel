@@ -13,11 +13,111 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/whatsnew/0.1.x.md",
+                "file": "docs/whatsnew/（版本未定好）.md",
                 "mode": "source",
                 "source": false
               }
-            }
+            },
+            "group": "5bc33164c8d413f8"
+          }
+        ]
+      },
+      {
+        "id": "00b819afbde38efd",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "309b472293e08dcc",
+            "type": "leaf",
+            "state": {
+              "type": "localgraph",
+              "state": {
+                "file": "docs/whatsnew/（版本未定好）.md",
+                "options": {
+                  "collapse-filter": true,
+                  "search": "",
+                  "localJumps": 1,
+                  "localBacklinks": true,
+                  "localForelinks": true,
+                  "localInterlinks": false,
+                  "showTags": false,
+                  "showAttachments": false,
+                  "hideUnresolved": false,
+                  "collapse-color-groups": false,
+                  "colorGroups": [
+                    {
+                      "query": "a",
+                      "color": {
+                        "a": 1,
+                        "rgb": 14048348
+                      }
+                    },
+                    {
+                      "query": "",
+                      "color": {
+                        "a": 1,
+                        "rgb": 14069084
+                      }
+                    }
+                  ],
+                  "collapse-display": true,
+                  "showArrow": false,
+                  "textFadeMultiplier": 0,
+                  "nodeSizeMultiplier": 1,
+                  "lineSizeMultiplier": 1,
+                  "collapse-forces": false,
+                  "centerStrength": 0.540296052631579,
+                  "repelStrength": 10,
+                  "linkStrength": 1,
+                  "linkDistance": 250,
+                  "scale": 1,
+                  "close": false
+                }
+              }
+            },
+            "group": "5bc33164c8d413f8"
+          }
+        ]
+      },
+      {
+        "id": "f274ed8492c93399",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7a494394362aea4a",
+            "type": "leaf",
+            "state": {
+              "type": "localgraph",
+              "state": {
+                "file": "docs/whatsnew/（版本未定好）.md",
+                "options": {
+                  "collapse-filter": true,
+                  "search": "",
+                  "localJumps": 1,
+                  "localBacklinks": true,
+                  "localForelinks": true,
+                  "localInterlinks": false,
+                  "showTags": false,
+                  "showAttachments": false,
+                  "hideUnresolved": false,
+                  "collapse-color-groups": true,
+                  "colorGroups": [],
+                  "collapse-display": true,
+                  "showArrow": false,
+                  "textFadeMultiplier": 0,
+                  "nodeSizeMultiplier": 1,
+                  "lineSizeMultiplier": 1,
+                  "collapse-forces": true,
+                  "centerStrength": 0.518713248970312,
+                  "repelStrength": 10,
+                  "linkStrength": 1,
+                  "linkDistance": 250,
+                  "scale": 1,
+                  "close": false
+                }
+              }
+            },
+            "group": "5bc33164c8d413f8"
           }
         ]
       }
@@ -85,7 +185,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "docs/whatsnew/0.1.x.md",
+            "file": "docs/whatsnew/（版本未定好）.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -102,7 +202,7 @@
         "state": {
           "type": "outgoing-link",
           "state": {
-            "file": "docs/whatsnew/0.1.x.md",
+            "file": "docs/whatsnew/（版本未定好）.md",
             "linksCollapsed": false,
             "unlinkedCollapsed": true
           }
@@ -114,12 +214,11 @@
         "state": {
           "type": "outline",
           "state": {
-            "file": "docs/whatsnew/0.1.x.md"
+            "file": "docs/whatsnew/（版本未定好）.md"
           }
         }
       }
-    ],
-    "currentTab": 0
+    ]
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -133,6 +232,9 @@
   },
   "active": "86acb10021ca1b91",
   "lastOpenFiles": [
+    "docs/whatsnew/0.1.x.md",
+    "docs/whatsnew/（版本未定好）.md",
+    "docs/whatsnew/0.2.2.md",
     "server/__pycache__/constants.cpython-39.pyc",
     "server/handlers/__pycache__/Frontend.cpython-39.pyc",
     "server/handlers/__pycache__/urls.cpython-39.pyc",
@@ -143,10 +245,8 @@
     "mypy_cache/main/3.11/server/core.meta.json",
     "mypy_cache/main/3.11/server/core.data.json",
     "mypy_cache/main/3.11/server/handlers/urls.meta.json",
-    "mypy_cache/main/3.11/server/handlers/urls.data.json",
     "docs/whatsnew/0.2.0.md",
     "docs/whatsnew/0.2.1.md",
-    "docs/whatsnew/0.1.x.md",
     "README.md",
     "docs/Untitled.md",
     "README.en.md"
