@@ -1,5 +1,6 @@
 aiofiles
 tornado
+textual
 ujson
 types-aiofiles
 types-ujson
