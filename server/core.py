@@ -9,8 +9,10 @@ from server.constants import IP
 
 # logstart
 from server.no_important.logstart import logstart
+from server.config.logging import load
 
 def run_app() -> None:
+    load()
     import asyncio
     async def _run_app() -> None:
         event = asyncio.Event()
