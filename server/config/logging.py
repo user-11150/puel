@@ -1,6 +1,9 @@
 from logging.config import dictConfig
 
 def load():
+    import os
+    if not os.path.exists('logs'):
+        os.mkdir('logs')
     dictConfig({
       'version': 1.0, # type: ignore
       'formatters':{
@@ -51,3 +54,4 @@ def load():
         }
       }
     })
+    
