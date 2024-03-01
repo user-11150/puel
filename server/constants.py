@@ -1,6 +1,8 @@
 import configparser
 
-__all__ = []
+__all__ = ["STATIC_PATH",
+           "IP",
+           "PORT"]
 
 parser = configparser.ConfigParser()
 parser.readfp(open('configuration/config.ini',"rt",encoding="UTF-8"))
