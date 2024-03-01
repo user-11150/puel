@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/whatsnew/（版本未定好）.md",
+                "file": "docs/whatsnew/0.2.3.md",
                 "mode": "source",
                 "source": false
               }
@@ -32,7 +32,7 @@
             "state": {
               "type": "localgraph",
               "state": {
-                "file": "docs/whatsnew/（版本未定好）.md",
+                "file": "docs/whatsnew/0.2.3.md",
                 "options": {
                   "collapse-filter": true,
                   "search": "",
@@ -89,7 +89,7 @@
             "state": {
               "type": "localgraph",
               "state": {
-                "file": "docs/whatsnew/（版本未定好）.md",
+                "file": "docs/whatsnew/0.2.3.md",
                 "options": {
                   "collapse-filter": true,
                   "search": "",
@@ -185,7 +185,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "docs/whatsnew/（版本未定好）.md",
+            "file": "docs/whatsnew/0.2.3.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -202,7 +202,7 @@
         "state": {
           "type": "outgoing-link",
           "state": {
-            "file": "docs/whatsnew/（版本未定好）.md",
+            "file": "docs/whatsnew/0.2.3.md",
             "linksCollapsed": false,
             "unlinkedCollapsed": true
           }
@@ -214,7 +214,7 @@
         "state": {
           "type": "outline",
           "state": {
-            "file": "docs/whatsnew/（版本未定好）.md"
+            "file": "docs/whatsnew/0.2.3.md"
           }
         }
       }
@@ -232,20 +232,20 @@
   },
   "active": "86acb10021ca1b91",
   "lastOpenFiles": [
-    "server/no_important/__pycache__/logstart.cpython-311.pyc",
-    "server/no_important/__pycache__/logstart.cpython-39.pyc",
-    "server/no_important/__pycache__",
-    "server/no_important/logstart.py",
-    "server/no_important",
-    "configuration/config.ini",
-    "configuration",
+    "mypy_cache/client/CACHEDIR.TAG",
+    "mypy_cache/client/3.11/@plugins_snapshot.json",
+    "mypy_cache/client/3.11/__main__.meta.json",
+    "mypy_cache/client/3.11/__main__.data.json",
+    "mypy_cache/client/3.11/server/constants.meta.json",
+    "mypy_cache/client/3.11/server/constants.data.json",
+    "mypy_cache/client/3.11/server",
+    "mypy_cache/client/3.11/socket.meta.json",
+    "mypy_cache/client/3.11/socket.data.json",
+    "mypy_cache/client/3.11/webbrowser.meta.json",
+    "mypy_cache/client/3.11/webbrowser.data.json",
     "docs/whatsnew/0.1.x.md",
-    "docs/whatsnew/（版本未定好）.md",
+    "docs/whatsnew/0.2.3.md",
     "docs/whatsnew/0.2.2.md",
-    "server/__pycache__/constants.cpython-39.pyc",
-    "server/handlers/__pycache__/Frontend.cpython-39.pyc",
-    "server/handlers/__pycache__/urls.cpython-39.pyc",
-    "server/handlers/__pycache__/__init__.cpython-39.pyc",
     "docs/whatsnew/0.2.0.md",
     "docs/whatsnew/0.2.1.md",
     "README.md",

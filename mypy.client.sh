@@ -1,0 +1,1 @@
+mypy ./client/__main__.py --strict --cache-dir=./mypy_cache/client

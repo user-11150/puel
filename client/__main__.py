@@ -14,9 +14,11 @@ __version__ = None
 
 os.chdir(os.path.dirname(os.path.dirname(__file__)))
 
-ADDR = ("127.0.0.1",
-        2501
-       )
+sys.path.append('./')
+
+import server.constants
+
+ADDR = server.constants.IP,server.constants.PORT
 
 def try_connection() -> bool:
     try:
