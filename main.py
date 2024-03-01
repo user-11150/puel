@@ -1,4 +1,7 @@
 import sys
+import os
+
+os.chdir(os.path.dirname(__file__))
 
 assert sys.version_info >= (3,8),TypeError('Python版本过低')
 
