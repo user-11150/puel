@@ -206,4 +206,6 @@ def main():
     print(stream.getvalue())
     print(flush=True)
 
+#n = timeit.timeit(main,number=10)
+#print(n/10)
 main()
