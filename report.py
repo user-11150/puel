@@ -164,7 +164,7 @@ def task(name,s):
     size = sum([os.path.getsize(i) for i in f])
     line_n = sum([getLine(i) for i in f])
     file_number = len(files)
-    if file_number is 0 or line_n is 0:
+    if file_number == 0 or line_n == 0:
         update('\t无')
         return
     def sizeof(x):
