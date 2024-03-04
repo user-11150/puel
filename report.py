@@ -124,6 +124,7 @@ item = [
     ),
 ]
 
+
 item.insert(0,
   ("所有的",
     tuple(set(
@@ -159,7 +160,7 @@ def rmpycache():
             os.rmdir(p)
 
 def update(*args,**kwargs):
-    print(*args,**kwargs)
+    print(*args,**kwargs,file=stream)
 
 def getlength(i):
     return os.path.getsize(i)
@@ -221,5 +222,17 @@ def main():
     import atexit
     atexit.register(atexit_flush)
 
-n = timeit.timeit(main,number=1)
-print(n/1)
+#n = timeit.timeit(main,number=1)
+#print(n/1)
+
+start = time.time()
+main()
+end = time.time()
+
+print("本次统计用时：",round(
+            ((end-start)/
+             (1e-3)),
+            2),
+            "MS"
+     )
+print("接下来将会输出结果")
