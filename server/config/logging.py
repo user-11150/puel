@@ -1,4 +1,5 @@
 from logging.config import dictConfig
+import logging
 
 def load():
     import os
@@ -54,4 +55,5 @@ def load():
         }
       }
     })
-    
+    lp = logging.getLogger('Loading Progress')
+    lp.info('加载 logging 完成')
