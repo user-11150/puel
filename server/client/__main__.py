@@ -12,9 +12,9 @@ import os
 
 __version__ = None
 
-os.chdir(os.path.dirname(os.path.dirname(__file__)))
+os.chdir(os.path.join(os.path.dirname(os.path.dirname(__file__)),"main"))
 
-sys.path.append('./')
+sys.path.append("./")
 
 import server.constants
 
@@ -29,6 +29,7 @@ def try_connection() -> bool:
     return True
 
 def main() -> None:
+    print("http://"+ADDR[0]+":"+str(ADDR[1])+'/')
     webbrowser.open("http://"+ADDR[0]+":"+str(ADDR[1])+'/')
 
 if __name__ == "__main__":
