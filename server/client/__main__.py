@@ -12,7 +12,7 @@ import os
 
 __version__ = None
 
-os.chdir(os.path.join(os.path.dirname(os.path.dirname(__file__)),"main"))
+os.chdir(os.path.dirname(os.path.dirname(__file__)))
 
 sys.path.append("./")
 
