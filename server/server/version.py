@@ -4,10 +4,9 @@
 
 import os
 from typing import (Final,
-                    IO,
-                    )
+                    Any)
 
-def getVersion(base: str) -> Final[str]:
+def getVersion(base: str) -> str:
     """
     Return the PTS11150's version
     """
@@ -30,10 +29,10 @@ def getVersion(base: str) -> Final[str]:
         # 4. Return
         
         # 1. Open
-        ios: IO = open(p, "rt", encoding='UTF-8')
+        ios: Any = open(p, "rt", encoding='UTF-8')
         
         # 2. read
-        version = ios.read()
+        version: str = ios.read()
         
         # 3. Close
         ios.close()
