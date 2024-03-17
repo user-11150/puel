@@ -14,7 +14,7 @@ class Main:
         sa: SystemArgument= SystemArgument(argv)
         sa.parserCommand()
         source_path: Final[str] = sa.source
-        dist_path: Final[str] = sa.source
+        dist_path: Final[str] = sa.dist
         
         builder: Builder = Builder(*sa.build_config,source_path,dist_path)
-        
+        builder.build()
