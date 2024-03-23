@@ -1,6 +1,6 @@
 ---
 name: Feature request
-description:
+about: feature
 ---
 # 请描述你的与哪一方面相关。
 请简洁而清晰的写出与哪一方面有关。

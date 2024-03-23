@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-description: bug
+about: bug
 ---
 # 描述这个Bug
 ...
