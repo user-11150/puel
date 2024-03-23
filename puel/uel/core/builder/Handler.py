@@ -1,4 +1,5 @@
 from uel.core.builder.Lexer import Lexer
+from uel.core.builder.Parser import Parser
 from pprint import pprint
 
 from typing import Any
@@ -13,5 +14,6 @@ class Handler:
         lexer: Lexer = Lexer(self.fn,self.content)
         tokens = lexer.make_tokens()
         del lexer
-        pprint(tokens)
-        # ...(剩下的正在开发中)
+        parser: Parser = Parser(tokens)
+        ast = parser.parse()
+        print(ast)

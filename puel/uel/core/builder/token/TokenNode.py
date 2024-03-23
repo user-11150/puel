@@ -5,7 +5,11 @@ class TokenNode:
         if self.pos is None:
             raise Exception('Cannot get token position')
         self.token_val: str = token_val
-    def __repr__(self):
+
+    def __repr__(self) -> str:
         if self.token_val is not None:
             return f"TokenNode(token_type={repr(self.token_type)}, token_val={repr(self.token_val)})"
         return f"TokenNode(token_type={self.token_type})"
+
+    def __eq__(self,other: "TokenNode") -> bool:
+        return self.token_type == other.token_type and self.token_val == other.token_val

@@ -27,7 +27,7 @@ class Position:
             self.col = 0
             self.ln += 1
 
-    def copy(self):
+    def copy(self) -> "Position":
         """
         深拷贝
         :return: 一个深拷贝的 Position 对象

@@ -6,7 +6,7 @@ class UELBuildtimeException(UELException):
         super().__init__(error_message)
         self.line = pos.ln
         self.file = pos.fn
-    def __str__(self):
+    def __str__(self) -> str:
         oes: str = super().__str__()
         pos_string = f"{self.file}:{self.line}\n"
         return pos_string + oes

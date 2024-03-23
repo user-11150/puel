@@ -24,7 +24,7 @@ class Lexer:
         self.current_char = None
         self.advance()
 
-    def advance(self) -> None:
+    def advance(self) -> bool:
         """
         预读
         """
@@ -75,7 +75,7 @@ class Lexer:
         type_function = TT_FLOAT if "." in string else TT_INT
         return Token(type_function,string,pos=self.pos.copy())
 
-    def skip_annotation(self):
+    def skip_annotation(self) -> None:
         while True:
             self.advance()
             if self.current_char == "\n":
