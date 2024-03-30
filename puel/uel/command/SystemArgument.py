@@ -28,9 +28,15 @@ class SystemArgument:
     def __init__(self, argv):
         self.argv = argv[1:]
 
+        self.source_file = None
+        self.rest = None
+
     def parserCommand(self) -> None:
         if len(self.argv) > 1:
             print("Usage:\n"
                   "\tpython -m main <source-file>"
                   "")
+        [self.source_file, *self.rest] = self.argv
         
+#        # 测试
+#        print("Source file:",self.source_file)
