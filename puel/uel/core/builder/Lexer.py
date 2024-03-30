@@ -7,7 +7,10 @@ from uel.core.builder.token.TokenConstants import TT_ADD
 from uel.core.builder.token.TokenConstants import TT_FLOAT
 from uel.core.builder.token.TokenConstants import TT_INT
 from uel.core.builder.token.TokenConstants import TT_MINUS
+from uel.core.builder.token.TokenConstants import TT_MUL
+from uel.core.builder.token.TokenConstants import TT_DIV
 from uel.core.builder.token.TokenConstants import TT_STRING
+from uel.core.errors.RaiseError import RaiseError
 from uel.core.errors.UnknownSyntaxError import UnknownSyntaxError
 from uel.core.errors.TooDotsError import TooDotsError
 from uel.core.errors.ThrowException import ThrowException
@@ -41,28 +44,60 @@ class Lexer:
         产生Token
         """
         tokens: List[Token] = []
+
         while self.current_char is not None:
+            # 匹配注释
             if self.current_char == "#":
                 self.skip_annotation()
                 continue
+
+            # 空白
             if self.current_char == " " or self.current_char == "\n":
                 self.advance()
                 continue
+
             # 匹配数字
             if self.current_char in DIGITS:
                 tokens.append(self.make_number())
                 continue
+            # 匹配符号
             if self.current_char == "+":
                 tokens.append(Token(TT_ADD,pos=self.pos.copy()))
                 self.advance()
                 continue
             elif self.current_char == "-":
                 tokens.append(Token(TT_MINUS,pos=self.pos.copy()))
+                self.advance()
                 continue
+            elif self.current_char == "*":
+                tokens.append(Token(TT_MUL, pos=self.pos.copy()))
+                self.advance()
+                continue
+            elif self.current_char == "/":
+                tokens.append(Token(TT_DIV, pos=self.pos.copy()))
+                self.advance()
+                continue
+
+            # 字符串
+            if self.current_char == "\"":
+                tokens.append(self.make_string())
             ThrowException.throw(UnknownSyntaxError('Unknown syntax',self.pos))
             
         tokens.append(Token(TT_EOF,pos=self.pos.copy()))
         return tokens
+
+    def make_string(self) -> Token:
+        pos = self.pos.copy()
+        string = str()
+        while True:
+            char = self.advance()
+            if char is None:
+                break
+            else:
+                if char == "\"":
+                    break
+            string += char
+        return Token(TT_STRING, string, pos=pos)
 
     def make_number(self) -> Token:
         string: str = self.current_char

@@ -13,7 +13,7 @@ class Handler:
     def build(self) -> None:
         lexer: Lexer = Lexer(self.fn,self.content)
         tokens = lexer.make_tokens()
+        print(tokens)
         del lexer
         parser: Parser = Parser(tokens)
         ast = parser.parse()
-        print(ast)

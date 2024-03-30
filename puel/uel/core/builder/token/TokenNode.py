@@ -12,4 +12,6 @@ class TokenNode:
         return f"TokenNode(token_type={self.token_type})"
 
     def __eq__(self,other: "TokenNode") -> bool:
+        if type(other) is not type(self):
+            raise TypeError(f'Try to compare Token with {type(other)} for equality') from None
         return self.token_type == other.token_type and self.token_val == other.token_val
