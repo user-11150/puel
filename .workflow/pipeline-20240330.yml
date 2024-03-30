@@ -8,7 +8,7 @@ triggers:
       precise:
         - master
   schedule:
-    - cron: '* 0 0 * * ? *'
+    - cron: '* 20 * * * ? *'
 stages:
   - name: stage-ad2b7254
     displayName: 未命名
