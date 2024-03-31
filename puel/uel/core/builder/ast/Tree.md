@@ -7,6 +7,8 @@ AbstractNode
         MinusNode
         MultNode
         DivNode
+        VariableNode
     ExpressionNode
-    
+    SingleNode
+        Constant
 ```

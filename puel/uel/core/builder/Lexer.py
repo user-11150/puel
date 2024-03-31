@@ -9,11 +9,18 @@ from uel.core.builder.token.TokenConstants import TT_INT
 from uel.core.builder.token.TokenConstants import TT_MINUS
 from uel.core.builder.token.TokenConstants import TT_MUL
 from uel.core.builder.token.TokenConstants import TT_DIV
+from uel.core.builder.token.TokenConstants import TT_EQUAL
 from uel.core.builder.token.TokenConstants import TT_STRING
+from uel.core.builder.token.TokenConstants import TT_KEYWORDS
+from uel.core.builder.token.TokenConstants import TT_KEYWORD
+from uel.core.builder.token.TokenConstants import TT_IDENTIFER
 from uel.core.errors.RaiseError import RaiseError
 from uel.core.errors.UnknownSyntaxError import UnknownSyntaxError
 from uel.core.errors.TooDotsError import TooDotsError
 from uel.core.errors.ThrowException import ThrowException
+
+from string import ascii_lowercase
+from string import ascii_uppercase
 
 class Lexer:
     """
@@ -77,10 +84,18 @@ class Lexer:
                 tokens.append(Token(TT_DIV, pos=self.pos.copy()))
                 self.advance()
                 continue
+            elif self.current_char == "=":
+                tokens.append(Token(TT_EQUAL, pos=self.pos.copy()))
+                self.advance()
+                continue
 
             # 字符串
             if self.current_char == "\"":
                 tokens.append(self.make_string())
+                continue
+            if self.current_char in ascii_lowercase or self.current_char in ascii_uppercase:
+                tokens.append(self.make_identifier())
+                continue
             ThrowException.throw(UnknownSyntaxError('Unknown syntax',self.pos))
             
         tokens.append(Token(TT_EOF,pos=self.pos.copy()))
@@ -88,16 +103,26 @@ class Lexer:
 
     def make_string(self) -> Token:
         pos = self.pos.copy()
-        string = str()
+        string = ""
         while True:
-            char = self.advance()
-            if char is None:
+            self.advance()
+            if self.current_char is None:
                 break
             else:
-                if char == "\"":
+                if self.current_char == "\"":
+                    self.advance()
                     break
-            string += char
+            string += self.current_char
         return Token(TT_STRING, string, pos=pos)
+
+    def make_identifier(self):
+        identifer = self.current_char
+        while self.current_char != " ":
+            self.advance()
+            identifer += self.current_char
+        token_val = identifer.strip()
+        token_type = TT_IDENTIFER if token_val not in TT_KEYWORDS else TT_KEYWORD
+        return Token(token_type, token_val, self.pos.copy())
 
     def make_number(self) -> Token:
         string: str = self.current_char

@@ -25,7 +25,7 @@ from os import _exit as o_exit
 #        o_exit(1)
 
 class SystemArgument:
-    def __init__(self, argv):
+    def __init__(self, argv: List[str]):
         self.argv = argv[1:]
 
         self.source_file = None

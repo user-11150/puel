@@ -4,7 +4,7 @@ from uel.core.builder.token.TokenNode import TokenNode as Token
 from uel.core.builder.ast.AbstractNode import AbstractNode
 from uel.core.builder.Parser import Parser
 from typing import List
-from pprint import pprint
+from objprint import objprint
 
 class BuildCode(AbstractTask):
     def __init__(self, fn, code):
@@ -17,4 +17,4 @@ class BuildCode(AbstractTask):
         tokens: List[Token] = lexer.make_tokens()
         parser: Parser = Parser(tokens)
         ast = parser.parse()
-        pprint(ast)
+        objprint(ast)

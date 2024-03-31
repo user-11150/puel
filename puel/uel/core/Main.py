@@ -11,7 +11,7 @@ class Main:
     def main(argv: List[str]) -> None:
         # The function will execute build and execute
         
-        sa: SystemArgument= SystemArgument(argv)
+        sa: SystemArgument = SystemArgument(argv)
         sa.parserCommand()
         
         source_file: Final[str] = sa.source_file

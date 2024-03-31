@@ -9,3 +9,4 @@ class ContainerNode(AbstractNode):
 
     def push(self,node: AbstractNode) -> None:
         self.childrens.append(node)
+
