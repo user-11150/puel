@@ -1,9 +1,3 @@
-"""
-语法解释器
-"""
-
-#pylint:disable=C0103
-
 from typing import Self
 from typing import Any
 from typing import Never
@@ -36,6 +30,8 @@ from uel.core.builder.token.TokenConstants import TT_VALS
 from uel.core.builder.token.TokenConstants import TT_INT
 from uel.core.builder.token.TokenConstants import TT_FLOAT
 from uel.core.builder.token.TokenConstants import TT_EQUAL
+from uel.core.builder.token.TokenConstants import TT_IDENTIFER
+from uel.tools.func.wrapper.single_call import single_call
 
 class Parser:
     """
@@ -74,6 +70,33 @@ class Parser:
             self.current_token = None
         return self.current_token
 
+    def __priority(self, ast:ExpressionNode):
+        """
+        用于实现优先级的区分
+        """
+        
+        #############################################################
+        ##                     UTF - 8                             ##
+        #############################################################
+        # e5ae9ee99985e4b88ae5b0b1e698afe8a385e8a385e6a0b7e5ad90efb #
+        # c8ce595a5e4b99fe4b88de58aa8e5b0b1e79bb4e68ea5e8bf94e59b9e #
+        # e5a49ae5a5bd                                              #
+        #############################################################
+
+        return ast
+
+    @single_call
+    @staticmethod
+    def priority(fn): # pylint: disable=C0116, C0103
+        """
+        用于实现AST的优先级
+        """
+        def inner(self: "Parser"):
+            ast = fn(self)
+            return self.__priority(ast) # pylint: disable=W0212
+        return inner
+
+    @priority
     def validate_expr(self) -> ExpressionNode:
         """
         expr:
@@ -89,6 +112,8 @@ class Parser:
             def mapping(typ):
                 if typ in (TT_INT, TT_FLOAT):
                     return "number"
+                elif typ == TT_IDENTIFER:
+                    return "name"
                 return typ
             typ = mapping(tok.token_type)
             
@@ -113,9 +138,9 @@ class Parser:
             return container
         self.advance()
         right_val = self.validate_expr().val
+        left_val = wrap_single(left_token)
         
         ast_type: Any
-
         if op.token_type == TT_ADD:
             ast_type = AddNode
         elif op.token_type == TT_MINUS:
@@ -128,8 +153,6 @@ class Parser:
             ast_type = VariableNode
         else:
             op: Never
-        
-        left_val = wrap_single(left_token)
         
         node = ast_type(left_val,right_val)
         # print(node)
