@@ -117,7 +117,7 @@ class Lexer:
 
     def make_identifier(self):
         identifer = self.current_char
-        while self.current_char != " ":
+        while self.current_char != " " and self.current_char != "\n":
             self.advance()
             identifer += self.current_char
         token_val = identifer.strip()
