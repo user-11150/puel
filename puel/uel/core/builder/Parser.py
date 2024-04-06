@@ -21,17 +21,21 @@ from uel.core.builder.token.TokenNode import TokenNode
 from uel.core.builder.token.TokenConstants import TT_TYPES
 from uel.core.builder.token.TokenConstants import TT_EOF
 from uel.core.builder.token.TokenConstants import TT_KEYWORDS
+from uel.core.builder.token.TokenConstants import TT_KEYWORD
 from uel.core.builder.token.TokenConstants import TT_ADD
 from uel.core.builder.token.TokenConstants import TT_DIV
 from uel.core.builder.token.TokenConstants import TT_MINUS
 from uel.core.builder.token.TokenConstants import TT_MUL
 from uel.core.builder.token.TokenConstants import TT_OP
-from uel.core.builder.token.TokenConstants import TT_VALS
 from uel.core.builder.token.TokenConstants import TT_INT
 from uel.core.builder.token.TokenConstants import TT_FLOAT
 from uel.core.builder.token.TokenConstants import TT_EQUAL
 from uel.core.builder.token.TokenConstants import TT_IDENTIFER
 from uel.tools.func.wrapper.single_call import single_call
+from uel.core.builder.token.TokenConstants import TT_PUSH
+from uel.core.builder.ast.PushStackValueNode import PushStackValueNode
+from uel.core.builder.ast.PutNode import PutNode
+from uel.core.builder.token.TokenConstants import TT_PUT
 
 class Parser:
     """
@@ -114,6 +118,8 @@ class Parser:
                     return "number"
                 elif typ == TT_IDENTIFER:
                     return "name"
+                else:
+                    RaiseError(UELSyntaxError, f"Incorrect use of keyword", tok.pos)
                 return typ
             typ = mapping(tok.token_type)
             
@@ -159,9 +165,17 @@ class Parser:
         return ExpressionNode(node)
 
     def stmt(self) -> AbstractNode:
-        if self.current_token.token_type in TT_KEYWORDS:
-            error_object = UELSyntaxError("Cannot parser keyword on now")
-            ThrowException.throw(error_object)
+        if self.current_token.token_type == TT_KEYWORD:
+            if self.current_token.token_val == TT_PUSH:
+                self.advance()
+                node: ExpressionNode = self.validate_expr()
+                return PushStackValueNode(node)
+            elif self.current_token.token_val == TT_PUT:
+                self.advance()
+                node: ExpressionNode = self.validate_expr()
+                return PutNode(node)
+            else:
+                RaiseError(UELSyntaxError, "[Unknown Syntax] Syntax Error", self.current_token.pos)
         return self.validate_expr()
 
     def stmts(self, push_target: ContainerNode, eof_type: TT_TYPES) -> AbstractNode:

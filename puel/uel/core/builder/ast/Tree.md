@@ -9,6 +9,8 @@ AbstractNode
         DivNode
         VariableNode
     ExpressionNode
+        PushStackValueNode
+        PutNode
     SingleNode
         Constant
 ```
