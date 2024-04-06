@@ -5,7 +5,18 @@ import tqdm
 import timeit
 
 from functools import lru_cache
-path = './'
+
+import sys
+
+def getPath():
+    try:
+        argv = sys.argv
+        run_path, *args = argv
+        return args[0]
+    except IndexError:
+        return "./"
+
+path = getPath()
 
 sys.setrecursionlimit(1000000)
 
