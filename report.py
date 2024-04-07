@@ -186,10 +186,11 @@ def task(name,s):
         line_n = sum([getLine(i) for i in files])
         file_number = len(files)
         with mutex:
-            update(f'{name}：')
             if file_number == 0 or line_n == 0:
-                update('\t无')
+               
                 return
+            update(f'{name}：')
+            
             def sizeof(x):
                 sss = 0.8
                 l = 5
