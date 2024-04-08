@@ -1,8 +1,19 @@
+#pylint:disable=E0102
 import os,sys
 import time
-import io
-import tqdm
-import timeit
+
+try:
+    import rich
+    del rich
+except ImportError as e:
+    from pip import main
+    main(["install", "rich"])
+    del main
+
+from rich.console import Console
+from rich.table import Table
+
+console = Console()
 
 from functools import lru_cache
 
@@ -170,8 +181,9 @@ def rmpycache():
         if os.path.isdir(p):
             os.rmdir(p)
 
-def update(*args,**kwargs):
-    print(*args,**kwargs,file=stream)
+def update(table, name, value):
+    # print(*args,**kwargs)
+    table.add_row(name,str(value))
 
 def getlength(i):
     return os.path.getsize(i)
@@ -189,8 +201,9 @@ def task(name,s):
             if file_number == 0 or line_n == 0:
                
                 return
-            update(f'{name}：')
-            
+            tb = Table(title=name)
+            tb.add_column('属性名')
+            tb.add_column('值')
             def sizeof(x):
                 sss = 0.8
                 l = 5
@@ -202,14 +215,12 @@ def task(name,s):
                 if x/1024 > sss:
                     return f'{f(x/1024)}KB'
                 return f'{x}字节'    
-            update('\t所有代码总大小',sizeof(size))
-            update('\t文件个数',len(files))
-            update('\t行数和',line_n)
-            update('\t平均文件行数',line_n/file_number)
-            update('\t平均每一个文件的大小',sizeof(size/len(files)))
-            #update('\t平均一行多少',sizeof(size/line_n))
-            update('\t占总数的', size/sumsize*100,'%')
-            update('\t行数占总行数的',line_n/line*100,"%")
+            update(tb, '所有代码总大小',sizeof(size))
+            update(tb, '文件个数',len(files))
+            update(tb, '行数和',line_n)
+            update(tb, '平均文件行数',line_n/file_number)
+            update(tb, '平均每一个文件的大小',sizeof(size/len(files)))
+            console.print(tb)
     pool.submit(compete)
 
 def main():
@@ -218,33 +229,16 @@ def main():
     global line,sumsize,stream,day
     startTime = time.mktime(time.strptime('2024-2-24 22:0:0','%Y-%m-%d %H:%M:%S'))
     day = (time.time()-startTime)/60/60/24
-    stream = io.StringIO()
     line = sum([getLine(i) for i in getfilename(path,item[0][1])])
     sumsize = getfilename(path,item[0][1])
     
-    print('开发天数',day)
-    print('平均每天代码行数',line/day)
-    print('不算pyc，git，obsidian(markdwon软件)产生的')
-    
+    #    print('开发天数',day)
+#        print('平均每天代码行数',line/day)
+#        print('不算pyc，git，obsidian(markdwon软件)产生的')
+#        
+    console.print('开发天数', day, '天')
     for i in item:
         task(*i)
-    def atexit_flush():
-        print(stream.getvalue())
-        print(flush=True)
-    import atexit
-    atexit.register(atexit_flush)
 
-#n = timeit.timeit(main,number=1)
-#print(n/1)
-
-start = time.time()
-main()
-end = time.time()
-
-print("本次统计用时：",round(
-            ((end-start)/
-             (1e-3)),
-            2),
-            "MS"
-     )
-print("接下来将会输出结果")
+if __name__ == "__main__":
+    main()
