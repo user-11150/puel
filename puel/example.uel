@@ -1,7 +1,7 @@
-PUT PUT 1
+PUT 1
 
 # 测试向栈推入数据的语法树
 PUSH 2
 
 # 测试打印语法树
-PUT PUT
+PUT 2

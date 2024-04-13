@@ -5,9 +5,8 @@ from uel.core.builder.ast.AbstractNode import AbstractNode
 from uel.core.builder.Parser import Parser
 from typing import List
 from objprint import objprint
+from pprint import pprint
 from uel.core.builder.bytecode.ASTToByteCodeCollectionCompiler import ASTToByteCodeCollectionCompiler
-from uel.core.builder.bytecode.ByteCodeNodeInfoConstantsConfiguration.shared.functions.development.pretty.print.bytecode_object_print import bytecode_object_print as \
-              builder_bytecode_bytecodenodeinfoconstantsconfiguration_shared_funtion_development_prettyprint_bytecodeprint
 
 class BuildCode(AbstractTask):
     def __init__(self, fn, code):
@@ -24,9 +23,9 @@ class BuildCode(AbstractTask):
         ast = parser.parse()
         print('\nAST:')
         objprint(ast)
-        print('\nByteCode:')
-        uel_compiler = ASTToByteCodeCollectionCompiler(ast)
-        result = uel_compiler.compiler()
-        builder_bytecode_bytecodenodeinfoconstantsconfiguration_shared_funtion_development_prettyprint_bytecodeprint(
-            result
-        )
+        compiler = ASTToByteCodeCollectionCompiler()
+        print('\nBytecode')
+        
+        with compiler.with_ast(ast) as fp:
+            pprint(fp.copy())
+            return fp
