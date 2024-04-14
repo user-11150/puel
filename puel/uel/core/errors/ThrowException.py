@@ -12,4 +12,4 @@ class ThrowException:
         stderr.write('\n')
         stderr.flush()
         
-        exit()
+        _exit(1)

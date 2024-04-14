@@ -13,22 +13,20 @@ BT_ADD:   BT = 0b00000001
 BT_MINUS: BT = 0b00000010
 BT_MUL:   BT = 0b00000011
 BT_DIV:   BT = 0b00000100
+BT_VAR:   BT = 0b00000101
 
 BT_OP: BTF =   0b00000111
-
 
 class BytecodeInfo:
     def __init__(self, bytecode_type: BT,
                  value: str,
-                 pos: int,
-                 token_pos: Position=None):
+                 pos: int):
+        # 只有bytecode运行到哪的位置，token的位置被我搞丢了
         assert pos > 0, "the arg 1 must be great 0"
-        assert runtime_type_check(token_pos, Position), "the last arg must be isintanceof <Position>"
         
         self.bytecode_type = bytecode_type
         self.value = value
         self.pos = pos
-        self.token_pos = token_pos
 
     def copy(self):
         return deepcopy(self)
@@ -45,7 +43,8 @@ class BytecodeInfo:
             BT_ADD: "add",
             BT_MINUS: "minus",
             BT_MUL: "multiply",
-            BT_DIV: "division"
+            BT_DIV: "division",
+            BT_VAR: "variable"
         }
         mapping.setdefault("unknown")
         return mapping[bt], bt

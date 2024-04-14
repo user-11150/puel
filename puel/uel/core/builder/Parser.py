@@ -133,7 +133,7 @@ class Parser:
         
         left_token = self.current_token
         if left_token.token_type == TT_EOF:
-            error_object = UELSyntaxError('EOF error')
+            error_object = UELSyntaxError('EOF error', left_token.pos)
             ThrowException.throw(error_object)
         op: TokenNode = self.advance()
         if op.token_type not in TT_OP:
