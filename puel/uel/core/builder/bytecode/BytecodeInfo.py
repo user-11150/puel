@@ -6,16 +6,16 @@ from uel.tools.func.share.runtime_type_check import runtime_type_check
 # Bytecode types
 BT: TypeAlias = int
 
-# BT filter
-BTF = TypeAlias = int
+BT_ADD:          BT = 0b00000000_00000001
+BT_MINUS:        BT = 0b00000000_00000010
+BT_MUL:          BT = 0b00000000_00000011
+BT_DIV:          BT = 0b00000000_00000100
+BT_STORE_NAME:   BT = 0b00000000_00000101
+BT_POP:          BT = 0b00000000_00000110
+BT_LOAD_CONST:   BT = 0b00000000_00000111
+BT_QPUT:         BT = 0b00000000_00001000
+BT_QTOP:         BT = 0b00000000_00001001
 
-BT_ADD:   BT = 0b00000001
-BT_MINUS: BT = 0b00000010
-BT_MUL:   BT = 0b00000011
-BT_DIV:   BT = 0b00000100
-BT_VAR:   BT = 0b00000101
-
-BT_OP: BTF =   0b00000111
 
 class BytecodeInfo:
     def __init__(self, bytecode_type: BT,
@@ -44,14 +44,21 @@ class BytecodeInfo:
             BT_MINUS: "minus",
             BT_MUL: "multiply",
             BT_DIV: "division",
-            BT_VAR: "variable"
+            BT_STORE_NAME: "store name",
+            BT_POP: "pop",
+            BT_LOAD_CONST: "load const",
+            BT_QPUT: "queue put",
+            BT_QTOP: "queue top"
         }
         mapping.setdefault("unknown")
         return mapping[bt], bt
 
     def __repr__(self) -> str:
         bt = self.pretty_with_bytecode_type(self.bytecode_type)[0]
-        return f"Info({bt} => {self.value}, index={self.pos})"
+        if self.value is not None:
+            return f"Info({bt} => {self.value}, index={self.pos})"
+        else:
+            return f"Info({bt}, index={self.pos})"
 
 #if __name__ == "__main__":
 #    code = BytecodeInfo(BT_ADD, (2, 3), 1, Position(1,1,1,1,1))
