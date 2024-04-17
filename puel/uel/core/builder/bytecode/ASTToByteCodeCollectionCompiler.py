@@ -13,5 +13,5 @@ class ASTToByteCodeCollectionCompiler:
         compiler.read(ast)
         return compiler.toBytecodes()
 
-    def createCompiler(self):
+    def createCompiler(self) -> UELBytecodeCompiler:
         return UELBytecodeCompiler()
