@@ -31,7 +31,7 @@ class BytecodeInfo:
     def copy(self):
         return deepcopy(self)
 
-    def where(self, start, end):
+    def where(self, start: int, end: int) -> bool | None:
         if(abs(start) == start
           and abs(end) == end):
             return self.pos >= start and self.pos <= end

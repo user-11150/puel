@@ -30,16 +30,16 @@ class FourArithmethicMixinWithUELBytcodeCompilerI:
 class FourArithmethicMixin(
         FourArithmethicMixinWithUELBytcodeCompilerI
     ):
-    def add(self):
+    def add(self) -> None:
         self.bytecode(bytecode.BT_ADD)
 
-    def minus(self):
+    def minus(self) -> None:
         self.bytecode(bytecode.BT_MINUS)
 
-    def mult(self):
+    def mult(self) -> None:
         self.bytecode(bytecode.BT_MUL)
 
-    def div(self):
+    def div(self) -> None:
         self.bytecode(bytecode.BT_DIV)
 
 
