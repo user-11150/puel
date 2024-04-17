@@ -23,7 +23,7 @@ __all__ = ["UELBytecodeCompiler"]
 
 class FourArithmethicMixinWithUELBytcodeCompilerI:
     def bytecode(self, bytecode_type: BT,
-                 value: str=None):
+                 value: str=None) -> None:
         pass
     
 
@@ -143,6 +143,9 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         return counter
 
     def calculator(self, node: BinOpNode, root=True) -> None:
+        """
+        Four arithmetic
+        """
         def _symbol(node: BinOpNode) -> None:
             type_node = type(node)
             if type_node is AddNode:
@@ -165,19 +168,30 @@ class UELBytecodeCompiler(FourArithmethicMixin):
             self.calculator(node.right, False)
 
     def pop(self, each_number: int) -> None:
+        """
+        Pop stack value
+        """
         for _ in range(each_number or 0):
             self.bytecode(bytecode.BT_POP)
 
-    def load_const(self, val):
+    def load_const(self, val) -> None:
+        """
+        Push a value to stack
+        """
         self.bytecode(bytecode.BT_LOAD_CONST, val)
 
-    def store_name(self, name, value):
+    def store_name(self, name, value) -> None:
+        """
+        Variable
+        """
         self.expr(value)
         self.bytecode(bytecode.BT_STORE_NAME, value=name.val)
 
     def bytecode(self, bytecode_type: BT,
-                 value: str=None):
-        
+                 value: str=None) -> None:
+        """
+        Push a bytecode
+        """
         self.idx += 1
         self.bytecodes.append(BytecodeInfo(
             bytecode_type=bytecode_type,

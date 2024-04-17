@@ -4,17 +4,20 @@ from uel.core.builder.token.TokenNode import TokenNode as Token
 from uel.core.builder.ast.AbstractNode import AbstractNode
 from uel.core.builder.Parser import Parser
 from typing import List
-from objprint import objprint
+from objprint import objprint # type: ignore
 from pprint import pprint
+from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
 from uel.core.builder.bytecode.ASTToByteCodeCollectionCompiler import ASTToByteCodeCollectionCompiler
 
+import typing as t
+
 class BuildCode(AbstractTask):
-    def __init__(self, fn, code):
+    def __init__(self, fn: str, code: str):
         self.fn = fn
         self.code = code
         self.result = None
 
-    def run(self):
+    def run(self) -> List[BytecodeInfo]:
         import warnings
         warnings.warn('It is still under development. Please do not use it.')
         lexer: Lexer = Lexer(self.fn, self.code)
