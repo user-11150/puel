@@ -17,6 +17,7 @@ from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
 from uel.core.builder.bytecode.BytecodeInfo import BT
 
 import threading
+import typing as t
 
 __all__ = ["UELBytecodeCompiler"]
 
@@ -69,7 +70,7 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                     raise RuntimeError("Multiple calls to read")
             self.ast = abstract_syntax_tree
 
-    def toBytecodes(self):
+    def toBytecodes(self) -> t.Sequence[bytecode.BytecodeInfo]:
         """
         Return the saved AST compile to bytecodes
         """
@@ -78,13 +79,13 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         self.module(ast)
         return self.bytecodes
 
-    def module(self, module_node: ModuleNode):
+    def module(self, module_node: ModuleNode) -> None:
         """
         Its will arg 1 to save bytecodes with Compiler.bytecodes
         """
         self.alwaysExecute(module_node)
 
-    def alwaysExecute(self, node: ContainerNode):
+    def alwaysExecute(self, node: ContainerNode) -> None:
         """
         Must be exceute
         """
@@ -141,7 +142,7 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         
         return counter
 
-    def calculator(self, node: BinOpNode, root=True):
+    def calculator(self, node: BinOpNode, root=True) -> None:
         def _symbol(node: BinOpNode) -> None:
             type_node = type(node)
             if type_node is AddNode:
@@ -163,7 +164,7 @@ class UELBytecodeCompiler(FourArithmethicMixin):
             _symbol(node)
             self.calculator(node.right, False)
 
-    def pop(self, each_number):
+    def pop(self, each_number: int) -> None:
         for _ in range(each_number or 0):
             self.bytecode(bytecode.BT_POP)
 
