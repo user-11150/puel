@@ -1,4 +1,5 @@
 from typing import List
+from typing import Optional
 from string import digits as DIGITS
 from uel.core.builder.Position import Position
 from uel.core.builder.token.TokenNode import TokenNode as Token
@@ -19,6 +20,7 @@ from uel.core.errors.UnknownSyntaxError import UnknownSyntaxError
 from uel.core.errors.TooDotsError import TooDotsError
 from uel.core.errors.ThrowException import ThrowException
 
+from uel.pyexceptions.Nerver import Nerver
 from string import ascii_lowercase
 from string import ascii_uppercase
 
@@ -31,14 +33,16 @@ class Lexer:
         self.content: str = content
         #                   I,  L  C   F   C
         self.pos = Position(-1, 1, -1, fn, content)
-        self.current_char = None
+        self.current_char: Optional[str] = None
         self.advance()
 
     def advance(self) -> bool:
         """
         预读
         """
+        
         self.pos.advance(self.current_char)
+        
         if self.pos.idx < len(self.content):
             self.current_char = self.content[self.pos.idx]
             return True
@@ -53,6 +57,8 @@ class Lexer:
         tokens: List[Token] = []
 
         while self.current_char is not None:
+            if self.current_char is None:
+                raise RuntimeError
             # 匹配注释
             if self.current_char == "#":
                 self.skip_annotation()
@@ -115,20 +121,28 @@ class Lexer:
             string += self.current_char
         return Token(TT_STRING, string, pos=pos)
 
-    def make_identifier(self):
+    def make_identifier(self) -> Token:
+        if self.current_char is None:
+            raise RuntimeError
         identifer = self.current_char
         while self.current_char != " " and self.current_char != "\n":
             self.advance()
+            if self.current_char is None:
+                break
             identifer += self.current_char
-        token_val = identifer.strip()
-        token_type = TT_IDENTIFER if token_val not in TT_KEYWORDS else TT_KEYWORD
+        token_val: str = identifer.strip()
+        token_type: str = TT_IDENTIFER if token_val not in TT_KEYWORDS else TT_KEYWORD
         return Token(token_type, token_val, self.pos.copy())
 
     def make_number(self) -> Token:
+        if self.current_char is None:
+            raise Nerver
         string: str = self.current_char
         while self.advance():
             if (self.current_char not in DIGITS) and (self.current_char != "."):
                 break
+            if self.current_char is None:
+                raise SystemExit
             string += self.current_char
         if string.count('.') > 1:
             ThrowException.throw(TooDotsError(f"At most one dot appears in a number, but more than one appear: '{string}'",self.pos))

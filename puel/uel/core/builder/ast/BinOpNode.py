@@ -4,6 +4,6 @@ class BinOpNode(AbstractNode):
     left: AbstractNode
     right: AbstractNode
     
-    def __init__(self,left,right):
+    def __init__(self,left: AbstractNode,right: AbstractNode) -> None:
         self.left = left
         self.right = right

@@ -1,5 +1,5 @@
 class Position:
-    def __init__(self, idx, ln, col, fn, text):
+    def __init__(self, idx: int, ln: int, col: int, fn: str, text: str):
         """
         :param idx: 索引下标
         :param ln: 行号(line)
@@ -14,12 +14,14 @@ class Position:
         self.fn = fn
         self.text = text
 
-    def advance(self, current_char) -> None:
+    def advance(self, current_char: str | None) -> None:
         """
         预读取下一个字符, 配合 Lexer 类进行使用
         :param current_char:
         :return:
         """
+        if current_char is None:
+            return
         self.idx += 1
         self.col += 1
 

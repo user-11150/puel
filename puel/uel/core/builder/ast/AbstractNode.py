@@ -12,5 +12,5 @@ class AbstractNode:
     
     AN is the all AST(abstract syntax tree) important baseclass
     """
-    def __init__(self):
+    def __init__(self) -> None:
         raise NotImplementedError

@@ -3,6 +3,8 @@ from typing import TypeAlias
 from uel.core.builder.Position import Position
 from uel.tools.func.share.runtime_type_check import runtime_type_check
 
+import typing as t
+
 # Bytecode types
 BT: TypeAlias = int
 
@@ -19,7 +21,7 @@ BT_QTOP:         BT = 0b00000000_00001001
 
 class BytecodeInfo:
     def __init__(self, bytecode_type: BT,
-                 value: str,
+                 value: t.Optional[str],
                  pos: int):
         # 只有bytecode运行到哪的位置，token的位置被我搞丢了
         assert pos > 0, "the arg 1 must be great 0"
@@ -28,7 +30,7 @@ class BytecodeInfo:
         self.value = value
         self.pos = pos
 
-    def copy(self):
+    def copy(self) -> "BytecodeInfo":
         return deepcopy(self)
 
     def where(self, start: int, end: int) -> bool | None:
@@ -38,7 +40,7 @@ class BytecodeInfo:
         raise ValueError("The arg 1 and arg 2 must be great 0")
 
     @staticmethod
-    def pretty_with_bytecode_type(bt: BT):
+    def pretty_with_bytecode_type(bt: BT) -> t.Tuple[str, int]:
         mapping = {
             BT_ADD: "add",
             BT_MINUS: "minus",
@@ -50,7 +52,7 @@ class BytecodeInfo:
             BT_QPUT: "queue put",
             BT_QTOP: "queue top"
         }
-        mapping.setdefault("unknown")
+        mapping.setdefault("unknown") # type: ignore
         return mapping[bt], bt
 
     def __repr__(self) -> str:

@@ -23,7 +23,7 @@ __all__ = ["UELBytecodeCompiler"]
 
 class FourArithmethicMixinWithUELBytcodeCompilerI:
     def bytecode(self, bytecode_type: BT,
-                 value: str=None) -> None:
+                 value: str | None=None) -> None:
         pass
     
 
@@ -47,17 +47,17 @@ class UELBytecodeCompiler(FourArithmethicMixin):
     """
     Bytecode compiler
     """
-    def __init__(self):
-        self.ast = None
+    def __init__(self) -> None:
+        self.ast: t.Optional[ModuleNode] = None
         self.mutex = threading.Lock()
         self.idx = 0
-        self.bytecodes = []
+        self.bytecodes: t.List[BytecodeInfo] = []
         self.__read = 0
 
-    def __iter__(self):
-        return iter([self.ast])
+    def __iter__(self) -> t.Any:
+        yield self.ast
 
-    def read(self, abstract_syntax_tree: ModuleNode):
+    def read(self, abstract_syntax_tree: ModuleNode) -> None:
         """
         Save the AST for compiler
         """
@@ -70,7 +70,7 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                     raise RuntimeError("Multiple calls to read")
             self.ast = abstract_syntax_tree
 
-    def toBytecodes(self) -> t.Sequence[bytecode.BytecodeInfo]:
+    def toBytecodes(self) -> t.List[bytecode.BytecodeInfo]:
         """
         Return the saved AST compile to bytecodes
         """
@@ -95,7 +95,7 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                 counter = self.expr(child)
             self.pop(counter)
 
-    def expr(self, node: ExpressionNode) -> int:
+    def expr(self, node: t.Any) -> int:
         """
         Parse the expression
         """
@@ -142,11 +142,11 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         
         return counter
 
-    def calculator(self, node: BinOpNode, root=True) -> None:
+    def calculator(self, node: t.Any, root: bool=True) -> None:
         """
         Four arithmetic
         """
-        def _symbol(node: BinOpNode) -> None:
+        def _symbol(node: t.Any) -> None:
             type_node = type(node)
             if type_node is AddNode:
                 self.add()
@@ -174,13 +174,13 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         for _ in range(each_number or 0):
             self.bytecode(bytecode.BT_POP)
 
-    def load_const(self, val) -> None:
+    def load_const(self, val: t.Any) -> None:
         """
         Push a value to stack
         """
         self.bytecode(bytecode.BT_LOAD_CONST, val)
 
-    def store_name(self, name, value) -> None:
+    def store_name(self, name: Constant, value: t.Any) -> None:
         """
         Variable
         """
@@ -188,7 +188,7 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         self.bytecode(bytecode.BT_STORE_NAME, value=name.val)
 
     def bytecode(self, bytecode_type: BT,
-                 value: str=None) -> None:
+                 value: t.Optional[str]=None) -> None:
         """
         Push a bytecode
         """

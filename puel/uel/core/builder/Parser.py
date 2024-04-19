@@ -1,7 +1,11 @@
-from typing import Self
-from typing import Any
-from typing import Never
+#pylint:disable=C0103
+#pylint:disable=C0114
+#pylint:disable=W0401
+#pylint:disable=W0614
 
+from typing import (Self,
+                    Any)
+from uel.pyexceptions.Nerver import Nerver
 from uel.core.builder.ast.AbstractNode import AbstractNode
 from uel.core.builder.ast.AddNode import AddNode
 from uel.core.builder.ast.BinOpNode import BinOpNode
@@ -37,13 +41,14 @@ from uel.core.builder.ast.PushStackValueNode import PushStackValueNode
 from uel.core.builder.ast.PutNode import PutNode
 from uel.core.builder.token.TokenConstants import TT_PUT
 
+
 class Parser:
     """
     语法解析器
     """
     def __init__(self, tokens: list[TokenNode]):
         self.tokens = tokens
-        self.current_token = None
+        self.current_token: TokenNode | None
         self.idx = -1
         
         self.advance()
@@ -74,33 +79,6 @@ class Parser:
             self.current_token = None
         return self.current_token
 
-    def __priority(self, ast:ExpressionNode):
-        """
-        用于实现优先级的区分
-        """
-        
-        #############################################################
-        ##                     UTF - 8                             ##
-        #############################################################
-        # e5ae9ee99985e4b88ae5b0b1e698afe8a385e8a385e6a0b7e5ad90efb #
-        # c8ce595a5e4b99fe4b88de58aa8e5b0b1e79bb4e68ea5e8bf94e59b9e #
-        # e5a49ae5a5bd                                              #
-        #############################################################
-
-        return ast
-
-    @single_call
-    @staticmethod
-    def priority(fn): # pylint: disable=C0116, C0103
-        """
-        用于实现AST的优先级
-        """
-        def inner(self: "Parser"):
-            ast = fn(self)
-            return self.__priority(ast) # pylint: disable=W0212
-        return inner
-
-    @priority
     def validate_expr(self) -> ExpressionNode:
         """
         expr:
@@ -113,30 +91,34 @@ class Parser:
             实现一个值token => AST
             """
             val = tok.token_val
-            def mapping(typ):
-                if typ in (TT_INT, TT_FLOAT):
-                    return "number"
-                elif typ == TT_IDENTIFER:
-                    return "name"
-                else:
-                    RaiseError(UELSyntaxError, f"Incorrect use of keyword", tok.pos)
-                return typ
-            typ = mapping(tok.token_type)
+#            def mapping(typ: str) -> str:
+#                if typ in (TT_INT, TT_FLOAT):
+#                    return "number"
+#                elif typ == TT_IDENTIFER:
+#                    return "name"
+#                else:
+#                    RaiseError(UELSyntaxError, f"Incorrect use of keyword: {typ}", tok.pos)
+
+            mapping = {
+                TT_INT: "number",
+                TT_FLOAT: "number",
+                TT_IDENTIFER: "name"
+            }
+            token_type: str = tok.token_type
+            
+            typ: str = mapping[token_type]
             
             return Constant(val, typ)
+        
 
-        left_token = None
-        op = None
-        right_token = None # pylint: disable=W
-        
-        val = None # pylint: disable=W
-        
         left_token = self.current_token
-        if left_token.token_type == TT_EOF:
+        if left_token is None or left_token.token_type == TT_EOF:
+            if left_token is None:
+                raise Nerver
             error_object = UELSyntaxError('EOF error', left_token.pos)
             ThrowException.throw(error_object)
         op: TokenNode = self.advance()
-        if op.token_type not in TT_OP:
+        if op is None or op.token_type not in TT_OP:
             container = ExpressionNode(None)
             left_val = wrap_single(left_token)
             container.val = left_val
@@ -158,33 +140,42 @@ class Parser:
         elif op.token_type == TT_EQUAL:
             ast_type = VariableNode
         else:
-            op: Never
+            raise ValueError("op.token_type is not support")
         
-        node = ast_type(left_val,right_val)
+        node: AbstractNode = ast_type(left_val,right_val) # type: ignore
         # print(node)
-        return ExpressionNode(node)
+        return ExpressionNode(node) # type: ignore
 
     def stmt(self) -> AbstractNode:
+        """
+        stmt
+        """
+        if self.current_token is None:
+            raise TypeError
         if self.current_token.token_type == TT_KEYWORD:
             if self.current_token.token_val == TT_PUSH:
                 self.advance()
-                node: ExpressionNode = self.validate_expr()
+                node: ExpressionNode = self.validate_expr() # type: ignore
                 return PushStackValueNode(node)
             elif self.current_token.token_val == TT_PUT:
                 self.advance()
-                node: ExpressionNode = self.validate_expr()
+                node: ExpressionNode = self.validate_expr() # type: ignore
                 return PutNode(node)
             else:
                 RaiseError(UELSyntaxError, "[Unknown Syntax] Syntax Error", self.current_token.pos)
+                raise SystemExit
         return self.validate_expr()
 
-    def stmts(self, push_target: ContainerNode, eof_type: TT_TYPES) -> AbstractNode:
+    def stmts(self, push_target: ContainerNode, eof_type: str) -> Any:
         if eof_type not in TT_TYPES:
             raise TypeError(f'Cannot parse {eof_type}: This is developer error')
         # while self.current_token.token_type != TT_EOF and self.current_token is not None:
         while self.current_token is not None and self.current_token.token_type != TT_EOF:
+            if self.current_token is None:
+                break
             push_target.push(self.stmt())
             self.advance()
+            
         return push_target
 
     def parse(self) -> ModuleNode:

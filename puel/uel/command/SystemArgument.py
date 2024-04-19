@@ -1,7 +1,8 @@
 from typing import Sequence
 from typing import List
-
 from os import _exit as o_exit
+
+import typing as t
 
 #class SystemArgument:
 #    argv: Sequence[str]
@@ -28,15 +29,16 @@ class SystemArgument:
     def __init__(self, argv: List[str]):
         self.argv = argv[1:]
 
-        self.source_file = None
-        self.rest = None
+        self.source_file:  t.Optional[str] = None
+        self.rest: t.Optional[t.List[str]] = None
 
     def parserCommand(self) -> None:
-        if len(self.argv) > 1:
+        if len(self.argv) < 1:
             print("Usage:\n"
                   "\tpython -m main <source-file>"
                   "")
-        [self.source_file, *self.rest] = self.argv
+        if len(self.argv) >= 1:
+            [self.source_file, *self.rest] = self.argv
         
 #        # 测试
 #        print("Source file:",self.source_file)

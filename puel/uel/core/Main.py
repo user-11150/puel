@@ -1,3 +1,5 @@
+from uel.pyexceptions.Nerver import Nerver
+
 # Impprt the classes
 from uel.command.SystemArgument import SystemArgument
 from uel.core.runner.ExecuteContext import ExecuteContext
@@ -13,7 +15,8 @@ class Main:
         
         sa: SystemArgument = SystemArgument(argv)
         sa.parserCommand()
-        
+        if sa.source_file is None:
+            raise Nerver
         source_file: Final[str] = sa.source_file
         
         ectx: ExecuteContext = ExecuteContext()

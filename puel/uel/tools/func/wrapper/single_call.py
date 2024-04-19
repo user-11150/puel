@@ -5,9 +5,12 @@
 from ctypes import pointer
 from ctypes import c_ulong
 
-from typing import Any
+from typing import *
 
-def single_call(fn: Any) -> Any:
+T = ParamSpec("T")
+R = TypeVar("R")
+
+def single_call(fn: Callable[T, R]) -> Callable[T, R]:
     run_count: Any = pointer(c_ulong(0))
     
     def inner(*args: Any, **kwargs: Any) -> Any:
