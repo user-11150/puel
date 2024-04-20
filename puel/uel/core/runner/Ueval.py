@@ -2,6 +2,9 @@ from uel.core.runner.Frame import Frame
 from uel.core.runner.Stack import Stack
 from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
 from uel.core.builder.bytecode import BytecodeInfo as bytecode
+from uel.core.object.object_parse import parse
+from uel.core.errors.runtime.throw import throw
+from uel.core.errors.runtime.UELRuntimeError import UELRuntimeError
 
 from queue import Queue
 
@@ -34,18 +37,40 @@ class Ueval:
             self.eval(_bytecode)
 
     def eval(self, bytecode_info: BytecodeInfo) -> None:
-        if bytecode_info.bytecode_type is bytecode.BT_LOAD_CONST:
+        if bytecode_info.bytecode_type == bytecode.BT_LOAD_CONST:
             self.stack_push(bytecode_info.value)
-        elif bytecode_info.bytecode_type is bytecode.BT_ADD:
-            x = self.stack_top
-            y = self.stack_top
-            self.stack_push(1)
-        elif bytecode_info.bytecode_type is bytecode.BT_MINUS:
-            x = self.stack_top
-            y = self.stack_top
-            print(x,y)
-        elif bytecode_info.bytecode_type is bytecode.BT_STORE_NAME:
-            value = bytecode_info.value
-            print("store ",value)
+        elif bytecode_info.bytecode_type == bytecode.BT_ADD:
+            self.binary_op(self.frame, bytecode_info)
+        elif bytecode_info.bytecode_type == bytecode.BT_MINUS:
+            self.binary_op(self.frame, bytecode_info)
+        elif bytecode_info.bytecode_type == bytecode.BT_STORE_NAME:
+            name = bytecode_info.value
+            val = parse(self.stack_top)
+            print(name, val.val)
         else:
             raise ValueError(f"Not support type: {bytecode_info.bytecode_type}")
+
+    @staticmethod
+    def binary_op(frame: Frame, bytecode_info: BytecodeInfo):
+        right_value = parse(frame.stack.top)
+        left_value = parse(frame.stack.top)
+        
+        fn_name: str
+        
+        if bytecode_info.bytecode_type == bytecode.BT_ADD:
+            fn_name = "tp_add"
+        elif bytecode_info.bytecode_type == bytecode.BT_MINUS:
+            fn_name = "tp_minus"
+        elif bytecode_info.bytecode_type == bytecode.BT_MUL:
+            fn_name = "tp_mult"
+        elif bytecode_info.bytecode_type == bytecode.BT_DIV:
+            fn_name = "tp_div"
+        else:
+            raise ValueError
+        if (
+            (hasattr(left_value, fn_name) and hasattr(right_value, fn_name))
+           ):
+            result = getattr(left_value, fn_name)(right_value)
+        else:
+            throw(UELRuntimeError("[TypeError] Unable add"))
+        frame.stack.push(result.tp_bytecode())

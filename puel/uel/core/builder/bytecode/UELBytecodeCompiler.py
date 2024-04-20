@@ -16,6 +16,8 @@ from uel.core.builder.bytecode import BytecodeInfo as bytecode
 from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
 from uel.core.builder.bytecode.BytecodeInfo import BT
 
+from uel.tools.func.share.runtime_type_check import runtime_type_check
+
 import threading
 import typing as t
 
@@ -127,7 +129,7 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                 self.load_const((node.type, node.val))
                 counter += 1
 
-            elif type(node) in (AddNode, MinusNode):
+            elif type(node) in (AddNode, MinusNode, MultNode, DivNode):
                 self.calculator(node)
 
             else:
@@ -142,7 +144,7 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         
         return counter
 
-    def calculator(self, node: t.Any, root: bool=True) -> None:
+    def calculator(self, node: Constant | BinOpNode) -> None:
         """
         Four arithmetic
         """
@@ -154,18 +156,40 @@ class UELBytecodeCompiler(FourArithmethicMixin):
             elif type_node is MinusNode:
                 self.minus()
                 return
-            # Test
+            elif type_node is MultNode:
+                self.mult()
+            elif type_node is DivNode:
+                self.div()
+        
+        def deep(node: t.Any, root: bool=True) -> None:
+            if runtime_type_check(node, Constant):
+                self.calculator(node)
+                yield
+                return
+            if root:
+                self.calculator(node.left)
+                g = deep(node.right, False)
+                next(g)
+                _symbol(node)
+                yield from g
+            else:
+                self.calculator(node.left)
+                yield
+                g = deep(node.right, False)
+                next(g)
+                _symbol(node)
+                yield from g
+        
         if type(node) is Constant:
             self.expr(node)
             return
-        if root:
-            self.calculator(node.left, False)
-            self.calculator(node.right, False)
+        elif runtime_type_check(node.left, Constant) and runtime_type_check(node.right, Constant):
+            self.calculator(node.left)
+            self.calculator(node.right)
             _symbol(node)
         else:
-            self.calculator(node.left, False)
-            _symbol(node)
-            self.calculator(node.right, False)
+            for _ in deep(node):
+                pass
 
     def pop(self, each_number: int) -> None:
         """

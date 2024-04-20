@@ -8,7 +8,7 @@ class Stack(Generic[T]):
     """
     First in last out
     """
-    def __init__(self):
+    def __init__(self) -> None:
         self.__deque = deque[T]()
 
     @property
@@ -17,10 +17,3 @@ class Stack(Generic[T]):
 
     def push(self, value: T) -> None:
         self.__deque.append(value)
-
-if __name__ == "__main__":
-    stack = Stack[bool]()
-    stack.push(True)
-    stack.push(False)
-    print(stack.top)
-    print(stack.top)

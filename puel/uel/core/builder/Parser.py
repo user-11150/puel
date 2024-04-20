@@ -35,6 +35,7 @@ from uel.core.builder.token.TokenConstants import TT_INT
 from uel.core.builder.token.TokenConstants import TT_FLOAT
 from uel.core.builder.token.TokenConstants import TT_EQUAL
 from uel.core.builder.token.TokenConstants import TT_IDENTIFER
+from uel.core.builder.token.TokenConstants import TT_STRING
 from uel.tools.func.wrapper.single_call import single_call
 from uel.core.builder.token.TokenConstants import TT_PUSH
 from uel.core.builder.ast.PushStackValueNode import PushStackValueNode
@@ -102,7 +103,8 @@ class Parser:
             mapping = {
                 TT_INT: "number",
                 TT_FLOAT: "number",
-                TT_IDENTIFER: "name"
+                TT_IDENTIFER: "name",
+                TT_STRING: "string"
             }
             token_type: str = tok.token_type
             
