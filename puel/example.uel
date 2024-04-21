@@ -1,7 +1,5 @@
-PUT 5
-
-IF a 
+IF true
   PUT 2
+END ELSE
+  PUT 3
 END
-3
-PUT 2

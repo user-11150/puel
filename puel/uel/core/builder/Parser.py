@@ -186,7 +186,9 @@ class Parser:
             return IfNode(condition, body_result, else_case)
         
         else_case = ContainerNode()
+        self.advance()
         self.stmts(else_case, TT_EOF)
+        self.rollback()
         return IfNode(condition, body_result, else_case)
 
     def stmt(self) -> AbstractNode:

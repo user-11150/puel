@@ -1,3 +1,6 @@
+#pylint:disable=C0103
+#pylint:disable=C0411
+#pylint:disable=C0116
 from uel.core.runner.Frame import Frame
 from uel.core.runner.Stack import Stack
 from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
@@ -7,17 +10,24 @@ from uel.core.errors.runtime.throw import throw
 from uel.core.errors.runtime.UELRuntimeError import UELRuntimeError
 
 from uel.core.object.UEObject import UEObject
-from queue import Queue
+from queue import Queue, Empty
 
 from typing import Any
 from typing import List
 
 class Ueval:
+    """
+    Runner
+    """
     def __init__(self, bytecodes: List[BytecodeInfo]):
         self.bytecodes = bytecodes
         self.frame = Frame(
             # Stack
             Stack[Any](),
+            # index
+            0,
+            # bytecodes
+            self.bytecodes,
             # Prev_frame
             None,
             # Variables
@@ -34,8 +44,9 @@ class Ueval:
         self.frame.stack.push(value)
 
     def uelEval_EvalBytecodeDefault(self) -> None:
-        for _bytecode in self.bytecodes:
-            self.eval(_bytecode)
+        while self.frame.idx < len(self.bytecodes):
+            self.eval(self.bytecodes[self.frame.idx])
+            self.frame.idx += 1
 
     def eval(self, bytecode_info: BytecodeInfo) -> None:
         if bytecode_info.bytecode_type == bytecode.BT_LOAD_CONST:
@@ -56,13 +67,40 @@ class Ueval:
             self.frame.gqueue.put(self.stack_top)
 
         elif bytecode_info.bytecode_type == bytecode.BT_POP:
-            self.stack_top # pylint: disable=W
+            try:
+                self.stack_top # pylint: disable=W
+            except Empty:
+                pass
 
         elif bytecode_info.bytecode_type == bytecode.BT_PUT:
             self.print(self.stack_top)
-
+        elif bytecode_info.bytecode_type == bytecode.BT_JUMP:
+            self.jump(bytecode_info.value)
+        elif bytecode_info.bytecode_type == bytecode.BT_IF_TRUE_JUMP:
+            val = parse(self.stack_top, self.frame)
+            if self.tp_bool(val):
+                self.jump(bytecode_info.value)
+                return
+            self.stack_push(val.tp_bytecode())
+        elif bytecode_info.bytecode_type == bytecode.BT_IF_FALSE_JUMP:
+            value = parse(self.stack_top, self.frame)
+            if not self.tp_bool(value):
+                self.jump(bytecode_info.value)
+                return
+            self.stack_push(value.tp_bytecode())
         else:
-            raise ValueError(f"Not support type: {bytecode_info.pretty_with_bytecode_type(bytecode_info.bytecode_type)[0]}")
+            prettyd = bytecode_info.pretty_with_bytecode_type(bytecode_info.bytecode_type)[0]
+            raise ValueError("Not support type:" +
+                             f"{prettyd}"
+                            )
+
+    def jump(self, idx):
+        self.frame.idx = idx - 2
+
+    def tp_bool(self, val) -> bool:
+        if hasattr(val, "val"):
+            return bool(val.val)
+        return True
 
     @staticmethod
     def binary_op(frame: Frame, bytecode_info: BytecodeInfo):

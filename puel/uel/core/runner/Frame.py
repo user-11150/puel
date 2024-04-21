@@ -5,10 +5,14 @@ from queue import Queue
 
 class Frame:
     def __init__(self, stack: Stack,
+                 idx: int,
+                 bytecodes: t.List[t.Any],
                  prev_frame: t.Optional["Frame"]=None,
                  variables: t.Optional[dict]=None,
                  gqueue: t.Optional[Queue]=None):
         self.stack: Stack = stack
+        self.idx = idx
+        self.bytecodes = bytecodes
         self.prev_frame = prev_frame
         self.variables = variables
         if self.variables is None:

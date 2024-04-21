@@ -1,5 +1,0 @@
-PUSH 1
-result = TOP + TOP # 这里有一个错误，用于示范是怎么报错的
-
-PUT result
-

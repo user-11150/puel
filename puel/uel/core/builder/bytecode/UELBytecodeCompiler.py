@@ -3,18 +3,19 @@ from uel.core.builder.ast.ContainerNode import ContainerNode
 from uel.core.builder.ast.ExpressionNode import ExpressionNode
 from uel.core.builder.ast.VariableNode import VariableNode
 from uel.core.builder.ast.Constant import Constant
-
 from uel.core.builder.ast.PushStackValueNode import PushStackValueNode
 from uel.core.builder.ast.PutNode import PutNode
-
 from uel.core.builder.ast.BinOpNode import BinOpNode
-from uel.core.errors.RaiseError import RaiseError
-from uel.core.errors.UELException import UELException
-
 from uel.core.builder.ast.AddNode import AddNode
 from uel.core.builder.ast.MinusNode import MinusNode
 from uel.core.builder.ast.MultNode import MultNode
 from uel.core.builder.ast.DivNode import DivNode
+from uel.core.builder.ast.IfNode import IfNode
+
+from uel.core.errors.RaiseError import RaiseError
+from uel.core.errors.UELException import UELException
+
+from uel.pyexceptions.CustomError import CustomError
 
 from uel.core.builder.bytecode import BytecodeInfo as bytecode
 from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
@@ -22,7 +23,6 @@ from uel.core.builder.bytecode.BytecodeInfo import BT
 
 from uel.tools.func.share.runtime_type_check import runtime_type_check
 
-from uel.pyexceptions.CustomError import CustomError
 
 import threading
 import typing as t
@@ -108,6 +108,29 @@ class UELBytecodeCompiler(FourArithmethicMixin):
             elif type_ is PutNode:
                 self.expr(child.val)
                 self.bytecode(bytecode.BT_PUT)
+            
+            elif type_ is IfNode:
+                nod: IfNode
+                body = child.body
+                else_do = child.orelse
+                condition = child.condition
+                self.expr(condition)
+                self.bytecode(bytecode.BT_IF_TRUE_JUMP, value=self.idx + 3)
+                jump_to_else_bytecode = BytecodeInfo(bytecode.BT_IF_FALSE_JUMP,
+                                                     None,
+                                                     self.idx + 1)
+                self.idx += 1
+                self.bytecodes.append(jump_to_else_bytecode)
+                self.alwaysExecute(body)
+                jump_to_continue_bytecode = BytecodeInfo(bytecode.BT_JUMP,
+                                                         None,
+                                                         self.idx + 1)
+                self.idx += 1
+                self.bytecodes.append(jump_to_continue_bytecode)
+                jump_to_else_bytecode.value = self.idx + 1
+                self.alwaysExecute(else_do)
+                jump_to_continue_bytecode.value = self.idx + 1
+                
             else:
                 raise CustomError("Developer not completed")
 
@@ -138,7 +161,7 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                 raise ExitAndReturn
 
             elif type(nod) in (AddNode, MinusNode, MultNode, DivNode):
-                self.calculator(node)
+                self.calculator(nod)
                 raise ExitAndReturn
 
             else:
@@ -191,6 +214,9 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         if type(node) is Constant:
             self.expr(node)
             return
+        elif type(node) is ExpressionNode and type(node.val) is Constant:
+            self.expr(node.val)
+            return 
         elif runtime_type_check(node.left, Constant) and runtime_type_check(node.right, Constant):
             self.calculator(node.left)
             self.calculator(node.right)

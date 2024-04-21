@@ -22,6 +22,7 @@ class BuildCode(AbstractTask):
         warnings.warn('It is still under development. Please do not use it.')
         lexer: Lexer = Lexer(self.fn, self.code)
         tokens: List[Token] = lexer.make_tokens()
+        pprint(tokens)
         parser: Parser = Parser(tokens)
         ast = parser.parse()
         print('\nAST:')

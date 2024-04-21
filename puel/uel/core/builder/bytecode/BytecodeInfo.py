@@ -8,20 +8,23 @@ import typing as t
 # Bytecode types
 BT: TypeAlias = int
 
-BT_ADD:          BT = 0b00000000_00000001
-BT_MINUS:        BT = 0b00000000_00000010
-BT_MUL:          BT = 0b00000000_00000011
-BT_DIV:          BT = 0b00000000_00000100
-BT_STORE_NAME:   BT = 0b00000000_00000101
-BT_POP:          BT = 0b00000000_00000110
-BT_LOAD_CONST:   BT = 0b00000000_00000111
-BT_QPUT:         BT = 0b00000000_00001000
-BT_QTOP:         BT = 0b00000000_00001001
-BT_PUT:          BT = 0b00000000_00001010
+BT_ADD:          BT = 0b00000000_00000000_00000001
+BT_MINUS:        BT = 0b00000000_00000000_00000010
+BT_MUL:          BT = 0b00000000_00000000_00000011
+BT_DIV:          BT = 0b00000000_00000000_00000100
+BT_STORE_NAME:   BT = 0b00000000_00000000_00000101
+BT_POP:          BT = 0b00000000_00000000_00000110
+BT_LOAD_CONST:   BT = 0b00000000_00000000_00000111
+BT_QPUT:         BT = 0b00000000_00000000_00001000
+BT_QTOP:         BT = 0b00000000_00000000_00001001
+BT_PUT:          BT = 0b00000000_00000000_00001010
+BT_IF_TRUE_JUMP: BT = 0b00000000_00000000_00001011
+BT_IF_FALSE_JUMP:BT = 0b00000000_00000000_00001100
+BT_JUMP:         BT = 0b00000000_00000000_00001101
 
 class BytecodeInfo:
     def __init__(self, bytecode_type: BT,
-                 value: t.Optional[str],
+                 value: t.Optional[t.Any],
                  pos: int):
         # 只有bytecode运行到哪的位置，token的位置被我搞丢了
         assert pos > 0, "the arg 1 must be great 0"
@@ -51,7 +54,10 @@ class BytecodeInfo:
             BT_LOAD_CONST: "load const",
             BT_QPUT: "queue put",
             BT_QTOP: "queue top",
-            BT_PUT: "put"
+            BT_PUT: "put",
+            BT_IF_TRUE_JUMP: "if true jump",
+            BT_IF_FALSE_JUMP: "if false jump",
+            BT_JUMP: "jump to",
         }
         mapping.setdefault("unknown") # type: ignore
         return mapping[bt], bt
