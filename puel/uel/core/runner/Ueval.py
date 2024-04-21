@@ -6,6 +6,7 @@ from uel.core.object.object_parse import parse
 from uel.core.errors.runtime.throw import throw
 from uel.core.errors.runtime.UELRuntimeError import UELRuntimeError
 
+from uel.core.object.UEObject import UEObject
 from queue import Queue
 
 from typing import Any
@@ -39,21 +40,34 @@ class Ueval:
     def eval(self, bytecode_info: BytecodeInfo) -> None:
         if bytecode_info.bytecode_type == bytecode.BT_LOAD_CONST:
             self.stack_push(bytecode_info.value)
+
         elif bytecode_info.bytecode_type == bytecode.BT_ADD:
             self.binary_op(self.frame, bytecode_info)
+
         elif bytecode_info.bytecode_type == bytecode.BT_MINUS:
             self.binary_op(self.frame, bytecode_info)
+
         elif bytecode_info.bytecode_type == bytecode.BT_STORE_NAME:
             name = bytecode_info.value
-            val = parse(self.stack_top)
-            print(name, val.val)
+            val = parse(self.stack_top, self.frame)
+            self.frame.variables[name] = val
+
+        elif bytecode_info.bytecode_type == bytecode.BT_QPUT:
+            self.frame.gqueue.put(self.stack_top)
+
+        elif bytecode_info.bytecode_type == bytecode.BT_POP:
+            self.stack_top # pylint: disable=W
+
+        elif bytecode_info.bytecode_type == bytecode.BT_PUT:
+            self.print(self.stack_top)
+
         else:
-            raise ValueError(f"Not support type: {bytecode_info.bytecode_type}")
+            raise ValueError(f"Not support type: {bytecode_info.pretty_with_bytecode_type(bytecode_info.bytecode_type)[0]}")
 
     @staticmethod
     def binary_op(frame: Frame, bytecode_info: BytecodeInfo):
-        right_value = parse(frame.stack.top)
-        left_value = parse(frame.stack.top)
+        right_value = parse(frame.stack.top, frame)
+        left_value = parse(frame.stack.top, frame)
         
         fn_name: str
         
@@ -74,3 +88,6 @@ class Ueval:
         else:
             throw(UELRuntimeError("[TypeError] Unable add"))
         frame.stack.push(result.tp_bytecode())
+
+    def print(self, uelobject: UEObject) -> None:
+        print(parse(uelobject, self.frame).tp_str(), end="")

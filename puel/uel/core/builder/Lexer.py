@@ -32,7 +32,7 @@ class Lexer:
         self.fn: str = fn
         self.content: str = content
         #                   I,  L  C   F   C
-        self.pos = Position(-1, 1, -1, fn, content)
+        self.pos = Position(0, 1, -1, fn, content)
         self.current_char: Optional[str] = None
         self.advance()
 

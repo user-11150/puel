@@ -17,7 +17,7 @@ BT_POP:          BT = 0b00000000_00000110
 BT_LOAD_CONST:   BT = 0b00000000_00000111
 BT_QPUT:         BT = 0b00000000_00001000
 BT_QTOP:         BT = 0b00000000_00001001
-
+BT_PUT:          BT = 0b00000000_00001010
 
 class BytecodeInfo:
     def __init__(self, bytecode_type: BT,
@@ -50,7 +50,8 @@ class BytecodeInfo:
             BT_POP: "pop",
             BT_LOAD_CONST: "load const",
             BT_QPUT: "queue put",
-            BT_QTOP: "queue top"
+            BT_QTOP: "queue top",
+            BT_PUT: "put"
         }
         mapping.setdefault("unknown") # type: ignore
         return mapping[bt], bt

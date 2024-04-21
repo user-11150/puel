@@ -42,7 +42,6 @@ from uel.core.builder.ast.PushStackValueNode import PushStackValueNode
 from uel.core.builder.ast.PutNode import PutNode
 from uel.core.builder.token.TokenConstants import TT_PUT
 
-
 class Parser:
     """
     语法解析器
@@ -109,6 +108,8 @@ class Parser:
             token_type: str = tok.token_type
             
             typ: str = mapping[token_type]
+            if tok.token_val == "TOP":
+                typ = "stack_top"
             
             return Constant(val, typ)
         

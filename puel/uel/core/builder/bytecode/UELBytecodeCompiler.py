@@ -4,9 +4,13 @@ from uel.core.builder.ast.ExpressionNode import ExpressionNode
 from uel.core.builder.ast.VariableNode import VariableNode
 from uel.core.builder.ast.Constant import Constant
 
-from uel.core.builder.ast.BinOpNode import BinOpNode
+from uel.core.builder.ast.PushStackValueNode import PushStackValueNode
+from uel.core.builder.ast.PutNode import PutNode
 
-# Four Arithmetic
+from uel.core.builder.ast.BinOpNode import BinOpNode
+from uel.core.errors.RaiseError import RaiseError
+from uel.core.errors.UELException import UELException
+
 from uel.core.builder.ast.AddNode import AddNode
 from uel.core.builder.ast.MinusNode import MinusNode
 from uel.core.builder.ast.MultNode import MultNode
@@ -17,6 +21,8 @@ from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
 from uel.core.builder.bytecode.BytecodeInfo import BT
 
 from uel.tools.func.share.runtime_type_check import runtime_type_check
+
+from uel.pyexceptions.CustomError import CustomError
 
 import threading
 import typing as t
@@ -93,9 +99,17 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         """
         for child in node.childrens:
             type_ = type(child)
-            if type_ == ExpressionNode:
+            if type_ is ExpressionNode:
                 counter = self.expr(child)
-            self.pop(counter)
+                self.pop(counter)
+            elif type_ is PushStackValueNode:
+                self.expr(child.val)
+                self.bytecode(bytecode.BT_QPUT)
+            elif type_ is PutNode:
+                self.expr(child.val)
+                self.bytecode(bytecode.BT_PUT)
+            else:
+                raise CustomError("Developer not completed")
 
     def expr(self, node: t.Any) -> int:
         """
@@ -113,34 +127,28 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                 val = node.val
                 value_type = type(val)
 
-            if type(node) is ExpressionNode:
-                if value_type is VariableNode:
-                    self.store_name(val.left, val.right)
-                    raise ExitAndReturn
+            nod = node.val if runtime_type_check(node, ExpressionNode) else node
 
-                elif type(val) is Constant:
-                    self.load_const((val.type, val.val))
-                    counter += 1
-
-                else:
-                    raise NotSupportType
-
-            elif type(node) is Constant:
-                self.load_const((node.type, node.val))
+            if type(nod) is VariableNode:
+                self.store_name(val.left, val.right)
+                raise ExitAndReturn
+            elif type(nod) is Constant:
+                self.load_const((nod.type, nod.val))
                 counter += 1
+                raise ExitAndReturn
 
-            elif type(node) in (AddNode, MinusNode, MultNode, DivNode):
+            elif type(nod) in (AddNode, MinusNode, MultNode, DivNode):
                 self.calculator(node)
+                raise ExitAndReturn
 
             else:
                 raise NotSupportType
+        
+        except NotSupportType:
+            raise TypeError(f"Not support type: {type(nod)}")
+        
         except ExitAndReturn:
             pass
-        except NotSupportType as e:
-            # If the metaclass __str__ is overload
-            objstr = object.__str__
-            with_types = f" ~ {objstr(type(node.val))}" if hasattr(node, "val") else ""
-            raise TypeError(f"Not support type: {objstr(type(node))}{with_types}") from e
         
         return counter
 
