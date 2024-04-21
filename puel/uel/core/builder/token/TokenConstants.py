@@ -18,6 +18,10 @@ TT_PUSH = "PUSH"
 # ≈ print
 TT_PUT = "PUT"
 
+TT_END = "END"
+TT_IF = "IF"
+TT_ELSE = "ELSE"
+
 TT_VALS = [
     TT_STRING,
     TT_INT,
@@ -31,7 +35,10 @@ TT_OP = [TT_ADD,
          TT_EQUAL]
          
 TT_KEYWORDS = [TT_PUSH,
-               TT_PUT]
+               TT_PUT,
+               TT_END,
+               TT_IF,
+               TT_ELSE,]
 
 TT_TYPES = [*TT_VALS,
             *TT_OP,

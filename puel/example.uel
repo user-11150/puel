@@ -1,3 +1,7 @@
-PUSH 4
-result = 2 - TOP
-PUT result
+PUT 5
+
+IF a 
+  PUT 2
+END
+3
+PUT 2

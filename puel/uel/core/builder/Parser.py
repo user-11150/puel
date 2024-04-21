@@ -1,11 +1,3 @@
-#pylint:disable=C0103
-#pylint:disable=C0114
-#pylint:disable=W0401
-#pylint:disable=W0614
-
-from typing import (Self,
-                    Any)
-from uel.pyexceptions.Nerver import Nerver
 from uel.core.builder.ast.AbstractNode import AbstractNode
 from uel.core.builder.ast.AddNode import AddNode
 from uel.core.builder.ast.BinOpNode import BinOpNode
@@ -18,9 +10,16 @@ from uel.core.builder.ast.MultNode import MultNode
 from uel.core.builder.ast.SingleNode import SingleNode
 from uel.core.builder.ast.VariableNode import VariableNode
 from uel.core.builder.ast.Constant import Constant
+from uel.core.builder.ast.PushStackValueNode import PushStackValueNode
+from uel.core.builder.ast.PutNode import PutNode
+from uel.core.builder.ast.IfNode import IfNode
+
 from uel.core.errors.ThrowException import ThrowException
 from uel.core.errors.RaiseError import RaiseError
 from uel.core.errors.UELSyntaxError import UELSyntaxError
+
+from uel.pyexceptions.Nerver import Nerver
+
 from uel.core.builder.token.TokenNode import TokenNode
 from uel.core.builder.token.TokenConstants import TT_TYPES
 from uel.core.builder.token.TokenConstants import TT_EOF
@@ -36,11 +35,18 @@ from uel.core.builder.token.TokenConstants import TT_FLOAT
 from uel.core.builder.token.TokenConstants import TT_EQUAL
 from uel.core.builder.token.TokenConstants import TT_IDENTIFER
 from uel.core.builder.token.TokenConstants import TT_STRING
-from uel.tools.func.wrapper.single_call import single_call
-from uel.core.builder.token.TokenConstants import TT_PUSH
-from uel.core.builder.ast.PushStackValueNode import PushStackValueNode
-from uel.core.builder.ast.PutNode import PutNode
 from uel.core.builder.token.TokenConstants import TT_PUT
+from uel.core.builder.token.TokenConstants import TT_PUSH
+from uel.core.builder.token.TokenConstants import TT_IF
+from uel.core.builder.token.TokenConstants import TT_ELSE
+from uel.core.builder.token.TokenConstants import TT_END
+
+from uel.tools.func.wrapper.single_call import single_call
+
+from objprint import objprint
+
+from typing import (Self,
+                    Any)
 
 class Parser:
     """
@@ -99,6 +105,12 @@ class Parser:
 #                else:
 #                    RaiseError(UELSyntaxError, f"Incorrect use of keyword: {typ}", tok.pos)
 
+            typ = None
+            if tok.token_val == "TOP":
+                typ = "stack_top"
+            if tok.token_val == "true" or tok.token_val == "false":
+                typ = "boolean"
+            
             mapping = {
                 TT_INT: "number",
                 TT_FLOAT: "number",
@@ -106,11 +118,8 @@ class Parser:
                 TT_STRING: "string"
             }
             token_type: str = tok.token_type
-            
-            typ: str = mapping[token_type]
-            if tok.token_val == "TOP":
-                typ = "stack_top"
-            
+            if typ is None:
+                typ = mapping[token_type]
             return Constant(val, typ)
         
 
@@ -149,6 +158,37 @@ class Parser:
         # print(node)
         return ExpressionNode(node) # type: ignore
 
+    def validate_if(self):
+        last_token = self.current_token
+        self.advance()
+        if self.current_token is None:
+            RaiseError(UELSyntaxError, "[Unknown Syntax] Syntax Error", last_token.pos)
+            raise SystemExit
+        del last_token
+        condition = self.validate_expr()
+        self.advance()
+        body_result = ContainerNode()
+        self.stmts(body_result, TT_EOF)
+        
+        
+        class GotoNoElseCase(Exception):
+            pass
+        
+        try:
+            if self.current_token is None:
+                raise GotoNoElseCase
+            if not (self.current_token.token_type == TT_KEYWORD \
+             and self.current_token.token_val == TT_ELSE):
+                raise GotoNoElseCase
+        except GotoNoElseCase:
+            else_case = ContainerNode()
+            self.rollback()
+            return IfNode(condition, body_result, else_case)
+        
+        else_case = ContainerNode()
+        self.stmts(else_case, TT_EOF)
+        return IfNode(condition, body_result, else_case)
+
     def stmt(self) -> AbstractNode:
         """
         stmt
@@ -164,6 +204,10 @@ class Parser:
                 self.advance()
                 node: ExpressionNode = self.validate_expr() # type: ignore
                 return PutNode(node)
+            elif self.current_token.token_val == TT_END:
+                return
+            elif self.current_token.token_val == TT_IF:
+                return self.validate_if()
             else:
                 RaiseError(UELSyntaxError, "[Unknown Syntax] Syntax Error", self.current_token.pos)
                 raise SystemExit
@@ -176,8 +220,16 @@ class Parser:
         while self.current_token is not None and self.current_token.token_type != TT_EOF:
             if self.current_token is None:
                 break
-            push_target.push(self.stmt())
-            self.advance()
+            if self.current_token.token_type == TT_END:
+                self.advance()
+                break
+            result_node = self.stmt()
+            if result_node is not None:
+                push_target.push(result_node)
+                self.advance()
+            else:
+                self.advance()
+                break
             
         return push_target
 
