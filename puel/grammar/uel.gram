@@ -14,7 +14,7 @@ constant:
 
 expr:
     ->: <constant>
-    ->: <expr>\s*[+-*/]\s*<expr>
+    ->: <expr>\s*(+|-|\*|/|is)\s*<expr>
 
 put:
     ->: PUT <expr>
