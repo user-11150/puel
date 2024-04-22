@@ -8,6 +8,7 @@ AbstractNode
         MultNode
         DivNode
         VariableNode
+        IsEqual
     ExpressionNode
         PushStackValueNode
         PutNode

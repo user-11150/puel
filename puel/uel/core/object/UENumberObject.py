@@ -1,4 +1,7 @@
 import typing as t
+
+from uel.tools.func.share.runtime_type_check import runtime_type_check
+from uel.core.object.UEBooleanObject import UEBooleanObject
 from uel.core.object.UEObject import UEObject
 
 class UENumberObject(UEObject):
@@ -36,6 +39,11 @@ class UENumberObject(UEObject):
               if isinstance(other, UENumberObject)
               else other)
         )
+    
+    def tp_equal(self, other):
+        if not runtime_type_check(other, type(self)):
+            return UEBooleanObject(False)
+        return UEBooleanObject(self.val == other.val)
     
     def __init__(self, string: t.Any) -> None:
         self.val = float(string)

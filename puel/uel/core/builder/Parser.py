@@ -13,6 +13,7 @@ from uel.core.builder.ast.Constant import Constant
 from uel.core.builder.ast.PushStackValueNode import PushStackValueNode
 from uel.core.builder.ast.PutNode import PutNode
 from uel.core.builder.ast.IfNode import IfNode
+from uel.core.builder.ast.IsEqual import IsEqual
 
 from uel.core.errors.ThrowException import ThrowException
 from uel.core.errors.RaiseError import RaiseError
@@ -40,6 +41,7 @@ from uel.core.builder.token.TokenConstants import TT_PUSH
 from uel.core.builder.token.TokenConstants import TT_IF
 from uel.core.builder.token.TokenConstants import TT_ELSE
 from uel.core.builder.token.TokenConstants import TT_END
+from uel.core.builder.token.TokenConstants import TT_IS
 
 from uel.tools.func.wrapper.single_call import single_call
 
@@ -130,7 +132,7 @@ class Parser:
             error_object = UELSyntaxError('EOF error', left_token.pos)
             ThrowException.throw(error_object)
         op: TokenNode = self.advance()
-        if op is None or op.token_type not in TT_OP:
+        if op is None or op.token_type not in TT_OP and not (op.token_type == TT_KEYWORD and op.token_val == TT_IS):
             container = ExpressionNode(None)
             left_val = wrap_single(left_token)
             container.val = left_val
@@ -149,6 +151,8 @@ class Parser:
             ast_type = MultNode
         elif op.token_type == TT_DIV:
             ast_type = DivNode
+        elif op.token_type == TT_KEYWORD and op.token_val == TT_IS:
+            ast_type = IsEqual
         elif op.token_type == TT_EQUAL:
             ast_type = VariableNode
         else:

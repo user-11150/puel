@@ -11,6 +11,7 @@ from uel.core.builder.ast.MinusNode import MinusNode
 from uel.core.builder.ast.MultNode import MultNode
 from uel.core.builder.ast.DivNode import DivNode
 from uel.core.builder.ast.IfNode import IfNode
+from uel.core.builder.ast.IsEqual import IsEqual
 
 from uel.core.errors.RaiseError import RaiseError
 from uel.core.errors.UELException import UELException
@@ -160,7 +161,7 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                 counter += 1
                 raise ExitAndReturn
 
-            elif type(nod) in (AddNode, MinusNode, MultNode, DivNode):
+            elif type(nod) in (AddNode, MinusNode, MultNode, DivNode, IsEqual):
                 self.calculator(nod)
                 raise ExitAndReturn
 
@@ -174,6 +175,9 @@ class UELBytecodeCompiler(FourArithmethicMixin):
             pass
         
         return counter
+
+    def equal(self):
+        self.bytecode(bytecode.BT_IS)
 
     def calculator(self, node: Constant | BinOpNode) -> None:
         """
@@ -191,6 +195,8 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                 self.mult()
             elif type_node is DivNode:
                 self.div()
+            elif type_node is IsEqual:
+                self.equal()
         
         def deep(node: t.Any, root: bool=True) -> None:
             if runtime_type_check(node, Constant):

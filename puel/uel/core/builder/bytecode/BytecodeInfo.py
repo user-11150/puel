@@ -21,6 +21,7 @@ BT_PUT:          BT = 0b00000000_00000000_00001010
 BT_IF_TRUE_JUMP: BT = 0b00000000_00000000_00001011
 BT_IF_FALSE_JUMP:BT = 0b00000000_00000000_00001100
 BT_JUMP:         BT = 0b00000000_00000000_00001101
+BT_IS:           BT = 0b00000000_00000000_00001110
 
 class BytecodeInfo:
     def __init__(self, bytecode_type: BT,
@@ -58,6 +59,7 @@ class BytecodeInfo:
             BT_IF_TRUE_JUMP: "if true jump",
             BT_IF_FALSE_JUMP: "if false jump",
             BT_JUMP: "jump to",
+            BT_IS: "is"
         }
         mapping.setdefault("unknown") # type: ignore
         return mapping[bt], bt

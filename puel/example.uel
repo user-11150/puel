@@ -1,5 +1,10 @@
-IF true
-  PUT 2
-END ELSE
-  PUT 3
+PUSH 1 is 1
+PUSH 2 is 2
+PUSH TOP + TOP is 1
+
+IF TOP
+  PUT "All rights"
 END
+
+PUT "
+"

@@ -10,6 +10,8 @@ from uel.core.errors.runtime.throw import throw
 from uel.core.errors.runtime.UELRuntimeError import UELRuntimeError
 
 from uel.core.object.UEObject import UEObject
+from uel.core.object.UEBooleanObject import UEBooleanObject
+
 from queue import Queue, Empty
 
 from typing import Any
@@ -48,6 +50,12 @@ class Ueval:
             self.eval(self.bytecodes[self.frame.idx])
             self.frame.idx += 1
 
+    def equal(self, x: UEObject, y: UEObject) -> bool:
+        if hasattr(x, "val") and hasattr(y, "val"):
+            return x.val == y.val
+        
+        return x == y
+
     def eval(self, bytecode_info: BytecodeInfo) -> None:
         if bytecode_info.bytecode_type == bytecode.BT_LOAD_CONST:
             self.stack_push(bytecode_info.value)
@@ -57,7 +65,21 @@ class Ueval:
 
         elif bytecode_info.bytecode_type == bytecode.BT_MINUS:
             self.binary_op(self.frame, bytecode_info)
-
+        elif bytecode_info.bytecode_type == bytecode.BT_MUL:
+            self.binary_op(self.frame, bytecode_info)
+        elif bytecode_info.bytecode_type == bytecode.BT_DIV:
+            self.binary_op(self.frame, bytecode_info)
+        elif bytecode_info.bytecode_type == bytecode.BT_IS:
+            left_value = parse(self.stack_top, self.frame)
+            right_val = parse(self.stack_top, self.frame)
+            
+            if hasattr(left_value, "tp_equal"):
+                self.stack_push(left_value.tp_equal(right_val).tp_bytecode())
+            elif hasattr(right_val, "tp_equal"):
+                self.stack_push(right_val.tp_equal(left_value).tp_bytecode())
+            else:
+                result = UEBooleanObject(str(self.equal(left_value, right_val)))
+                self.stack_push(result.tp_bytecode())
         elif bytecode_info.bytecode_type == bytecode.BT_STORE_NAME:
             name = bytecode_info.value
             val = parse(self.stack_top, self.frame)
