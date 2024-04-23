@@ -15,4 +15,5 @@ AbstractNode
     SingleNode
         Constant
     IfNode
+    RepeatNode
 ```
