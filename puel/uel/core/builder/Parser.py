@@ -43,6 +43,7 @@ from uel.core.builder.token.TokenConstants import TT_IF
 from uel.core.builder.token.TokenConstants import TT_ELSE
 from uel.core.builder.token.TokenConstants import TT_END
 from uel.core.builder.token.TokenConstants import TT_IS
+from uel.core.builder.token.TokenConstants import TT_REPEAT
 
 from uel.tools.func.wrapper.single_call import single_call
 
@@ -196,6 +197,15 @@ class Parser:
         self.rollback()
         return IfNode(condition, body_result, else_case)
 
+    def validate_repeat_loop(self):
+        self.advance()
+        
+        # body
+        result_node = RepeatNode()
+        self.stmts(result_node)
+        
+        return result_node
+
     def stmt(self) -> AbstractNode:
         """
         stmt
@@ -215,12 +225,14 @@ class Parser:
                 return
             elif self.current_token.token_val == TT_IF:
                 return self.validate_if()
+            elif self.current_token.token_val == TT_REPEAT:
+                return self.validate_repeat_loop()
             else:
                 RaiseError(UELSyntaxError, "[Unknown Syntax] Syntax Error", self.current_token.pos)
                 raise SystemExit
         return self.validate_expr()
 
-    def stmts(self, push_target: ContainerNode, eof_type: str) -> Any:
+    def stmts(self, push_target: ContainerNode, eof_type: str=TT_EOF) -> Any:
         if eof_type not in TT_TYPES:
             raise TypeError(f'Cannot parse {eof_type}: This is developer error')
         # while self.current_token.token_type != TT_EOF and self.current_token is not None:

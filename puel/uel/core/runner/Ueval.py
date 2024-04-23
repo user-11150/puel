@@ -96,6 +96,7 @@ class Ueval:
 
         elif bytecode_info.bytecode_type == bytecode.BT_PUT:
             self.print(self.stack_top)
+
         elif bytecode_info.bytecode_type == bytecode.BT_JUMP:
             self.jump(bytecode_info.value)
         elif bytecode_info.bytecode_type == bytecode.BT_IF_TRUE_JUMP:

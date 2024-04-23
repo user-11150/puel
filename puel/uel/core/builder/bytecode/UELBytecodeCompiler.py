@@ -12,6 +12,7 @@ from uel.core.builder.ast.MultNode import MultNode
 from uel.core.builder.ast.DivNode import DivNode
 from uel.core.builder.ast.IfNode import IfNode
 from uel.core.builder.ast.IsEqual import IsEqual
+from uel.core.builder.ast.RepeatNode import RepeatNode
 
 from uel.core.errors.RaiseError import RaiseError
 from uel.core.errors.UELException import UELException
@@ -131,6 +132,11 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                 jump_to_else_bytecode.value = self.idx + 1
                 self.alwaysExecute(else_do)
                 jump_to_continue_bytecode.value = self.idx + 1
+                
+            elif type_ is RepeatNode:
+                start_index = self.idx
+                self.alwaysExecute(child)
+                self.bytecode(bytecode.BT_JUMP, value=start_index + 1)
                 
             else:
                 raise CustomError("Developer not completed")

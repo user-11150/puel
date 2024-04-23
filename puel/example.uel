@@ -1,10 +1,7 @@
-PUSH 1 is 1
-PUSH 2 is 2
-PUSH TOP + TOP is 1
-
-IF TOP
-  PUT "All rights"
+a = 1
+repeat
+  a = a + 1
+  PUT a
+  PUT "
+  "
 END
-
-PUT "
-"
