@@ -23,6 +23,7 @@ TT_IF = "IF"
 TT_ELSE = "ELSE"
 
 TT_IS = "is"
+TT_REPEAT = "repeat"
 
 TT_VALS = [
     TT_STRING,
@@ -42,7 +43,8 @@ TT_KEYWORDS = [TT_PUSH,
                TT_END,
                TT_IF,
                TT_ELSE,
-               TT_IS]
+               TT_IS,
+               TT_REPEAT]
 
 TT_TYPES = [*TT_VALS,
             *TT_OP,
