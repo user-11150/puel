@@ -14,6 +14,7 @@ from uel.core.builder.ast.PushStackValueNode import PushStackValueNode
 from uel.core.builder.ast.PutNode import PutNode
 from uel.core.builder.ast.IfNode import IfNode
 from uel.core.builder.ast.IsEqual import IsEqual
+from uel.core.builder.ast.RepeatNode import RepeatNode
 
 from uel.core.errors.ThrowException import ThrowException
 from uel.core.errors.RaiseError import RaiseError
