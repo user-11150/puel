@@ -1,1 +1,0 @@
-mypy --strict --pretty --no-warn-unused-ignores main.py
