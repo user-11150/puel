@@ -21,8 +21,8 @@ from uel.core.errors.TooDotsError import TooDotsError
 from uel.core.errors.ThrowException import ThrowException
 
 from uel.pyexceptions.Nerver import Nerver
-from string import ascii_lowercase
-from string import ascii_uppercase
+from uel.core.builder.token.tools.identifier import is_start
+from uel.core.builder.token.tools.identifier import is_identifier_center_char_or_end_char
 
 class Lexer:
     """
@@ -32,7 +32,7 @@ class Lexer:
         self.fn: str = fn
         self.content: str = content
         #                   I,  L  C   F   C
-        self.pos = Position(0, 1, -1, fn, content)
+        self.pos = Position(0, 1, 1, fn, content)
         self.current_char: Optional[str] = None
         self.advance()
 
@@ -96,10 +96,10 @@ class Lexer:
                 continue
 
             # 字符串
-            if self.current_char == "\"":
+            elif self.current_char == "\"":
                 tokens.append(self.make_string())
                 continue
-            if self.current_char in ascii_lowercase or self.current_char in ascii_uppercase:
+            elif is_start(self.current_char):
                 tokens.append(self.make_identifier())
                 continue
             ThrowException.throw(UnknownSyntaxError('Unknown syntax',self.pos))
@@ -125,7 +125,7 @@ class Lexer:
         if self.current_char is None:
             raise RuntimeError
         identifer = self.current_char
-        while self.current_char != " " and self.current_char != "\n":
+        while self.current_char is not None and is_identifier_center_char_or_end_char(self.current_char):
             self.advance()
             if self.current_char is None:
                 break
