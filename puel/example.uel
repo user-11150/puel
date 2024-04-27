@@ -1,7 +1,7 @@
-a = 1
+数1 = 1
 repeat
-  a = a + 1
-  PUT a
+  数1 = 数1 + 1
+  PUT 数1
   PUT "
   "
 END
