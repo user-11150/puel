@@ -1,3 +1,16 @@
+try:
+    import flask
+    del flask
+except ImportError:
+    import pip
+    import os.path
+    import sys
+    import io
+
+    print("loading")
+    
+    pip.main(["install", "-r", os.path.abspath(os.path.join(os.path.dirname(__file__), "requirements.txt"))])
+
 from flask import Flask, redirect
 
 app: Flask = Flask(__package__,
@@ -10,6 +23,6 @@ def index():
     return redirect("/index.html")
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1",
+    app.run(host="0.0.0.0",
             port=2500,
             debug=True)
