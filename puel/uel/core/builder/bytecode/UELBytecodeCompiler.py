@@ -25,6 +25,7 @@ from uel.core.builder.bytecode.BytecodeInfo import BT
 
 from uel.tools.func.share.runtime_type_check import runtime_type_check
 
+from uel.core.object.object_new import uel_new_object, IS_CAN_MAKE_OBJECT
 
 import threading
 import typing as t
@@ -163,7 +164,10 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                 self.store_name(val.left, val.right)
                 raise ExitAndReturn
             elif type(nod) is Constant:
-                self.load_const((nod.type, nod.val))
+                self.load_const((
+                    nod.type,
+                    nod.val
+                ))
                 counter += 1
                 raise ExitAndReturn
 
@@ -248,6 +252,8 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         """
         Push a value to stack
         """
+        if IS_CAN_MAKE_OBJECT(val[0]):
+            val = ("object", uel_new_object(*val))
         self.bytecode(bytecode.BT_LOAD_CONST, val)
 
     def store_name(self, name: Constant, value: t.Any) -> None:

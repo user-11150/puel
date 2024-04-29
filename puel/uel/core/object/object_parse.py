@@ -1,7 +1,3 @@
-from uel.core.object.UENumberObject import UENumberObject
-from uel.core.object.UEStringObject import UEStringObject
-from uel.core.object.UEBooleanObject import UEBooleanObject
-
 from uel.core.runner.Frame import Frame
 
 from uel.core.errors.runtime.UELRuntimeError import UELRuntimeError
@@ -12,17 +8,14 @@ from typing import Tuple
 
 def parse(info: Tuple[str, str], frame: Frame):
     typ, val = info
-    if typ == "number":
-        constructor = UENumberObject
-    elif typ == "string":
-        constructor = UEStringObject
-    elif typ == "stack_top":
+    
+    if typ == "stack_top":
         try:
             return parse(frame.gqueue.get_nowait(), frame)
         except Empty:
             throw(UELRuntimeError("[ValueError] At least one PUSH before TOP"))
-    elif typ == "boolean":
-        return UEBooleanObject(val)
+    elif typ == "object":
+        return val
     elif typ == "name":
         try:
             return frame.variables[val]
@@ -30,4 +23,3 @@ def parse(info: Tuple[str, str], frame: Frame):
             throw(UELRuntimeError(f"[NameError] {val} is undefined"))
     else:
         raise ValueError
-    return constructor(val)

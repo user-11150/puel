@@ -1,7 +1,13 @@
 数1 = 1
+None = "
+"
 repeat
-  数1 = 数1 + 1
-  PUT 数1
-  PUT "
-  "
+  IF 数1 is 10 END
+  ELSE
+    数1 = 数1 + 1
+    PUT 数1
+    PUT "Hello world"
+        "H1"
+    PUT None
+  END
 END

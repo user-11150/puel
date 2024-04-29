@@ -5,8 +5,6 @@ from uel.core.object.UEBooleanObject import UEBooleanObject
 from uel.core.object.UEObject import UEObject
 
 class UENumberObject(UEObject):
-    def tp_bytecode(self):
-        return ("number", self.tp_str())
 
     def tp_str(self):
         return str(self.val)
