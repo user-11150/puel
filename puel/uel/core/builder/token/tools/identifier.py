@@ -14,6 +14,8 @@ def is_start(char: str) -> bool:
         return True
     elif "_" == char:
         return True
+    elif "$" == char:
+        return True
     return False
 
 def is_identifier_center_char_or_end_char(char: str) -> bool:
