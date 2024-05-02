@@ -13,14 +13,14 @@ TT_KEYWORD = "TT_KEYWORD"
 
 TT_EOF = "TT_EOF"
 
-TT_PUSH = "PUSH"
+TT_PUSH = "push"
 
 # ≈ print
-TT_PUT = "PUT"
+TT_PUT = "put"
 
-TT_END = "END"
-TT_IF = "IF"
-TT_ELSE = "ELSE"
+TT_END = "end"
+TT_IF = "if"
+TT_ELSE = "else"
 
 TT_IS = "is"
 TT_REPEAT = "repeat"

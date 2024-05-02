@@ -1,2 +1,21 @@
-a= true
+pancake = "pancake"
+jiaozi = "jiaozi"
+rice = "rice"
+chicken = "chicken"
+
+eat = pancake
+repeat
+  if eat is jiaozi
+    put "饺子"
+  end else
+    if eat is pancake
+      put "薄烤饼"
+    end else
+      if eat is rice
+        put "米"
+      end
+    end
+  end
+  put " "
+
 
