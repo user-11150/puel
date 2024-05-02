@@ -60,21 +60,21 @@ class Lexer:
             if self.current_char is None:
                 raise RuntimeError
             # 匹配注释
-            if self.current_char == "#":
+            elif self.current_char == "#":
                 self.skip_annotation()
                 continue
 
             # 空白
-            if self.current_char == " " or self.current_char == "\n":
+            elif self.current_char == " " or self.current_char == "\n":
                 self.advance()
                 continue
 
             # 匹配数字
-            if self.current_char in DIGITS:
+            elif self.current_char in DIGITS:
                 tokens.append(self.make_number())
                 continue
             # 匹配符号
-            if self.current_char == "+":
+            elif self.current_char == "+":
                 tokens.append(Token(TT_ADD,pos=self.pos.copy()))
                 self.advance()
                 continue
@@ -102,7 +102,8 @@ class Lexer:
             elif is_start(self.current_char):
                 tokens.append(self.make_identifier())
                 continue
-            ThrowException.throw(UnknownSyntaxError('Unknown syntax',self.pos))
+            else:
+                ThrowException.throw(UnknownSyntaxError('Unknown syntax',self.pos))
             
         tokens.append(Token(TT_EOF,pos=self.pos.copy()))
         return tokens
@@ -125,9 +126,11 @@ class Lexer:
         if self.current_char is None:
             raise RuntimeError
         identifer = self.current_char
-        while self.current_char is not None and is_identifier_center_char_or_end_char(self.current_char):
+        while self.current_char is not None:
             self.advance()
             if self.current_char is None:
+                break
+            if not is_identifier_center_char_or_end_char(self.current_char):
                 break
             identifer += self.current_char
         token_val: str = identifer.strip()

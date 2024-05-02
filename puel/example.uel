@@ -1,7 +1,2 @@
-Изпълнение = true
+a= true
 
-IF Изпълнение
-    PUT 5
-    PUT "
-"
-END
