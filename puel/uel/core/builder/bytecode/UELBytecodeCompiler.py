@@ -13,6 +13,9 @@ from uel.core.builder.ast.DivNode import DivNode
 from uel.core.builder.ast.IfNode import IfNode
 from uel.core.builder.ast.IsEqual import IsEqual
 from uel.core.builder.ast.RepeatNode import RepeatNode
+from uel.core.builder.ast.FunctionNode import FunctionNode
+from uel.core.builder.ast.ReturnNode import ReturnNode
+from uel.core.builder.ast.CallFunctionNode import CallFunctionNode
 
 from uel.core.errors.RaiseError import RaiseError
 from uel.core.errors.UELException import UELException
@@ -26,7 +29,8 @@ from uel.core.builder.bytecode.BytecodeInfo import BT
 from uel.tools.func.share.runtime_type_check import runtime_type_check
 
 from uel.core.object.object_new import uel_new_object, IS_CAN_MAKE_OBJECT
-
+from uel.core.object.UEFunctionObject import UEFunctionObject
+from uel.core.object.UEObject import UEObject
 import threading
 import typing as t
 
@@ -133,12 +137,23 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                 jump_to_else_bytecode.value = self.idx + 1
                 self.alwaysExecute(else_do)
                 jump_to_continue_bytecode.value = self.idx + 1
-                
+            elif type_ is FunctionNode:
+                interpreter_compiler = UELBytecodeCompiler()
+                interpreter_compiler.read(child)
+                bytecodes = interpreter_compiler.toBytecodes()
+                function_object = uel_new_object("function", (child.args, bytecodes))
+                self.load_const(("object", function_object))
+                self._store_name(child.name)
             elif type_ is RepeatNode:
                 start_index = self.idx
                 self.alwaysExecute(child)
                 self.bytecode(bytecode.BT_JUMP, value=start_index + 1)
-                
+            elif type_ is CallFunctionNode:
+                self.expr(child.val)
+                self.bytecode(bytecode.BT_CALL)
+            elif type_ is ReturnNode:
+                self.expr(child.val)
+                self.bytecode(bytecode.BT_RETURN)
             else:
                 raise CustomError("Developer not completed")
 
@@ -170,7 +185,6 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                 ))
                 counter += 1
                 raise ExitAndReturn
-
             elif type(nod) in (AddNode, MinusNode, MultNode, DivNode, IsEqual):
                 self.calculator(nod)
                 raise ExitAndReturn
@@ -252,7 +266,7 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         """
         Push a value to stack
         """
-        if IS_CAN_MAKE_OBJECT(val[0]):
+        if not issubclass(type(val), UEObject) and IS_CAN_MAKE_OBJECT(val[0]):
             val = ("object", uel_new_object(*val))
         self.bytecode(bytecode.BT_LOAD_CONST, val)
 
@@ -261,7 +275,9 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         Variable
         """
         self.expr(value)
-        self.bytecode(bytecode.BT_STORE_NAME, value=name.val)
+        self._store_name(name.val)
+    def _store_name(self, value):
+        self.bytecode(bytecode.BT_STORE_NAME, value)
 
     def bytecode(self, bytecode_type: BT,
                  value: t.Optional[str]=None) -> None:

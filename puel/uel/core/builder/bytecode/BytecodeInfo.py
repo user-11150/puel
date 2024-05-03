@@ -8,20 +8,22 @@ import typing as t
 # Bytecode types
 BT: TypeAlias = int
 
-BT_ADD: BT = 0b00000000_00000000_00000001
-BT_MINUS: BT = 0b00000000_00000000_00000010
-BT_MUL: BT = 0b00000000_00000000_00000011
-BT_DIV: BT = 0b00000000_00000000_00000100
-BT_STORE_NAME: BT = 0b00000000_00000000_00000101
-BT_POP: BT = 0b00000000_00000000_00000110
-BT_LOAD_CONST: BT = 0b00000000_00000000_00000111
-BT_QPUT: BT = 0b00000000_00000000_00001000
-BT_QTOP: BT = 0b00000000_00000000_00001001
-BT_PUT: BT = 0b00000000_00000000_00001010
-BT_IF_TRUE_JUMP: BT = 0b00000000_00000000_00001011
+BT_ADD:           BT = 0b00000000_00000000_00000001
+BT_MINUS:         BT = 0b00000000_00000000_00000010
+BT_MUL:           BT = 0b00000000_00000000_00000011
+BT_DIV:           BT = 0b00000000_00000000_00000100
+BT_STORE_NAME:    BT = 0b00000000_00000000_00000101
+BT_POP:           BT = 0b00000000_00000000_00000110
+BT_LOAD_CONST:    BT = 0b00000000_00000000_00000111
+BT_QPUT:          BT = 0b00000000_00000000_00001000
+BT_QTOP:          BT = 0b00000000_00000000_00001001
+BT_PUT:           BT = 0b00000000_00000000_00001010
+BT_IF_TRUE_JUMP:  BT = 0b00000000_00000000_00001011
 BT_IF_FALSE_JUMP: BT = 0b00000000_00000000_00001100
-BT_JUMP: BT = 0b00000000_00000000_00001101
-BT_IS: BT = 0b00000000_00000000_00001110
+BT_JUMP:          BT = 0b00000000_00000000_00001101
+BT_IS:            BT = 0b00000000_00000000_00001110
+BT_CALL:          BT = 0b00000000_00000000_00001111
+BT_RETURN:        BT = 0b00000000_00000000_00010000
 
 class BytecodeInfo:
     def __init__(self, bytecode_type: BT,
@@ -59,15 +61,17 @@ class BytecodeInfo:
             BT_IF_TRUE_JUMP: "if true jump",
             BT_IF_FALSE_JUMP: "if false jump",
             BT_JUMP: "jump to",
-            BT_IS: "is"
+            BT_IS: "is",
+            BT_CALL: "call",
+            BT_RETURN: "return"
         }
         mapping.setdefault("unknown") # type: ignore
-        return mapping[bt], bt
+        return mapping[bt].upper().replace(" ", "_"), bt
 
     def __repr__(self) -> str:
         bt = self.pretty_with_bytecode_type(self.bytecode_type)[0]
         if self.value is not None:
-            return f"Info({bt} => {self.value}, index={self.pos})"
+            return f"Info({bt}, {self.value}, index={self.pos})"
         else:
             return f"Info({bt}, index={self.pos})"
 

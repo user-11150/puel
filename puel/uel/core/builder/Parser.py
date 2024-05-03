@@ -15,6 +15,10 @@ from uel.core.builder.ast.PutNode import PutNode
 from uel.core.builder.ast.IfNode import IfNode
 from uel.core.builder.ast.IsEqual import IsEqual
 from uel.core.builder.ast.RepeatNode import RepeatNode
+from uel.core.builder.ast.FunctionNode import FunctionNode
+from uel.core.builder.ast.SequenceNode import SequenceNode
+from uel.core.builder.ast.ReturnNode import ReturnNode
+from uel.core.builder.ast.CallFunctionNode import CallFunctionNode
 
 from uel.core.errors.ThrowException import ThrowException
 from uel.core.errors.RaiseError import RaiseError
@@ -44,6 +48,11 @@ from uel.core.builder.token.TokenConstants import TT_ELSE
 from uel.core.builder.token.TokenConstants import TT_END
 from uel.core.builder.token.TokenConstants import TT_IS
 from uel.core.builder.token.TokenConstants import TT_REPEAT
+from uel.core.builder.token.TokenConstants import TT_COMMA
+from uel.core.builder.token.TokenConstants import TT_FUNCTION
+from uel.core.builder.token.TokenConstants import TT_SEMI
+from uel.core.builder.token.TokenConstants import TT_CALL
+from uel.core.builder.token.TokenConstants import TT_RETURN
 
 from uel.tools.func.wrapper.single_call import single_call
 
@@ -203,8 +212,45 @@ class Parser:
         # body
         result_node = RepeatNode()
         self.stmts(result_node)
+        self.rollback()
         
         return result_node
+
+    def validate_sequence(self, last_token):
+        if self.current_token is None or self.current_token.token_type != TT_IDENTIFER:
+            RaiseError(UELSyntaxError, "SyntaxError", last_token.pos)
+        sequence = []
+        try:
+            while True:
+                assert self.current_token.token_type == TT_IDENTIFER
+                sequence.append(self.current_token.token_val)
+                self.advance()
+                if self.current_token.token_type == TT_COMMA:
+                    self.advance()
+                    continue
+                elif self.current_token.token_type == TT_SEMI:
+                    break
+        except:
+            RaiseError(UELSyntaxError, "SyntaxError", self.current_token.pos)
+        return SequenceNode(sequence)
+
+    def validate_function(self):
+        last_token = self.current_token
+        self.advance()
+        if self.current_token is None:
+            RaiseError(UELSyntaxError, "SyntaxError", last_token.pos)
+        del last_token
+        if self.current_token.token_type != TT_IDENTIFER:
+            RaiseError(UELSyntaxError, "SyntaxError", self.current_token.pos)
+        function_name = self.current_token.token_val
+        last_token = self.current_token
+        self.advance()
+        args = self.validate_sequence(last_token)
+        self.advance()
+        fn = FunctionNode([], function_name, args.values)
+        self.stmts(fn)
+        self.rollback()
+        return fn
 
     def stmt(self) -> AbstractNode:
         """
@@ -221,12 +267,22 @@ class Parser:
                 self.advance()
                 node: ExpressionNode = self.validate_expr() # type: ignore
                 return PutNode(node)
+            elif self.current_token.token_val == TT_CALL:
+                self.advance()
+                node: ExpressionNode = self.validate_expr() # type: ignore
+                return CallFunctionNode(node)
+            elif self.current_token.token_val == TT_RETURN:
+                self.advance()
+                node: ExpressionNode = self.validate_expr() # type: ignore
+                return ReturnNode(node)
             elif self.current_token.token_val == TT_END:
                 return
             elif self.current_token.token_val == TT_IF:
                 return self.validate_if()
             elif self.current_token.token_val == TT_REPEAT:
                 return self.validate_repeat_loop()
+            elif self.current_token.token_val == TT_FUNCTION:
+                return self.validate_function()
             else:
                 RaiseError(UELSyntaxError, "[Unknown Syntax] Syntax Error", self.current_token.pos)
                 raise SystemExit

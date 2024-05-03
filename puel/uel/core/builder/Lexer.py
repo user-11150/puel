@@ -15,11 +15,12 @@ from uel.core.builder.token.TokenConstants import TT_STRING
 from uel.core.builder.token.TokenConstants import TT_KEYWORDS
 from uel.core.builder.token.TokenConstants import TT_KEYWORD
 from uel.core.builder.token.TokenConstants import TT_IDENTIFER
+from uel.core.builder.token.TokenConstants import TT_SEMI
+from uel.core.builder.token.TokenConstants import TT_COMMA
 from uel.core.errors.RaiseError import RaiseError
 from uel.core.errors.UnknownSyntaxError import UnknownSyntaxError
 from uel.core.errors.TooDotsError import TooDotsError
 from uel.core.errors.ThrowException import ThrowException
-
 from uel.pyexceptions.Nerver import Nerver
 from uel.core.builder.token.tools.identifier import is_start
 from uel.core.builder.token.tools.identifier import is_identifier_center_char_or_end_char
@@ -99,6 +100,13 @@ class Lexer:
             elif self.current_char == "\"":
                 tokens.append(self.make_string())
                 continue
+            elif self.current_char == ";":
+                tokens.append(Token(TT_SEMI, pos=self.pos.copy))
+                self.advance()
+            elif self.current_char == ",":
+                tokens.append(Token(TT_COMMA, pos=self.pos.copy))
+                self.advance()
+            
             elif is_start(self.current_char):
                 tokens.append(self.make_identifier())
                 continue

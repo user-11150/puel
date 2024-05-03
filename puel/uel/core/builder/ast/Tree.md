@@ -2,6 +2,7 @@
 AbstractNode
     ContainerNode
         ModuleNode
+        FunctionNode
     BinOpNode
         AddNode
         MinusNode
@@ -12,8 +13,11 @@ AbstractNode
     ExpressionNode
         PushStackValueNode
         PutNode
+        ReturnNode
+        CallFunctionNode
     SingleNode
         Constant
     IfNode
     RepeatNode
+    SequenceNode
 ```

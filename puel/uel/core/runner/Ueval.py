@@ -3,27 +3,34 @@
 #pylint:disable=C0116
 from uel.core.runner.Frame import Frame
 from uel.core.runner.Stack import Stack
+
 from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
 from uel.core.builder.bytecode import BytecodeInfo as bytecode
+
+from uel.tools.func.share.runtime_type_check import runtime_type_check
+
 from uel.core.object.object_parse import parse
+
 from uel.core.errors.runtime.throw import throw
 from uel.core.errors.runtime.UELRuntimeError import UELRuntimeError
 
 from uel.core.object.UEObject import UEObject
 from uel.core.object.UEBooleanObject import UEBooleanObject
+from uel.core.object.UECallableObject import UECallableObject
+from uel.core.object.UEFunctionObject import UEFunctionObject
 
 from queue import Queue, Empty
 
-from typing import Any
-from typing import List
+from typing import *
+from types import *
 
 class Ueval:
     """
     Runner
     """
-    def __init__(self, bytecodes: List[BytecodeInfo]):
+    def __init__(self, bytecodes: List[BytecodeInfo], frame: Optional[Frame]=None):
         self.bytecodes = bytecodes
-        self.frame = Frame(
+        self.frame =  frame or Frame(
             # Stack
             Stack[Any](),
             # index
@@ -111,11 +118,42 @@ class Ueval:
                 self.jump(bytecode_info.value)
                 return
             self.stack_push(value.tp_bytecode())
+        elif bytecode_info.bytecode_type == bytecode.BT_CALL:
+            self.call_function()
+        elif bytecode_info.bytecode_type == bytecode.BT_RETURN:
+            if self.frame.prev_frame is None:
+                throw(UELRuntimeError, "'return' outside function")
+            self.frame.prev_frame.gqueue.put_nowait(self.frame.stack.top)
+            
         else:
             prettyd = bytecode_info.pretty_with_bytecode_type(bytecode_info.bytecode_type)[0]
             raise ValueError("Not support type:" +
                              f"{prettyd}"
                             )
+
+    def call_function(self):
+        def getFunctionArgumentLength(fn: Union[UEFunctionObject, UECallableObject, FunctionType]):
+            if runtime_type_check(fn, FunctionType):
+                return fn.__code__.co_argcount
+            elif issubclass(type(fn), UECallableObject):
+                if runtime_type_check(fn, UEFunctionObject):
+                    return len(fn.args)
+                else:
+                    throw(UELRuntimeError, f"{fn.tp_str()} is not callable")
+        function: Union[UEFunctionObject, UECallableObject, FunctionType] = parse(self.stack_top, self.frame)
+        arguments = []
+        def x(n):
+            i = 1
+            while i <= n:
+                yield (i := i + 1)
+        for _ in x(getFunctionArgumentLength(function)):
+            arguments.append(self.frame.gqueue.get_nowait())
+        if runtime_type_check(function, UEFunctionObject):
+            function.tp_call(args=arguments,
+                             frame=self.frame)
+            # print(self.frame)
+        elif runtime_type_check(function, FunctionType):
+            self.stack_push(function(*arguments))
 
     def jump(self, idx):
         self.frame.idx = idx - 2

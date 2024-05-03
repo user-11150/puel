@@ -1,4 +1,5 @@
 from uel.core.runner.Frame import Frame
+from uel.helpers import get_variable_from_frame
 
 from uel.core.errors.runtime.UELRuntimeError import UELRuntimeError
 from uel.core.errors.runtime.throw import throw
@@ -17,9 +18,6 @@ def parse(info: Tuple[str, str], frame: Frame):
     elif typ == "object":
         return val
     elif typ == "name":
-        try:
-            return frame.variables[val]
-        except KeyError:
-            throw(UELRuntimeError(f"[NameError] {val} is undefined"))
+        return get_variable_from_frame(val, frame)
     else:
         raise ValueError
