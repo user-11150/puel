@@ -7,6 +7,4 @@ author: User-11150
 ## 链接
 1. [Gitee](http://gitee.com/user-11150/server)
 2. [Contributers](./docs/Contibuters.md)
-## 文档
-1. [教学文档](docs/tutorial/entry.md)
-2. [开发指南](docs/devguide/entry.md)
+3. [教学文档](docs/tutorial.md)
