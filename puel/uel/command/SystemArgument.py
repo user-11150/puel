@@ -37,6 +37,7 @@ class SystemArgument:
             print("Usage:\n"
                   "\tpython -m main <source-file>"
                   "")
+            raise SystemExit
         elif len(self.argv) >= 1:
             [self.source_file, *self.rest] = self.argv
         

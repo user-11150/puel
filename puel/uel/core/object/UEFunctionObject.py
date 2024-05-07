@@ -12,9 +12,6 @@ class UEFunctionObject(UECallableObject):
         self.args = args
         self.bytecodes = bytecodes
 
-    def tp_str(self):
-        return f"<function: disassembly of {self.bytecodes}>"
-
     def tp_call(self, frame, args):
         from uel.core.runner.Ueval import Ueval
 
@@ -22,11 +19,12 @@ class UEFunctionObject(UECallableObject):
             throw(UELRuntimeError(f"Only {len(self.args)} parameters are accepted,"
                                   f"but there are {args} arguments."))
         frame = Frame(
-            Stack(),
-            0,
-            self.bytecodes,
-            frame, 
-            dict(
+            stack=Stack(),
+            idx=0,
+            bytecodes=self.bytecodes,
+            prev_frame=frame,
+            filename=frame.filename,
+            variables=dict(
                 zip(
                     self.args,
                     (parse(x, frame) for x in args)

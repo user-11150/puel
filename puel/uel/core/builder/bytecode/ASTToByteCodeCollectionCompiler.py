@@ -8,10 +8,10 @@ from uel.core.builder.bytecode.UELBytecodeCompiler import UELBytecodeCompiler
 
 class ASTToByteCodeCollectionCompiler:
     @with_out
-    def with_ast(self, ast: ModuleNode) -> list[BytecodeInfo]:
-        compiler = self.createCompiler()
+    def with_ast(self, ast: ModuleNode, filename) -> list[BytecodeInfo]:
+        compiler = self.createCompiler(filename)
         compiler.read(ast)
-        return compiler.toBytecodes()
+        return compiler.toBytecodes(), compiler.filename
 
-    def createCompiler(self) -> UELBytecodeCompiler:
-        return UELBytecodeCompiler()
+    def createCompiler(self, *args, **kwargs) -> UELBytecodeCompiler:
+        return UELBytecodeCompiler(*args, **kwargs)

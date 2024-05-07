@@ -28,7 +28,7 @@ class Ueval:
     """
     Runner
     """
-    def __init__(self, bytecodes: List[BytecodeInfo], frame: Optional[Frame]=None):
+    def __init__(self, bytecodes: List[BytecodeInfo], frame: Optional[Frame]=None, filename=None):
         self.bytecodes = bytecodes
         self.frame =  frame or Frame(
             # Stack
@@ -39,6 +39,7 @@ class Ueval:
             self.bytecodes,
             # Prev_frame
             None,
+            filename if filename is not None else exec("raise"),
             # Variables
             {},
             # Gqueue
@@ -153,7 +154,9 @@ class Ueval:
                              frame=self.frame)
             # print(self.frame)
         elif runtime_type_check(function, FunctionType):
-            self.stack_push(function(*arguments))
+            result: UEObject = function(self.frame, *arguments)
+            if result is not None:
+                self.stack_push(result)
 
     def jump(self, idx):
         self.frame.idx = idx - 2

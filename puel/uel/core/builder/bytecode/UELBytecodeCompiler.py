@@ -16,6 +16,7 @@ from uel.core.builder.ast.RepeatNode import RepeatNode
 from uel.core.builder.ast.FunctionNode import FunctionNode
 from uel.core.builder.ast.ReturnNode import ReturnNode
 from uel.core.builder.ast.CallFunctionNode import CallFunctionNode
+from uel.core.builder.ast.ImportNode import ImportNode
 
 from uel.core.errors.RaiseError import RaiseError
 from uel.core.errors.UELException import UELException
@@ -27,7 +28,6 @@ from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
 from uel.core.builder.bytecode.BytecodeInfo import BT
 
 from uel.tools.func.share.runtime_type_check import runtime_type_check
-
 from uel.core.object.object_new import uel_new_object, IS_CAN_MAKE_OBJECT
 from uel.core.object.UEFunctionObject import UEFunctionObject
 from uel.core.object.UEObject import UEObject
@@ -62,12 +62,13 @@ class UELBytecodeCompiler(FourArithmethicMixin):
     """
     Bytecode compiler
     """
-    def __init__(self) -> None:
+    def __init__(self, filename) -> None:
         self.ast: t.Optional[ModuleNode] = None
         self.mutex = threading.Lock()
         self.idx = 0
         self.bytecodes: t.List[BytecodeInfo] = []
         self.__read = 0
+        self.filename = filename
 
     def __iter__(self) -> t.Any:
         yield self.ast
@@ -138,7 +139,7 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                 self.alwaysExecute(else_do)
                 jump_to_continue_bytecode.value = self.idx + 1
             elif type_ is FunctionNode:
-                interpreter_compiler = UELBytecodeCompiler()
+                interpreter_compiler = UELBytecodeCompiler(self.filename)
                 interpreter_compiler.read(child)
                 bytecodes = interpreter_compiler.toBytecodes()
                 function_object = uel_new_object("function", (child.args, bytecodes))
@@ -154,6 +155,9 @@ class UELBytecodeCompiler(FourArithmethicMixin):
             elif type_ is ReturnNode:
                 self.expr(child.val)
                 self.bytecode(bytecode.BT_RETURN)
+            elif type_ is ImportNode:
+                from uel.helpers import u_module_def
+                u_module_def(self, child)
             else:
                 raise CustomError("Developer not completed")
 

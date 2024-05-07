@@ -17,19 +17,21 @@ class BuildCode(AbstractTask):
         self.code = code
         self.result = None
 
-    def run(self) -> List[BytecodeInfo]:
-        import warnings
-        warnings.warn('It is still under development. Please do not use it.')
+    def run(self, debug=True) -> List[BytecodeInfo]:
         lexer: Lexer = Lexer(self.fn, self.code)
         tokens: List[Token] = lexer.make_tokens()
-        pprint(tokens)
+        if debug:
+            pprint(tokens)
         parser: Parser = Parser(tokens)
         ast = parser.parse()
-        print('\nAST:')
-        objprint(ast)
+        if debug:
+            print('\nAST:')
+            objprint(ast)
         compiler = ASTToByteCodeCollectionCompiler()
-        print('\nBytecode')
+        if debug:
+            print('\nBytecode')
         
-        with compiler.with_ast(ast) as fp:
-            pprint(fp.copy())
+        with compiler.with_ast(ast, self.fn) as fp:
+            if debug:
+               pprint(fp[0])
             return fp

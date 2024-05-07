@@ -1,9 +1,0 @@
-gvar = 1
-function a arg1, arg2;
-  put a
-  put gvar
-  put 1
-end
-push 1
-push 2
-call a

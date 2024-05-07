@@ -19,13 +19,11 @@ from uel.core.builder.ast.FunctionNode import FunctionNode
 from uel.core.builder.ast.SequenceNode import SequenceNode
 from uel.core.builder.ast.ReturnNode import ReturnNode
 from uel.core.builder.ast.CallFunctionNode import CallFunctionNode
-
+from uel.core.builder.ast.ImportNode import ImportNode
 from uel.core.errors.ThrowException import ThrowException
 from uel.core.errors.RaiseError import RaiseError
 from uel.core.errors.UELSyntaxError import UELSyntaxError
-
 from uel.pyexceptions.Nerver import Nerver
-
 from uel.core.builder.token.TokenNode import TokenNode
 from uel.core.builder.token.TokenConstants import TT_TYPES
 from uel.core.builder.token.TokenConstants import TT_EOF
@@ -53,13 +51,11 @@ from uel.core.builder.token.TokenConstants import TT_FUNCTION
 from uel.core.builder.token.TokenConstants import TT_SEMI
 from uel.core.builder.token.TokenConstants import TT_CALL
 from uel.core.builder.token.TokenConstants import TT_RETURN
-
+from uel.core.builder.token.TokenConstants import TT_IMPORT
 from uel.tools.func.wrapper.single_call import single_call
-
-from objprint import objprint
-
 from typing import (Self,
                     Any)
+from objprint import objprint
 
 class Parser:
     """
@@ -217,20 +213,21 @@ class Parser:
         return result_node
 
     def validate_sequence(self, last_token):
-        if self.current_token is None or self.current_token.token_type != TT_IDENTIFER:
+        if self.current_token is None or (self.current_token.token_type != TT_IDENTIFER and self.current_token.token_type != TT_SEMI):
             RaiseError(UELSyntaxError, "SyntaxError", last_token.pos)
         sequence = []
         try:
             while True:
+                if self.current_token.token_type == TT_SEMI:
+                    break
                 assert self.current_token.token_type == TT_IDENTIFER
                 sequence.append(self.current_token.token_val)
                 self.advance()
                 if self.current_token.token_type == TT_COMMA:
                     self.advance()
                     continue
-                elif self.current_token.token_type == TT_SEMI:
-                    break
-        except:
+        except Exception:
+            
             RaiseError(UELSyntaxError, "SyntaxError", self.current_token.pos)
         return SequenceNode(sequence)
 
@@ -251,6 +248,19 @@ class Parser:
         self.stmts(fn)
         self.rollback()
         return fn
+
+    def validate_import(self):
+        last_token = self.current_token
+        self.advance()
+        current = self.current_token
+        if current is None or current.token_type != TT_STRING:
+            if current is None:
+                RaiseError(UELSyntaxError,"Unknown Syntax", last_token.pos)
+            elif current.token_type != TT_STRING:
+                emsg = f'Libary name must be string literal, did you mean \n\'import "{current.token_val}"\'' if current.token_type == TT_IDENTIFER \
+                        else "Libary name must be string literal"
+                RaiseError(UELSyntaxError, emsg, self.current_token.pos)
+        return ImportNode(self.current_token.token_val)
 
     def stmt(self) -> AbstractNode:
         """
@@ -283,6 +293,8 @@ class Parser:
                 return self.validate_repeat_loop()
             elif self.current_token.token_val == TT_FUNCTION:
                 return self.validate_function()
+            elif self.current_token.token_val == TT_IMPORT:
+                return self.validate_import()
             else:
                 RaiseError(UELSyntaxError, "[Unknown Syntax] Syntax Error", self.current_token.pos)
                 raise SystemExit
