@@ -8,6 +8,8 @@ from queue import Empty
 from typing import Tuple
 
 def parse(info: Tuple[str, str], frame: Frame):
+    if not(isinstance(info, tuple)):
+        return info
     typ, val = info
     
     if typ == "stack_top":

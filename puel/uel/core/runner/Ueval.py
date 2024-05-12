@@ -143,20 +143,18 @@ class Ueval:
                     throw(UELRuntimeError, f"{fn.tp_str()} is not callable")
         function: Union[UEFunctionObject, UECallableObject, FunctionType] = parse(self.stack_top, self.frame)
         arguments = []
-        def x(n):
-            i = 1
-            while i <= n:
-                yield (i := i + 1)
-        for _ in x(getFunctionArgumentLength(function)):
+        for _ in range(1, getFunctionArgumentLength(function)):
             arguments.append(self.frame.gqueue.get_nowait())
         if runtime_type_check(function, UEFunctionObject):
             function.tp_call(args=arguments,
                              frame=self.frame)
             # print(self.frame)
-        elif runtime_type_check(function, FunctionType):
+        elif isinstance(function, FunctionType):
             result: UEObject = function(self.frame, *arguments)
             if result is not None:
-                self.stack_push(result)
+                self.frame.gqueue.put_nowait(result)
+        else:
+            print(function)
 
     def jump(self, idx):
         self.frame.idx = idx - 2
