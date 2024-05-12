@@ -1,14 +1,4 @@
 import "time"
 
-function test a, b;
-  put a
-  put b
-end
-
-push 1
-push 2
-call test
 call time
-
 put TOP
-
