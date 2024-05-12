@@ -135,7 +135,7 @@ class Ueval:
     def call_function(self):
         def getFunctionArgumentLength(fn: Union[UEFunctionObject, UECallableObject, FunctionType]):
             if runtime_type_check(fn, FunctionType):
-                return fn.__code__.co_argcount
+                return fn.__code__.co_argcount - 1
             elif issubclass(type(fn), UECallableObject):
                 if runtime_type_check(fn, UEFunctionObject):
                     return len(fn.args)
@@ -143,8 +143,8 @@ class Ueval:
                     throw(UELRuntimeError, f"{fn.tp_str()} is not callable")
         function: Union[UEFunctionObject, UECallableObject, FunctionType] = parse(self.stack_top, self.frame)
         arguments = []
-        for _ in range(1, getFunctionArgumentLength(function)):
-            arguments.append(self.frame.gqueue.get_nowait())
+        for _ in range(0, getFunctionArgumentLength(function)):
+            arguments.insert(0, self.frame.gqueue.get_nowait())
         if runtime_type_check(function, UEFunctionObject):
             function.tp_call(args=arguments,
                              frame=self.frame)
