@@ -1,6 +1,0 @@
-new_line = "
-"
-
-function end_;
-  put new_line
-end

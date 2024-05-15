@@ -1,6 +1,0 @@
-import "./helpers.uel"
-
-function main;
-  put "Hello world"
-  call end_
-end
