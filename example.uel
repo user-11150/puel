@@ -1,0 +1,7 @@
+import "fib"
+import "time"
+
+push 100
+call fib
+
+put TOP

@@ -30,15 +30,4 @@ class Main:
             os._exit(0)
         except Exception as e:
             print("UELRuntimeError(PythonError):", file=sys.stderr)
-            def stack(stack_):
-                def frame(f):
-                    if f.f_back is None:
-                        code = f.f_code
-                        return f
-                    return frame(f.f_back)
-                f = frame(sys._getframe())
-                typ = TracebackType(None, f, 1, 114514)
-                return typ
-                
-            e.__traceback__ = stack(e.__traceback__)
             sys.excepthook(type(e), e, e.__traceback__)

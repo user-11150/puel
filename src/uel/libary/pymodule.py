@@ -9,6 +9,7 @@ class UELImportError(Exception):
 class UEModuleNew:
     def __init__(self, pymodule):
         self.module = pymodule
+        print(self.module.bytecodes, "asihds")
         try:
             if not hasattr(pymodule, 'bytecodes'):
                 raise UELImportError from \
@@ -24,7 +25,12 @@ class UEModuleNew:
     def bytecodes(self):
         return self.module.bytecodes
 
-def pymodule_get(module_name):
-    prefix = "uel.modules."
-    pymodule_name = f"{prefix}{module_name}"
-    return UEModuleNew(import_module(pymodule_name))
+def pymodule_get(module_name, prefix):
+    if prefix == "libary":
+        
+        pymodule_name = f"uel.{prefix}.{module_name}"
+        module = import_module(pymodule_name)
+    else:
+        from uel.modules.map import MAP
+        module = MAP[module_name]
+    return UEModuleNew(module)

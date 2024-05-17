@@ -1,3 +1,5 @@
+refrensh: clean install
+
 build:
 	python setup.py build
 
