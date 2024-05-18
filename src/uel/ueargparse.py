@@ -15,6 +15,7 @@ from uel.core.runner.importlib import _read_string_from_file
 HELP = ("help", "--help")
 VERSION = ("version", "-V")
 RUN = ("run",)
+REPL = ("repl", )
 
 try:
     TERCOL = os.get_terminal_size().columns
@@ -62,6 +63,7 @@ class UEHelpTaskDesc(UETaskDesc):
         RUN: "Run UEL code",
         HELP: "Show help. use of 'python -m uel help' or show help of given command eg: 'python -m help run'",
         VERSION: "Show python version",
+        REPL: "Looks like python REPL(future feature)"
     }
     EMPTY = []
     s = ""
