@@ -1,7 +1,6 @@
-import "fib"
-import "time"
+function f1;
+  a = 5
+  put a
+end
 
-push 100
-call fib
-
-put TOP
+call f1

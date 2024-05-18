@@ -43,16 +43,11 @@ PYX_COMPILE_LANG = "c"
 extensions = [
     *cythonize(
         [
-            Extension(
-                "uel.modules.fib",
-                sources=["src/uel/modules/fib.pyx"],
-                language=PYX_COMPILE_LANG
-            )
+            # This is need compile cython extensions.
         ],
         build_dir=BUILD_DIR,
         nthreads=THREADS
-    ),
-   
+    )
 ]
 
 setup(

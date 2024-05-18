@@ -11,8 +11,9 @@ import sys
 
 assert sys.version_info >= (3, 0, 0)
 
-from uel.core.Main import Main
-from sys import argv
+from uel.cli import main
+from sys import exit
 
 if __name__ == "__main__":
-    Main().main(argv)
+    main()
+    exit()

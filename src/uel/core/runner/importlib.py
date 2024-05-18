@@ -24,8 +24,7 @@ def _read_string_from_file(pathname: str, encoding=None) -> str:
         return
 
 BUILTIN_MODULES = {
-    "time": (lambda: pymodule_get("_time", "libary")),
-    "fib": (lambda: pymodule_get("fib", "modules"))
+    "time": (lambda: pymodule_get("_time", "libary"))
 }
 
 def path_abs(relative_from, relative):

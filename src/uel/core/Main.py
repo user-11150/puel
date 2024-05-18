@@ -1,30 +1,18 @@
-from uel.pyexceptions.Nerver import Nerver
-
-# Impprt the classes
-from uel.command.SystemArgument import SystemArgument
-from uel.core.runner.ExecuteContext import ExecuteContext
+from uel.ueargparse import UEArgParser, \
+                         UETask
 
 # Import the types
 from typing import List
-from typing import Final
 import os
 import sys
-from types import TracebackType, FrameType, CodeType
 
 class Main:
     @staticmethod
     def main(argv: List[str]) -> None:
-        # The function will execute build and execute
-        
-        sa: SystemArgument = SystemArgument(argv)
-        sa.parserCommand()
-        if sa.source_file is None:
-            raise Nerver
-        source_file: Final[str] = sa.source_file
-        
-        ectx: ExecuteContext = ExecuteContext()
+        parser = UEArgParser(argv[1:])
         try:
-            ectx.run_code_from_fd(open(source_file, "rt"), source_file)
+            task = UETask(parser)
+            task.run()
         except KeyboardInterrupt:
             print("KeyboardInterrupt")
             os._exit(0)
