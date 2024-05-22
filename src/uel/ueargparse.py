@@ -15,7 +15,7 @@ from uel.core.runner.importlib import _read_string_from_file
 HELP = ("help", "--help")
 VERSION = ("version", "-V")
 RUN = ("run",)
-REPL = ("repl", )
+REPL = ("repl",)
 
 try:
     TERCOL = os.get_terminal_size().columns
@@ -49,6 +49,8 @@ class UEArgParser:
             self.tsk = UEVersionTaskDesc(self.rest)
         elif self.current in RUN:
             self.tsk = UERun(self.rest)
+        elif self.current in REPL:
+            self.tsk = UERepl(self.rest)
         else:
             print(f"{YELLOW}[WARNNING] Unknown argument, print help{RESET}")
 
@@ -63,7 +65,7 @@ class UEHelpTaskDesc(UETaskDesc):
         RUN: "Run UEL code",
         HELP: "Show help. use of 'python -m uel help' or show help of given command eg: 'python -m help run'",
         VERSION: "Show python version",
-        REPL: "Looks like python REPL(future feature)"
+        REPL: "Looks like python REPL"
     }
     EMPTY = []
     s = ""
@@ -86,7 +88,6 @@ class UEHelpTaskDesc(UETaskDesc):
 
 Usage: python -m uel [arguments]
   {s}
-
 """
     del col, s
     def run(self):
@@ -108,14 +109,27 @@ class UEVersionTaskDesc(UETaskDesc):
         print(sys.version)
 
 class _Private:
-    """
-    不对外直接公开的，但是可以间接使用的
-    """
+    pass
 
 class _UERunTaskDesc(_Private):
     def run(self, fn, string):
         ectx = ExecuteContext()
-        ectx.run_code_from_basic(fn, string)
+        ectx.run_code_from_basic(fn, string, False)
+
+class UERepl(UETaskDesc, _UERunTaskDesc):
+    def run(self):
+        UEVersionTaskDesc().run()
+        print("Use '.exit' quit")
+        while True:
+            try:
+                print(">>>", end="", flush=True)
+                string_of_code = sys.stdin.readline()[:-1]
+                if string_of_code == ".exit":
+                    print("EXIT")
+                    break
+                super().run("<string>", string_of_code)
+            except KeyboardInterrupt:
+                print(f"{RED}KeyboardInterrupt{RESET}")
 
 class UERun(UETaskDesc, _UERunTaskDesc):
     def run(self):

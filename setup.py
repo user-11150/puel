@@ -40,10 +40,12 @@ THREADS = 5
 OPTIMIZE = False
 PYX_COMPILE_LANG = "c"
 
+CPP_BUILD_ARGS = ["--std=c++11"]
+
 extensions = [
     *cythonize(
         [
-            # This is need compile cython extensions.
+            
         ],
         build_dir=BUILD_DIR,
         nthreads=THREADS
