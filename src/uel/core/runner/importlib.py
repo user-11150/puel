@@ -8,6 +8,7 @@ from uel.core.errors.runtime.throw import throw
 from uel.Constants import ENCODING
 
 from uel.libary.pymodule import pymodule_get
+from uel.libary.builtins import BUILTIN_MODULES
 
 def _read_string_from_file(pathname: str, encoding=None) -> str:
     emsgf = f"Cannot open file: {pathname}. %s"
@@ -22,10 +23,6 @@ def _read_string_from_file(pathname: str, encoding=None) -> str:
         emsg = emsgf % e.__str__()
         throw(UELRuntimeError(emsg))
         return
-
-BUILTIN_MODULES = {
-    "time": (lambda: pymodule_get("_time", "libary"))
-}
 
 def path_abs(relative_from, relative):
     return os.path.abspath(os.path.join(os.path.dirname(relative_from), relative))

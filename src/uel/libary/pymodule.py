@@ -9,7 +9,6 @@ class UELImportError(Exception):
 class UEModuleNew:
     def __init__(self, pymodule):
         self.module = pymodule
-        print(self.module.bytecodes, "asihds")
         try:
             if not hasattr(pymodule, 'bytecodes'):
                 raise UELImportError from \
