@@ -71,5 +71,10 @@ setup(
     },
     ext_modules=extensions,
     install_requires=["objprint"],
+    entry_points={
+        'console_scripts': [
+            'uel = uel.uel:main',
+        ]
+    },
 )
 
