@@ -11,11 +11,13 @@ from .colors import RESET, YELLOW, GREEN, RED
 from .pyexceptions.CustomError import CustomError
 from uel.core.runner.ExecuteContext import ExecuteContext
 from uel.core.runner.importlib import _read_string_from_file
+from uel.ue_web import start as _ue_web_start
 
 HELP = ("help", "--help")
 VERSION = ("version", "-V")
 RUN = ("run",)
 REPL = ("repl",)
+WEB = ("web",)
 
 try:
     TERCOL = os.get_terminal_size().columns
@@ -51,6 +53,8 @@ class UEArgParser:
             self.tsk = UERun(self.rest)
         elif self.current in REPL:
             self.tsk = UERepl(self.rest)
+        elif self.current in WEB:
+            self.tsk = UEWebTask(self.rest)
         else:
             print(f"{YELLOW}[WARNNING] Unknown argument, print help{RESET}")
 
@@ -65,7 +69,8 @@ class UEHelpTaskDesc(UETaskDesc):
         RUN: "Run UEL code",
         HELP: "Show help. use of 'python -m uel help' or show help of given command eg: 'python -m help run'",
         VERSION: "Show python version",
-        REPL: "Looks like python REPL"
+        REPL: "Looks like python REPL",
+        WEB: "The web for UEL, usage: 'python -m uel [<ip> [<port>]]'"
     }
     EMPTY = []
     s = ""
@@ -107,7 +112,21 @@ class UEVersionTaskDesc(UETaskDesc):
     def run(self):
         assert len(self.rest) == 0
         print(sys.version)
-
+class UEWebTask(UETaskDesc):
+    def run(self):
+        if not (0 <= len(self.rest) and len(self.rest) <= 2):
+            print(f"Unkown argument: '{self.rest}'\n"
+                   "Usage: python -m uel [<ip> [<port>]]")
+            exit()
+        default_address = ("0.0.0.0", 2521)
+        address = None
+        if len(self.rest) == 0:
+            address = default_address
+        elif len(self.rest) == 1:
+            address = [self.rest[0], default_address[1]]
+        elif len(self.rest) == 2:
+            address = self.rest
+        _ue_web_start(address)
 class _Private:
     pass
 

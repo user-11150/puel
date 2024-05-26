@@ -67,7 +67,7 @@ setup(
         "": "src"
     },
     package_data={
-      "uel": ["py.typed"]
+      "uel": ["py.typed", "web/**"]
     },
     ext_modules=extensions,
     install_requires=["objprint"],
