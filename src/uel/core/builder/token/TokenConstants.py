@@ -23,33 +23,13 @@ TT_FUNCTION = "function"
 TT_CALL = "call"
 TT_RETURN = "return"
 
-TT_VALS = [
-    TT_STRING,
-    TT_INT,
-    TT_FLOAT
+TT_VALS = [TT_STRING, TT_INT, TT_FLOAT]
+
+TT_OP = [TT_ADD, TT_MINUS, TT_MUL, TT_DIV, TT_EQUAL, TT_IS]
+
+TT_KEYWORDS = [
+    TT_PUSH, TT_PUT, TT_END, TT_IF, TT_ELSE, TT_IS, TT_REPEAT, TT_FUNCTION,
+    TT_CALL, TT_RETURN, TT_IMPORT
 ]
 
-TT_OP = [TT_ADD,
-         TT_MINUS,
-         TT_MUL,
-         TT_DIV,
-         TT_EQUAL,
-         TT_IS]
-         
-TT_KEYWORDS = [TT_PUSH,
-               TT_PUT,
-               TT_END,
-               TT_IF,
-               TT_ELSE,
-               TT_IS,
-               TT_REPEAT,
-               TT_FUNCTION,
-               TT_CALL,
-               TT_RETURN,
-               TT_IMPORT]
-
-TT_TYPES = [*TT_VALS,
-            *TT_OP,
-            *TT_KEYWORDS,
-            TT_KEYWORD,
-            TT_EOF]
+TT_TYPES = [*TT_VALS, *TT_OP, *TT_KEYWORDS, TT_KEYWORD, TT_EOF]

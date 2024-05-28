@@ -1,5 +1,7 @@
-from uel.core.Main import Main
 from sys import argv
 
-def main():
+from uel.core.Main import Main
+
+
+def main() -> None:
     Main().main(argv)

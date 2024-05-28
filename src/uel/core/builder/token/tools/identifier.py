@@ -1,6 +1,7 @@
-from string import ascii_letters
 import sys
+from string import ascii_letters
 from unicodedata import lookup
+
 
 def is_start(char: str) -> bool:
     if sys.version_info.major < 3:
@@ -8,7 +9,7 @@ def is_start(char: str) -> bool:
                                "while Python 2's is not."
                                "To ensure accuracy,"
                                "Python 2 reports an error directly.")
-    if char in ascii_letters: # English
+    if char in ascii_letters:  # English
         return True
     elif '\u4e00' <= char <= '\u9fff':
         return True
@@ -17,6 +18,7 @@ def is_start(char: str) -> bool:
     elif "$" == char:
         return True
     return False
+
 
 def is_identifier_center_char_or_end_char(char: str) -> bool:
     return is_start(char) or char.isdigit()

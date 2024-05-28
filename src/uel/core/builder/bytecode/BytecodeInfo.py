@@ -1,37 +1,37 @@
+import typing as t
 from copy import deepcopy
 from typing import TypeAlias
+
 from uel.core.builder.Position import Position
 from uel.tools.func.share.runtime_type_check import runtime_type_check
-
-import typing as t
 
 # Bytecode types
 BT: TypeAlias = int
 
-BT_ADD:           BT = 0b00000000_00000000_00000001
-BT_MINUS:         BT = 0b00000000_00000000_00000010
-BT_MUL:           BT = 0b00000000_00000000_00000011
-BT_DIV:           BT = 0b00000000_00000000_00000100
-BT_STORE_NAME:    BT = 0b00000000_00000000_00000101
-BT_POP:           BT = 0b00000000_00000000_00000110
-BT_LOAD_CONST:    BT = 0b00000000_00000000_00000111
-BT_QPUT:          BT = 0b00000000_00000000_00001000
-BT_QTOP:          BT = 0b00000000_00000000_00001001
-BT_PUT:           BT = 0b00000000_00000000_00001010
-BT_IF_TRUE_JUMP:  BT = 0b00000000_00000000_00001011
+BT_ADD: BT = 0b00000000_00000000_00000001
+BT_MINUS: BT = 0b00000000_00000000_00000010
+BT_MUL: BT = 0b00000000_00000000_00000011
+BT_DIV: BT = 0b00000000_00000000_00000100
+BT_STORE_NAME: BT = 0b00000000_00000000_00000101
+BT_POP: BT = 0b00000000_00000000_00000110
+BT_LOAD_CONST: BT = 0b00000000_00000000_00000111
+BT_QPUT: BT = 0b00000000_00000000_00001000
+BT_QTOP: BT = 0b00000000_00000000_00001001
+BT_PUT: BT = 0b00000000_00000000_00001010
+BT_IF_TRUE_JUMP: BT = 0b00000000_00000000_00001011
 BT_IF_FALSE_JUMP: BT = 0b00000000_00000000_00001100
-BT_JUMP:          BT = 0b00000000_00000000_00001101
-BT_IS:            BT = 0b00000000_00000000_00001110
-BT_CALL:          BT = 0b00000000_00000000_00001111
-BT_RETURN:        BT = 0b00000000_00000000_00010000
+BT_JUMP: BT = 0b00000000_00000000_00001101
+BT_IS: BT = 0b00000000_00000000_00001110
+BT_CALL: BT = 0b00000000_00000000_00001111
+BT_RETURN: BT = 0b00000000_00000000_00010000
+
 
 class BytecodeInfo:
-    def __init__(self, bytecode_type: BT,
-                 value: t.Optional[t.Any],
-                 pos: int):
+
+    def __init__(self, bytecode_type: BT, value: t.Optional[t.Any], pos: int):
         # 只有bytecode运行到哪的位置，token的位置被我搞丢了
         assert pos > 0, "the arg 1 must be great 0"
-        
+
         self.bytecode_type = bytecode_type
         self.value = value
         self.pos = pos
@@ -40,8 +40,7 @@ class BytecodeInfo:
         return deepcopy(self)
 
     def where(self, start: int, end: int) -> bool | None:
-        if(abs(start) == start
-          and abs(end) == end):
+        if (abs(start) == start and abs(end) == end):
             return self.pos >= start and self.pos <= end
         raise ValueError("The arg 1 and arg 2 must be great 0")
 
@@ -65,7 +64,7 @@ class BytecodeInfo:
             BT_CALL: "call",
             BT_RETURN: "return"
         }
-        mapping.setdefault("unknown") # type: ignore
+        mapping.setdefault("unknown")  # type: ignore
         return mapping[bt].upper().replace(" ", "_"), bt
 
     def __repr__(self) -> str:
@@ -75,7 +74,8 @@ class BytecodeInfo:
         else:
             return f"Info({bt}, index={self.pos})"
 
-#if __name__ == "__main__":
+
+# if __name__ == "__main__":
 #    code = BytecodeInfo(BT_ADD, (2, 3), 1, Position(1,1,1,1,1))
 #    print(code)
 #    is_where_range = code.where(0,1)

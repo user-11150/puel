@@ -1,13 +1,14 @@
 from collections import deque
-from typing import TypeVar
-from typing import Generic
+from typing import Generic, TypeVar
 
 T = TypeVar("T")
+
 
 class Stack(Generic[T]):
     """
     First in last out
     """
+
     def __init__(self) -> None:
         self.__deque = deque[T]()
 

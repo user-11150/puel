@@ -1,12 +1,13 @@
-from uel.ueargparse import UEArgParser, \
-                         UETask
-
-# Import the types
-from typing import List
 import os
 import sys
+# Import the types
+from typing import List
+
+from uel.ueargparse import UEArgParser, UETask
+
 
 class Main:
+
     @staticmethod
     def main(argv: List[str]) -> None:
         parser = UEArgParser(argv[1:])

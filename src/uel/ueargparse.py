@@ -1,17 +1,17 @@
-#pylint:disable=W0221
+# pylint:disable=W0221
 """
 The argparse and exec for UEL
 """
 
-import sys
 import os
+import sys
 
-from .colors import RESET, YELLOW, GREEN, RED
-
-from .pyexceptions.CustomError import CustomError
 from uel.core.runner.ExecuteContext import ExecuteContext
 from uel.core.runner.importlib import _read_string_from_file
 from uel.ue_web import start as _ue_web_start
+
+from .colors import GREEN, RED, RESET, YELLOW
+from .pyexceptions.CustomError import CustomError
 
 HELP = ("help", "--help")
 VERSION = ("version", "-V")
@@ -24,16 +24,18 @@ try:
 except OSError:
     TERCOL = 80
 
+
 class UEArgParser:
-    def __init__(self, args):
-        self.tsk = None
-        self.args = args
-        self.current = None
-        self.idx = -1
+
+    def __init__(self, args: list[str]):
+        self.tsk: UETaskDesc | None = None
+        self.args: list[str] = args
+        self.current: str | None = None
+        self.idx: int = -1
         self.advance()
         self.parser()
 
-    def advance(self):
+    def advance(self) -> None:
         try:
             self.idx += 1
             self.current = self.args[self.idx]
@@ -41,10 +43,10 @@ class UEArgParser:
             self.current = None
 
     @property
-    def rest(self):
+    def rest(self) -> list[str]:
         return self.args[self.idx + 1:]
 
-    def parser(self):
+    def parser(self) -> None:
         if self.current in HELP:
             self.tsk = UEHelpTaskDesc(self.rest)
         elif self.current in VERSION:
@@ -58,24 +60,35 @@ class UEArgParser:
         else:
             print(f"{YELLOW}[WARNNING] Unknown argument, print help{RESET}")
 
+
 class UETaskDesc:
-    def __init__(self, rest=None):
+
+    def __init__(self, rest: list[str] | None = None) -> None:
         if rest is None:
             rest = []
-        self.rest = rest
+        self.rest: list[str] = rest
+
 
 class UEHelpTaskDesc(UETaskDesc):
     ONLY_COMMAND_HELP = {
-        RUN: "Run UEL code",
-        HELP: "Show help. use of 'python -m uel help' or show help of given command eg: 'python -m help run'",
-        VERSION: "Show python version",
-        REPL: "Looks like python REPL",
-        WEB: "The web for UEL, usage: 'python -m uel [<ip> [<port>]]'"
+        RUN:
+            "Run UEL code",
+        HELP:
+            "Show help. use of 'python -m uel help' or show help of given command eg: 'python -m help run'",
+        VERSION:
+            "Show python version",
+        REPL:
+            "Looks like python REPL",
+        WEB:
+            "The web for UEL, usage: 'python -m uel [<ip> [<port>]]'"
     }
-    EMPTY = []
+    EMPTY: list[str] = []
     s = ""
     col = max(*map(lambda x: len(", ".join(x[0])), ONLY_COMMAND_HELP.items()))
-    for ks, v in sorted(ONLY_COMMAND_HELP.items(), key=lambda x: (y := bytes(",".join(x[0]), "utf-8"), int.from_bytes(y) if not y.count(b"-") else 0)[1]):
+    for ks, v in sorted(ONLY_COMMAND_HELP.items(),
+                        key=lambda x:
+                        (y := bytes(",".join(x[0]), "utf-8"), int.from_bytes(y)
+                         if not y.count(b"-") else 0)[1]):
         i = ", ".join(sorted(ks))
         s += i.ljust(col)
         s += ":"
@@ -95,8 +108,9 @@ Usage: python -m uel [arguments]
   {s}
 """
     del col, s
-    def run(self):
-        
+
+    def run(self) -> None:
+
         if self.rest == self.EMPTY:
             text = self.DEFAULT_HELP
         elif len(self.rest) == 1:
@@ -108,35 +122,44 @@ Usage: python -m uel [arguments]
             text = d2[self.rest[0]]
         print(text)
 
+
 class UEVersionTaskDesc(UETaskDesc):
-    def run(self):
+
+    def run(self) -> None:
         assert len(self.rest) == 0
         print(sys.version)
+
+
 class UEWebTask(UETaskDesc):
-    def run(self):
+
+    def run(self) -> None:
         if not (0 <= len(self.rest) and len(self.rest) <= 2):
             print(f"Unkown argument: '{self.rest}'\n"
-                   "Usage: python -m uel [<ip> [<port>]]")
+                  "Usage: python -m uel [<ip> [<port>]]")
             exit()
         default_address = ("0.0.0.0", 2521)
-        address = None
-        if len(self.rest) == 0:
-            address = default_address
-        elif len(self.rest) == 1:
-            address = [self.rest[0], default_address[1]]
+        address = default_address
+        if len(self.rest) == 1:
+            address = (self.rest[0], default_address[1])
         elif len(self.rest) == 2:
-            address = self.rest
+            address = self.rest  # type: ignore
         _ue_web_start(address)
+
+
 class _Private:
     pass
 
+
 class _UERunTaskDesc(_Private):
-    def run(self, fn, string):
+
+    def run_uel(self, fn: str, string: str) -> None:
         ectx = ExecuteContext()
         ectx.run_code_from_basic(fn, string, False)
 
+
 class UERepl(UETaskDesc, _UERunTaskDesc):
-    def run(self):
+
+    def run(self) -> None:
         UEVersionTaskDesc().run()
         print("Use '.exit' quit")
         while True:
@@ -146,28 +169,37 @@ class UERepl(UETaskDesc, _UERunTaskDesc):
                 if string_of_code == ".exit":
                     print("EXIT")
                     break
-                super().run("<string>", string_of_code)
+                self.run_uel("<string>", string_of_code)
             except KeyboardInterrupt:
                 print(f"{RED}KeyboardInterrupt{RESET}")
 
+
 class UERun(UETaskDesc, _UERunTaskDesc):
-    def run(self):
+
+    def run(self) -> None:
         if len(self.rest) != 1:
-            print(f"{RED}ERROR!!!: Run takes only one argument, <filename>, but is given {len(self.rest)}{RESET}")
+            print(
+                f"{RED}ERROR!!!: Run takes only one argument, <filename>, but is given {len(self.rest)}{RESET}"
+            )
             return
         filename = self.rest[0]
-        
+
         string = _read_string_from_file(filename)
-        super().run(filename, string)
+        self.run_uel(filename, string)
+
 
 class UETask:
-    def __init__(self, parser):
+
+    def __init__(self, parser: UEArgParser) -> None:
         self.parser = parser
         self.tsk = parser.tsk
 
-    def run(self):
+    def run(self) -> None:
         if hasattr(self.tsk, "run"):
             tsk = self.tsk
         else:
             tsk = UEHelpTaskDesc()
-        tsk.run()
+        if tsk is not None:
+            tsk.run()
+        else:
+            print("NONE")

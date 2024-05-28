@@ -1,10 +1,13 @@
 refrensh: clean install
 
 build:
-	python setup.py build
+	python setup.py sdist
 
 lint:
 	mypy --config-file=mypy.ini
+
+style:
+	yapf -ir ./src/uel/
 
 install:
 	python setup.py install

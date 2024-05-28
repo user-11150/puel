@@ -1,68 +1,45 @@
-from uel.core.builder.ast.ModuleNode import ModuleNode
-from uel.core.builder.ast.ContainerNode import ContainerNode
-from uel.core.builder.ast.ExpressionNode import ExpressionNode
-from uel.core.builder.ast.VariableNode import VariableNode
-from uel.core.builder.ast.Constant import Constant
-from uel.core.builder.ast.PushStackValueNode import PushStackValueNode
-from uel.core.builder.ast.PutNode import PutNode
-from uel.core.builder.ast.BinOpNode import BinOpNode
-from uel.core.builder.ast.AddNode import AddNode
-from uel.core.builder.ast.MinusNode import MinusNode
-from uel.core.builder.ast.MultNode import MultNode
-from uel.core.builder.ast.DivNode import DivNode
-from uel.core.builder.ast.IfNode import IfNode
-from uel.core.builder.ast.IsEqual import IsEqual
-from uel.core.builder.ast.RepeatNode import RepeatNode
-from uel.core.builder.ast.FunctionNode import FunctionNode
-from uel.core.builder.ast.ReturnNode import ReturnNode
-from uel.core.builder.ast.CallFunctionNode import CallFunctionNode
-from uel.core.builder.ast.ImportNode import ImportNode
-
-from uel.core.errors.RaiseError import RaiseError
-from uel.core.errors.UELException import UELException
-
-from uel.pyexceptions.CustomError import CustomError
-
-from uel.core.builder.bytecode import BytecodeInfo as bytecode
-from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
-from uel.core.builder.bytecode.BytecodeInfo import BT
-
-from uel.tools.func.share.runtime_type_check import runtime_type_check
-from uel.core.object.object_new import uel_new_object, IS_CAN_MAKE_OBJECT
-from uel.core.object.UEFunctionObject import UEFunctionObject
-from uel.core.object.UEObject import UEObject
 import threading
 import typing as t
 
+from uel.core.builder.ast.AbstractNode import AbstractNode
+from uel.core.builder.ast.AddNode import AddNode
+from uel.core.builder.ast.BinOpNode import BinOpNode
+from uel.core.builder.ast.CallFunctionNode import CallFunctionNode
+from uel.core.builder.ast.Constant import Constant
+from uel.core.builder.ast.ContainerNode import ContainerNode
+from uel.core.builder.ast.DivNode import DivNode
+from uel.core.builder.ast.ExpressionNode import ExpressionNode
+from uel.core.builder.ast.FunctionNode import FunctionNode
+from uel.core.builder.ast.IfNode import IfNode
+from uel.core.builder.ast.ImportNode import ImportNode
+from uel.core.builder.ast.IsEqual import IsEqual
+from uel.core.builder.ast.MinusNode import MinusNode
+from uel.core.builder.ast.ModuleNode import ModuleNode
+from uel.core.builder.ast.MultNode import MultNode
+from uel.core.builder.ast.PushStackValueNode import PushStackValueNode
+from uel.core.builder.ast.PutNode import PutNode
+from uel.core.builder.ast.RepeatNode import RepeatNode
+from uel.core.builder.ast.ReturnNode import ReturnNode
+from uel.core.builder.ast.VariableNode import VariableNode
+from uel.core.builder.bytecode import BytecodeInfo as bytecode
+from uel.core.builder.bytecode.BytecodeInfo import BT, BytecodeInfo
+from uel.core.errors.RaiseError import RaiseError
+from uel.core.errors.UELException import UELException
+from uel.core.object.object_new import IS_CAN_MAKE_OBJECT, uel_new_object
+from uel.core.object.UEFunctionObject import UEFunctionObject
+from uel.core.object.UEObject import UEObject
+from uel.pyexceptions.CustomError import CustomError
+from uel.tools.func.share.runtime_type_check import runtime_type_check
+
 __all__ = ["UELBytecodeCompiler"]
 
-class FourArithmethicMixinWithUELBytcodeCompilerI:
-    def bytecode(self, bytecode_type: BT,
-                 value: str | None=None) -> None:
-        pass
-    
 
-class FourArithmethicMixin(
-        FourArithmethicMixinWithUELBytcodeCompilerI
-    ):
-    def add(self) -> None:
-        self.bytecode(bytecode.BT_ADD)
-
-    def minus(self) -> None:
-        self.bytecode(bytecode.BT_MINUS)
-
-    def mult(self) -> None:
-        self.bytecode(bytecode.BT_MUL)
-
-    def div(self) -> None:
-        self.bytecode(bytecode.BT_DIV)
-
-
-class UELBytecodeCompiler(FourArithmethicMixin):
+class UELBytecodeCompiler:
     """
     Bytecode compiler
     """
-    def __init__(self, filename) -> None:
+
+    def __init__(self, filename: str) -> None:
         self.ast: t.Optional[ModuleNode] = None
         self.mutex = threading.Lock()
         self.idx = 0
@@ -81,7 +58,9 @@ class UELBytecodeCompiler(FourArithmethicMixin):
             self.__read += 1
             if self.__read != 1:
                 if type(self.__read) is not int:
-                    raise TypeError(f"Expected int, result is {self.__read.__class__.__name__}")
+                    raise TypeError(
+                        f"Expected int, result is {self.__read.__class__.__name__}"
+                    )
                 if self.__read > 1:
                     raise RuntimeError("Multiple calls to read")
             self.ast = abstract_syntax_tree
@@ -101,61 +80,69 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         """
         self.alwaysExecute(module_node)
 
-    def alwaysExecute(self, node: ContainerNode) -> None:
+    def alwaysExecute(self, node: AbstractNode) -> None:
         """
         Must be exceute
         """
+        node = node.tp(ContainerNode)
         for child in node.childrens:
             type_ = type(child)
             if type_ is ExpressionNode:
-                counter = self.expr(child)
+                child_ = child.tp(ExpressionNode)
+                counter = self.expr(child_)
                 self.pop(counter)
             elif type_ is PushStackValueNode:
-                self.expr(child.val)
+                child_ = child.tp(PushStackValueNode)
+                self.expr(child_.val)
                 self.bytecode(bytecode.BT_QPUT)
             elif type_ is PutNode:
-                self.expr(child.val)
+                child_ = child.tp(PutNode)
+                self.expr(child_.val)
                 self.bytecode(bytecode.BT_PUT)
-            
+
             elif type_ is IfNode:
-                nod: IfNode
+                child = child.tp(IfNode)
                 body = child.body
                 else_do = child.orelse
                 condition = child.condition
                 self.expr(condition)
                 self.bytecode(bytecode.BT_IF_TRUE_JUMP, value=self.idx + 3)
                 jump_to_else_bytecode = BytecodeInfo(bytecode.BT_IF_FALSE_JUMP,
-                                                     None,
-                                                     self.idx + 1)
+                                                     None, self.idx + 1)
                 self.idx += 1
                 self.bytecodes.append(jump_to_else_bytecode)
                 self.alwaysExecute(body)
-                jump_to_continue_bytecode = BytecodeInfo(bytecode.BT_JUMP,
-                                                         None,
-                                                         self.idx + 1)
+                jump_to_continue_bytecode = BytecodeInfo(
+                    bytecode.BT_JUMP, None, self.idx + 1)
                 self.idx += 1
                 self.bytecodes.append(jump_to_continue_bytecode)
                 jump_to_else_bytecode.value = self.idx + 1
                 self.alwaysExecute(else_do)
                 jump_to_continue_bytecode.value = self.idx + 1
             elif type_ is FunctionNode:
+                child = child.tp(FunctionNode)
                 interpreter_compiler = UELBytecodeCompiler(self.filename)
-                interpreter_compiler.read(child)
+                interpreter_compiler.read(child.tp(ModuleNode))
                 bytecodes = interpreter_compiler.toBytecodes()
-                function_object = uel_new_object("function", (child.args, bytecodes))
+                function_object = uel_new_object("function",
+                                                 (child.args, bytecodes))
                 self.load_const(("object", function_object))
                 self._store_name(child.name)
             elif type_ is RepeatNode:
+                child = child.tp(RepeatNode)
                 start_index = self.idx
                 self.alwaysExecute(child)
                 self.bytecode(bytecode.BT_JUMP, value=start_index + 1)
             elif type_ is CallFunctionNode:
+                child = child.tp(CallFunctionNode)
                 self.expr(child.val)
                 self.bytecode(bytecode.BT_CALL)
             elif type_ is ReturnNode:
+                child = child.tp(ReturnNode)
                 self.expr(child.val)
                 self.bytecode(bytecode.BT_RETURN)
             elif type_ is ImportNode:
+                child = child.tp(ImportNode)
                 from uel.helpers import u_module_def
                 u_module_def(self, child)
             else:
@@ -166,12 +153,13 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         Parse the expression
         """
         counter = 0
-        
+
         class ExitAndReturn(Exception):
             pass
+
         class NotSupportType(Exception):
             pass
-        
+
         try:
             if hasattr(node, "val"):
                 val = node.val
@@ -183,10 +171,7 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                 self.store_name(val.left, val.right)
                 raise ExitAndReturn
             elif type(nod) is Constant:
-                self.load_const((
-                    nod.type,
-                    nod.val
-                ))
+                self.load_const((nod.type, nod.val))
                 counter += 1
                 raise ExitAndReturn
             elif type(nod) in (AddNode, MinusNode, MultNode, DivNode, IsEqual):
@@ -195,22 +180,23 @@ class UELBytecodeCompiler(FourArithmethicMixin):
 
             else:
                 raise NotSupportType
-        
+
         except NotSupportType:
             raise TypeError(f"Not support type: {type(nod)}")
-        
+
         except ExitAndReturn:
             pass
-        
+
         return counter
 
-    def equal(self):
+    def equal(self) -> None:
         self.bytecode(bytecode.BT_IS)
 
-    def calculator(self, node: Constant | BinOpNode) -> None:
+    def calculator(self, node: t.Union[Constant, BinOpNode, t.Any]) -> None:
         """
         Four arithmetic
         """
+
         def _symbol(node: t.Any) -> None:
             type_node = type(node)
             if type_node is AddNode:
@@ -225,8 +211,8 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                 self.div()
             elif type_node is IsEqual:
                 self.equal()
-        
-        def deep(node: t.Any, root: bool=True) -> None:
+
+        def deep(node: t.Any, root: bool = True) -> t.Any:
             if runtime_type_check(node, Constant):
                 self.calculator(node)
                 yield
@@ -244,14 +230,16 @@ class UELBytecodeCompiler(FourArithmethicMixin):
                 next(g)
                 _symbol(node)
                 yield from g
-        
+
         if type(node) is Constant:
             self.expr(node)
             return
         elif type(node) is ExpressionNode and type(node.val) is Constant:
             self.expr(node.val)
-            return 
-        elif runtime_type_check(node.left, Constant) and runtime_type_check(node.right, Constant):
+            return
+        elif type(node) is BinOpNode and runtime_type_check(
+                node.left, Constant) and runtime_type_check(
+                    node.right, Constant):
             self.calculator(node.left)
             self.calculator(node.right)
             _symbol(node)
@@ -280,17 +268,29 @@ class UELBytecodeCompiler(FourArithmethicMixin):
         """
         self.expr(value)
         self._store_name(name.val)
-    def _store_name(self, value):
+
+    def _store_name(self, value: t.Any) -> None:
         self.bytecode(bytecode.BT_STORE_NAME, value)
 
-    def bytecode(self, bytecode_type: BT,
-                 value: t.Optional[str]=None) -> None:
+    def bytecode(self,
+                 bytecode_type: BT,
+                 value: t.Optional[t.Any] = None) -> None:
         """
         Push a bytecode
         """
         self.idx += 1
-        self.bytecodes.append(BytecodeInfo(
-            bytecode_type=bytecode_type,
-            value=value,
-            pos=self.idx
-        ))
+        self.bytecodes.append(
+            BytecodeInfo(bytecode_type=bytecode_type, value=value,
+                         pos=self.idx))
+
+    def add(self) -> None:
+        self.bytecode(bytecode.BT_ADD)
+
+    def minus(self) -> None:
+        self.bytecode(bytecode.BT_MINUS)
+
+    def mult(self) -> None:
+        self.bytecode(bytecode.BT_MUL)
+
+    def div(self) -> None:
+        self.bytecode(bytecode.BT_DIV)

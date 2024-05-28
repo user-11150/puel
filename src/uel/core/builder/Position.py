@@ -1,5 +1,19 @@
+from typing import Any, overload, final
+
 class Position:
-    def __init__(self, idx: int, ln: int, col: int, fn: str, text: str):
+    def __new__(cls, *args, **kwargs) -> "Position":
+        if args == () and kwargs == {}:
+            return # type: ignore
+        return object.__new__(cls)
+
+    @overload
+    def __init__(self): ...
+    
+    @overload
+    def __init__(self, idx: int, ln: int, col: int, fn: str, text: str): ...
+    
+    @final
+    def __init__(self, *args):
         """
         :param idx: 索引下标
         :param ln: 行号(line)
@@ -8,6 +22,7 @@ class Position:
         :param text: 内容文本
         :return:
         """
+        idx, ln, col, fn, text = args
         self.idx = idx
         self.ln = ln
         self.col = col

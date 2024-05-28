@@ -1,36 +1,36 @@
-#pylint:disable=C0103
-#pylint:disable=C0411
-#pylint:disable=C0116
-from uel.core.runner.Frame import Frame
-from uel.core.runner.Stack import Stack
+# pylint:disable=C0103
+# pylint:disable=C0411
+# pylint:disable=C0116
+import typing as t
+from queue import Empty, Queue
+from types import *
+from typing import *
 
-from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
 from uel.core.builder.bytecode import BytecodeInfo as bytecode
-
-from uel.tools.func.share.runtime_type_check import runtime_type_check
-
-from uel.core.object.object_parse import parse
-
+from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
 from uel.core.errors.runtime.throw import throw
 from uel.core.errors.runtime.UELRuntimeError import UELRuntimeError
-
-from uel.core.object.UEObject import UEObject
+from uel.core.object.object_parse import parse
 from uel.core.object.UEBooleanObject import UEBooleanObject
 from uel.core.object.UECallableObject import UECallableObject
 from uel.core.object.UEFunctionObject import UEFunctionObject
+from uel.core.object.UEObject import UEObject
+from uel.core.runner.Frame import Frame
+from uel.core.runner.Stack import Stack
+from uel.tools.func.share.runtime_type_check import runtime_type_check
 
-from queue import Queue, Empty
-
-from typing import *
-from types import *
 
 class Ueval:
     """
     Runner
     """
-    def __init__(self, bytecodes: List[BytecodeInfo], frame: Optional[Frame]=None, filename=None):
+
+    def __init__(self,
+                 bytecodes: List[BytecodeInfo],
+                 frame: Optional[Frame] = None,
+                 filename: str | None = None) -> None:
         self.bytecodes = bytecodes
-        self.frame =  frame or Frame(
+        self.frame = frame or Frame(
             # Stack
             Stack[Any](),
             # index
@@ -39,12 +39,11 @@ class Ueval:
             self.bytecodes,
             # Prev_frame
             None,
-            filename if filename is not None else exec("raise"),
+            filename if filename is not None else "<unknown>",
             # Variables
             {},
             # Gqueue
-            Queue()
-        )
+            Queue())
 
     @property
     def stack_top(self) -> Any:
@@ -60,9 +59,9 @@ class Ueval:
 
     def equal(self, x: UEObject, y: UEObject) -> bool:
         if hasattr(x, "val") and hasattr(y, "val"):
-            return x.val == y.val
-        
-        return x == y
+            return bool(x.val == y.val)
+
+        return bool(x == y)
 
     def eval(self, bytecode_info: BytecodeInfo) -> None:
         if bytecode_info.bytecode_type == bytecode.BT_LOAD_CONST:
@@ -80,7 +79,7 @@ class Ueval:
         elif bytecode_info.bytecode_type == bytecode.BT_IS:
             left_value = parse(self.stack_top, self.frame)
             right_val = parse(self.stack_top, self.frame)
-            
+
             if hasattr(left_value, "tp_equal"):
                 self.stack_push(left_value.tp_equal(right_val).tp_bytecode())
             elif hasattr(right_val, "tp_equal"):
@@ -91,14 +90,14 @@ class Ueval:
         elif bytecode_info.bytecode_type == bytecode.BT_STORE_NAME:
             name = bytecode_info.value
             val = parse(self.stack_top, self.frame)
-            self.frame.variables[name] = val
+            self.frame.variables[name] = val  # type: ignore
 
         elif bytecode_info.bytecode_type == bytecode.BT_QPUT:
             self.frame.gqueue.put(self.stack_top)
 
         elif bytecode_info.bytecode_type == bytecode.BT_POP:
             try:
-                self.stack_top # pylint: disable=W
+                self.stack_top  # pylint: disable=W
             except Empty:
                 pass
 
@@ -124,30 +123,37 @@ class Ueval:
         elif bytecode_info.bytecode_type == bytecode.BT_RETURN:
             if self.frame.prev_frame is None:
                 throw(UELRuntimeError, "'return' outside function")
+                return
             self.frame.prev_frame.gqueue.put_nowait(self.frame.stack.top)
-            
-        else:
-            prettyd = bytecode_info.pretty_with_bytecode_type(bytecode_info.bytecode_type)[0]
-            raise ValueError("Not support type:" +
-                             f"{prettyd}"
-                            )
 
-    def call_function(self):
-        def getFunctionArgumentLength(fn: Union[UEFunctionObject, UECallableObject, FunctionType]):
-            if runtime_type_check(fn, FunctionType):
+        else:
+            prettyd = bytecode_info.pretty_with_bytecode_type(
+                bytecode_info.bytecode_type)[0]
+            raise ValueError("Not support type:" + f"{prettyd}")
+
+    def call_function(self) -> None:
+
+        def getFunctionArgumentLength(
+                fn: Union[UEFunctionObject, UECallableObject,
+                          FunctionType]) -> int:
+            if type(fn) is FunctionType:
                 return fn.__code__.co_argcount - 1
             elif issubclass(type(fn), UECallableObject):
-                if runtime_type_check(fn, UEFunctionObject):
+                if type(fn) is UEFunctionObject:
                     return len(fn.args)
                 else:
-                    throw(UELRuntimeError, f"{fn.tp_str()} is not callable")
-        function: Union[UEFunctionObject, UECallableObject, FunctionType] = parse(self.stack_top, self.frame)
-        arguments = []
+                    throw(UELRuntimeError, f"{fn} is not callable")
+            return 0
+
+        function: Union[UEFunctionObject, UECallableObject,
+                        FunctionType] = parse(self.stack_top,
+                                              self.frame)  # type: ignore
+
+        arguments: list[UEObject] = []
         for _ in range(0, getFunctionArgumentLength(function)):
             arguments.insert(0, self.frame.gqueue.get_nowait())
-        if runtime_type_check(function, UEFunctionObject):
-            function.tp_call(args=arguments,
-                             frame=self.frame)
+        if type(function) is UEFunctionObject:
+            function.tp_call(args=arguments, frame=self.frame)
             # print(self.frame)
         elif isinstance(function, FunctionType):
             result: UEObject = function(self.frame, *arguments)
@@ -156,21 +162,23 @@ class Ueval:
         else:
             print(function)
 
-    def jump(self, idx):
+    def jump(self, idx: t.Any) -> None:
+        if type(idx) is not int:
+            raise TypeError("Arg 1 must be a int")
         self.frame.idx = idx - 2
 
-    def tp_bool(self, val) -> bool:
+    def tp_bool(self, val: UEObject) -> bool:
         if hasattr(val, "val"):
             return bool(val.val)
         return True
 
     @staticmethod
-    def binary_op(frame: Frame, bytecode_info: BytecodeInfo):
+    def binary_op(frame: Frame, bytecode_info: BytecodeInfo) -> None:
         right_value = parse(frame.stack.top, frame)
         left_value = parse(frame.stack.top, frame)
-        
+
         fn_name: str
-        
+
         if bytecode_info.bytecode_type == bytecode.BT_ADD:
             fn_name = "tp_add"
         elif bytecode_info.bytecode_type == bytecode.BT_MINUS:
@@ -181,9 +189,7 @@ class Ueval:
             fn_name = "tp_div"
         else:
             raise ValueError
-        if (
-            (hasattr(left_value, fn_name) and hasattr(right_value, fn_name))
-           ):
+        if ((hasattr(left_value, fn_name) and hasattr(right_value, fn_name))):
             result = getattr(left_value, fn_name)(right_value)
         else:
             throw(UELRuntimeError("[TypeError] Unable add"))

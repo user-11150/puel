@@ -5,6 +5,6 @@ code_string = f"""class {error_name}():
     pass
 """
 
-f = open(f"{error_name}.py","wt")
+f = open(f"{error_name}.py", "wt")
 f.write(code_string)
 f.close()

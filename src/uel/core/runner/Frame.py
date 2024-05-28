@@ -1,16 +1,19 @@
 import typing as t
-
-from uel.core.runner.Stack import Stack
 from queue import Queue
 
+from uel.core.runner.Stack import Stack
+
+
 class Frame:
-    def __init__(self, stack: Stack,
+
+    def __init__(self,
+                 stack: Stack[t.Any],
                  idx: int,
                  bytecodes: t.List[t.Any],
-                 prev_frame: t.Optional["Frame"]=None,
-                 filename: str=None,
-                 variables: t.Optional[dict]=None,
-                 gqueue: t.Optional[Queue]=None):
+                 prev_frame: t.Optional["Frame"] = None,
+                 filename: str = "<unknown>",
+                 variables: t.Optional[dict[str, t.Any]] = None,
+                 gqueue: t.Optional[Queue] = None):
         self.stack: Stack = stack
         self.idx = idx
         self.bytecodes = bytecodes
@@ -19,5 +22,4 @@ class Frame:
         self.variables = variables
         if self.variables is None:
             self.variables = {}
-        self.gqueue = Queue()
-        
+        self.gqueue = Queue[t.Any]()

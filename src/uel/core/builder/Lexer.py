@@ -1,35 +1,26 @@
-from typing import List
-from typing import Optional
 from string import digits as DIGITS
+from typing import List, Optional
+
 from uel.core.builder.Position import Position
+from uel.core.builder.token.TokenConstants import (
+    TT_ADD, TT_COMMA, TT_DIV, TT_EOF, TT_EQUAL, TT_FLOAT, TT_IDENTIFER, TT_INT,
+    TT_KEYWORD, TT_KEYWORDS, TT_MINUS, TT_MUL, TT_SEMI, TT_STRING)
 from uel.core.builder.token.TokenNode import TokenNode as Token
-from uel.core.builder.token.TokenConstants import TT_EOF
-from uel.core.builder.token.TokenConstants import TT_ADD
-from uel.core.builder.token.TokenConstants import TT_FLOAT
-from uel.core.builder.token.TokenConstants import TT_INT
-from uel.core.builder.token.TokenConstants import TT_MINUS
-from uel.core.builder.token.TokenConstants import TT_MUL
-from uel.core.builder.token.TokenConstants import TT_DIV
-from uel.core.builder.token.TokenConstants import TT_EQUAL
-from uel.core.builder.token.TokenConstants import TT_STRING
-from uel.core.builder.token.TokenConstants import TT_KEYWORDS
-from uel.core.builder.token.TokenConstants import TT_KEYWORD
-from uel.core.builder.token.TokenConstants import TT_IDENTIFER
-from uel.core.builder.token.TokenConstants import TT_SEMI
-from uel.core.builder.token.TokenConstants import TT_COMMA
+from uel.core.builder.token.tools.identifier import (
+    is_identifier_center_char_or_end_char, is_start)
 from uel.core.errors.RaiseError import RaiseError
-from uel.core.errors.UnknownSyntaxError import UnknownSyntaxError
-from uel.core.errors.TooDotsError import TooDotsError
 from uel.core.errors.ThrowException import ThrowException
+from uel.core.errors.TooDotsError import TooDotsError
+from uel.core.errors.UnknownSyntaxError import UnknownSyntaxError
 from uel.pyexceptions.Nerver import Nerver
-from uel.core.builder.token.tools.identifier import is_start
-from uel.core.builder.token.tools.identifier import is_identifier_center_char_or_end_char
+
 
 class Lexer:
     """
     源代码 => Tokens
     """
-    def __init__(self,fn: str, content: str):
+
+    def __init__(self, fn: str, content: str):
         self.fn: str = fn
         self.content: str = content
         #                   I,  L  C   F   C
@@ -41,9 +32,9 @@ class Lexer:
         """
         预读
         """
-        
+
         self.pos.advance(self.current_char)
-        
+
         if self.pos.idx < len(self.content):
             self.current_char = self.content[self.pos.idx]
             return True
@@ -76,11 +67,11 @@ class Lexer:
                 continue
             # 匹配符号
             elif self.current_char == "+":
-                tokens.append(Token(TT_ADD,pos=self.pos.copy()))
+                tokens.append(Token(TT_ADD, pos=self.pos.copy()))
                 self.advance()
                 continue
             elif self.current_char == "-":
-                tokens.append(Token(TT_MINUS,pos=self.pos.copy()))
+                tokens.append(Token(TT_MINUS, pos=self.pos.copy()))
                 self.advance()
                 continue
             elif self.current_char == "*":
@@ -101,19 +92,20 @@ class Lexer:
                 tokens.append(self.make_string())
                 continue
             elif self.current_char == ";":
-                tokens.append(Token(TT_SEMI, pos=self.pos.copy))
+                tokens.append(Token(TT_SEMI, pos=self.pos.copy()))
                 self.advance()
             elif self.current_char == ",":
-                tokens.append(Token(TT_COMMA, pos=self.pos.copy))
+                tokens.append(Token(TT_COMMA, pos=self.pos.copy()))
                 self.advance()
-            
+
             elif is_start(self.current_char):
                 tokens.append(self.make_identifier())
                 continue
             else:
-                ThrowException.throw(UnknownSyntaxError('Unknown syntax',self.pos))
-            
-        tokens.append(Token(TT_EOF,pos=self.pos.copy()))
+                ThrowException.throw(
+                    UnknownSyntaxError('Unknown syntax', self.pos))
+
+        tokens.append(Token(TT_EOF, pos=self.pos.copy()))
         return tokens
 
     def make_string(self) -> Token:
@@ -156,9 +148,12 @@ class Lexer:
                 raise SystemExit
             string += self.current_char
         if string.count('.') > 1:
-            ThrowException.throw(TooDotsError(f"At most one dot appears in a number, but more than one appear: '{string}'",self.pos))
+            ThrowException.throw(
+                TooDotsError(
+                    f"At most one dot appears in a number, but more than one appear: '{string}'",
+                    self.pos))
         type_function = TT_FLOAT if "." in string else TT_INT
-        return Token(type_function,string,pos=self.pos.copy())
+        return Token(type_function, string, pos=self.pos.copy())
 
     def skip_annotation(self) -> None:
         while True:

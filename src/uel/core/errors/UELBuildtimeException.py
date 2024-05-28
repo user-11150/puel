@@ -1,12 +1,15 @@
-from uel.core.errors.UELException import UELException
 from uel.core.builder.Position import Position
+from uel.core.errors.UELException import UELException
+
 
 class UELBuildtimeException(UELException):
-    def __init__(self,error_message: str,pos: Position):
+
+    def __init__(self, error_message: str, pos: Position):
         super().__init__(error_message)
         self.line = pos.ln
         self.file = pos.fn
         self.column = pos.col
+
     def __str__(self) -> str:
         oes: str = super().__str__()
         pos_string = f"{self.file}, {self.line}:{self.column}\n"
