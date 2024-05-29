@@ -1,17 +1,21 @@
 from typing import Any, overload, final
 
+
 class Position:
+
     def __new__(cls, *args, **kwargs) -> "Position":
         if args == () and kwargs == {}:
-            return # type: ignore
+            return  # type: ignore
         return object.__new__(cls)
 
     @overload
-    def __init__(self): ...
-    
+    def __init__(self):
+        ...
+
     @overload
-    def __init__(self, idx: int, ln: int, col: int, fn: str, text: str): ...
-    
+    def __init__(self, idx: int, ln: int, col: int, fn: str, text: str):
+        ...
+
     @final
     def __init__(self, *args):
         """

@@ -9,12 +9,13 @@ class ParameterError(Exception):
 
 class TokenNode:
 
-    def __init__(self,
-                 token_type: str,
-                 token_val: Optional[str] = None,
-                 pos: Position=Position()) -> None:
+    def __init__(
+        self,
+        token_type: str,
+        token_val: Optional[str] = None,
+        pos: Position = Position()) -> None:
         assert pos
-        
+
         self.token_type: str = token_type
         self.pos = pos
         self.token_val: Optional[str] = token_val
