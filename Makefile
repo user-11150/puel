@@ -6,9 +6,6 @@ build:
 lint:
 	mypy --config-file=mypy.ini
 
-style:
-	yapf -ir ./src/uel/
-
 install:
 	python setup.py install
 
