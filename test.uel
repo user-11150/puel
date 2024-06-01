@@ -1,4 +1,4 @@
-import "time"
+import "python::test.py"
 
 call time
 put TOP

@@ -5,13 +5,14 @@ The argparse and exec for UEL
 
 import os
 import sys
-
+from sys import path
 from uel.core.runner.ExecuteContext import ExecuteContext
 from uel.core.runner.importlib import _read_string_from_file
 from uel.ue_web import start as _ue_web_start
 
-from .colors import GREEN, RED, RESET, YELLOW
-from .pyexceptions.CustomError import CustomError
+from uel.colors import GREEN, RED, RESET, YELLOW
+from uel.Constants import DEBUG
+from uel.pyexceptions.CustomError import CustomError
 
 HELP = ("help", "--help")
 VERSION = ("version", "-V")
@@ -154,7 +155,7 @@ class _UERunTaskDesc(_Private):
 
     def run_uel(self, fn: str, string: str) -> None:
         ectx = ExecuteContext()
-        ectx.run_code_from_basic(fn, string, False)
+        ectx.run_code_from_basic(fn, string, DEBUG)
 
 
 class UERepl(UETaskDesc, _UERunTaskDesc):

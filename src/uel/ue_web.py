@@ -1,7 +1,9 @@
 import os.path
+import atexit
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from uel.colors import RED, RESET
 
-dev = True
+dev = False
 dirname = os.path.dirname(__file__)
 
 if dev:
@@ -34,4 +36,9 @@ def start(address: tuple[str, int]) -> None:
     print(
         f"Please open http://{ip if ip != '0.0.0.0' else '127.0.0.1'}:{port}/")
     server = HTTPServer((ip, int(port)), Handler)
-    server.serve_forever()
+    try:
+        server.serve_forever()
+    finally:
+        print(f"{RED}The server is closed{RESET}")
+        exit()
+    

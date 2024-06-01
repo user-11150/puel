@@ -45,19 +45,10 @@ CPP_BUILD_ARGS = ["--std=c++11"]
 extensions = [
     *cythonize(
         [
-#            Extension(
-#                "uel.modules.math.computer",
-#                sources=["src/uel/modules/math/computer.pyx"],
-#                language=PYX_COMPILE_LANG
-#            )
-             # 使用c extension会使打包速度变慢，进而影响开发速度，所以
-             # UEL目前计划是以Python为主，python不行的话尽量优化算法，
-             # 尽量不使用 c extension。
         ],
         build_dir=BUILD_DIR,
         nthreads=THREADS
-    ),
-    
+    )
 ]
 
 setup(

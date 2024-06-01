@@ -1,10 +1,18 @@
-refrensh: clean install
+SOURCE=./src/uel
+
+refrensh:
+	make imports_flush & make clean
+	
+	make install
 
 build:
 	python setup.py sdist
 
 lint:
 	mypy --config-file=mypy.ini
+
+imports_flush:
+	python imports_flush.py $(SOURCE)/__init__.py $(SOURCE)
 
 install:
 	python setup.py install

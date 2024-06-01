@@ -37,8 +37,16 @@ def module_import(name: str, from_there: str) -> list[BytecodeInfo]:
     from uel.core.runner.task.BuildCode import BuildCode
     if name in BUILTIN_MODULES.keys():
         return BUILTIN_MODULES[name]().bytecodes
-    path = path_abs(from_there, name)
-    source = _read_string_from_file(path)
-    task = BuildCode(path, source)
-    res = task.run(debug=False)[0]
-    return res
+    if name.startswith("python::"):
+        name = name[8:]
+        path = path_abs(from_there, name)
+        source = _read_string_from_file(path)
+        namespace = globals()
+        exec(compile(source, name, "exec"), namespace, namespace)  # pylint:disable=W0122
+        return namespace["bytecodes"]
+    else:
+        path = path_abs(from_there, name)
+        source = _read_string_from_file(path)
+        task = BuildCode(path, source)
+        res = task.run(debug=False)[0]
+        return res
