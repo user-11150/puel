@@ -5,6 +5,8 @@ The argparse and exec for UEL
 
 import os
 import sys
+import importlib
+
 from sys import path
 from uel.core.runner.ExecuteContext import ExecuteContext
 from uel.core.runner.importlib import _read_string_from_file
@@ -14,11 +16,16 @@ from uel.colors import GREEN, RED, RESET, YELLOW
 from uel.Constants import DEBUG
 from uel.pyexceptions.CustomError import CustomError
 
+from uel.bytecodefile.compress import compress
+from uel.bytecodefile.uncompress import uncompress
+
 HELP = ("help", "--help")
 VERSION = ("version", "-V")
 RUN = ("run",)
 REPL = ("repl",)
 WEB = ("web",)
+BUILD_BYTECODE = ("binary",)
+RUN_BYTECODE = ("run-binary", "run_binary")
 
 try:
     TERCOL = os.get_terminal_size().columns
@@ -58,6 +65,10 @@ class UEArgParser:
             self.tsk = UERepl(self.rest)
         elif self.current in WEB:
             self.tsk = UEWebTask(self.rest)
+        elif self.current in BUILD_BYTECODE:
+            self.tsk = UEBuildBytecodesTask(self.rest)
+        elif self.current in RUN_BYTECODE:
+            self.tsk = UERunBytecodesTask(self.rest)
         else:
             print(f"{YELLOW}[WARNNING] Unknown argument, print help{RESET}")
 
@@ -81,7 +92,11 @@ class UEHelpTaskDesc(UETaskDesc):
         REPL:
             "Looks like python REPL",
         WEB:
-            "The web for UEL, usage: 'python -m uel [<ip> [<port>]]'"
+            "The web for UEL, usage: 'python -m uel [<ip> [<port>]]'",
+        BUILD_BYTECODE:
+            "Build the bytecodes, (WARN: If you used Python extension, nerver use this)",
+        RUN_BYTECODE:
+            "Run the bytecodes, (WARN: If you used Python extension, nerver use this)"
     }
     EMPTY: list[str] = []
     s = ""
@@ -91,8 +106,9 @@ class UEHelpTaskDesc(UETaskDesc):
                         (y := bytes(",".join(x[0]), "utf-8"), int.from_bytes(y)
                          if not y.count(b"-") else 0)[1]):
         i = ", ".join(sorted(ks))
-        s += i.ljust(col)
+        s += i.ljust(col + 1)
         s += ":"
+        
         if v.count("\n") > 1:
             s += "\n    "
             for n in v.splitlines():
@@ -102,6 +118,7 @@ class UEHelpTaskDesc(UETaskDesc):
             s += " "
             s += v
         s += "\n  "
+        s += RESET
     s += "\n"
     DEFAULT_HELP = f"""This is UEL programming language help. by LiXingHao
 
@@ -156,6 +173,45 @@ class _UERunTaskDesc(_Private):
     def run_uel(self, fn: str, string: str) -> None:
         ectx = ExecuteContext()
         ectx.run_code_from_basic(fn, string, DEBUG)
+
+
+class UEBuildBytecodesTask(UETaskDesc):
+    def run(self):
+        
+        class BuildFail(Exception):
+            pass
+        
+        assert len(self.rest) == 2
+        
+        filename = self.rest[0]
+        save = self.rest[1]
+        string = _read_string_from_file(filename)
+        debug = DEBUG
+        
+        ectx = ExecuteContext()
+        bytecodes = ectx.build_bytecodes(
+            fn=filename,
+            code=string,
+            debug=debug)
+        with open(save, "wb") as fp:
+            try:
+                compressd = compress(bytecodes)
+            
+                uncompress(compressd)
+            except Exception as e:
+                raise BuildFail("Build Fail: (Maybe you used Python extension UEL.)") from e
+            fp.write(compressd)
+
+
+class UERunBytecodesTask(UETaskDesc):
+    def run(self):
+        assert len(self.rest) == 1
+        
+        filename = self.rest[0]
+        
+        ectx = ExecuteContext()
+        
+        ectx.run_bytecodes(uncompress(open(filename, "rb").read()))
 
 
 class UERepl(UETaskDesc, _UERunTaskDesc):

@@ -9,6 +9,7 @@ from uel.core.object.UEObject import UEObject
 from uel.core.runner.Frame import Frame
 from uel.core.runner.Stack import Stack
 
+from objprint import objstr
 
 class UEFunctionObject(UECallableObject):
 
@@ -16,7 +17,7 @@ class UEFunctionObject(UECallableObject):
         self.args = args
         self.bytecodes = bytecodes
 
-    def tp_call(self, frame: Frame, args: list[UEObject]) -> None:
+    def tp_call(self, ueval, frame: Frame, args: list[UEObject]) -> None:
         from uel.core.runner.Ueval import Ueval
 
         if len(args) != len(self.args):
@@ -31,5 +32,5 @@ class UEFunctionObject(UECallableObject):
                       filename=frame.filename,
                       variables=dict(
                           zip(self.args, (parse(x, frame) for x in args))))
-        u_eval = Ueval(self.bytecodes, frame)
-        u_eval.uelEval_EvalBytecodeDefault()
+        ueval.frame = frame
+        

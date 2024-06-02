@@ -1,4 +1,4 @@
-from collections import deque
+from queue import LifoQueue
 from typing import Generic, TypeVar
 
 T = TypeVar("T")
@@ -10,11 +10,11 @@ class Stack(Generic[T]):
     """
 
     def __init__(self) -> None:
-        self.__deque = deque[T]()
+        self._queue: list[T] = []
 
     @property
     def top(self) -> T:
-        return self.__deque.pop()
+        return self._queue.pop()
 
     def push(self, value: T) -> None:
-        self.__deque.append(value)
+        self._queue.append(value)

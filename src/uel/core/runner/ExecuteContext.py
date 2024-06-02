@@ -13,6 +13,14 @@ class ExecuteContext:
         runner = RunCode()
         runner.run(bytecodes)
 
+    def build_bytecodes(self, fn, code, debug):
+        bytecodeCompiler: BuildCode = BuildCode(fn, code)
+        bytecodes = bytecodeCompiler.run(debug=debug)
+        return bytecodes
+
+    def run_bytecodes(self, bytecodes):
+        RunCode().run(bytecodes)
+
     def run_code_from_fd(self,
                          fd: IO[str],
                          source: str,

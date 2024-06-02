@@ -39,7 +39,7 @@ def cmp(x: str, y: str):
     elif x.startswith("import") and y.startswith("from"):
         return 1
     
-    if sort_by_length(x) > sort_by_length(y):
+    elif sort_by_length(x) > sort_by_length(y):
         return 1
     elif sort_by_length(x) < sort_by_length(y):
         return -1

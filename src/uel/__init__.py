@@ -76,9 +76,11 @@ from uel.core.runner.task.BuildCode import BuildCode
 from uel.pyexceptions.CustomError import CustomError
 from uel.tools.func.wrapper.with_out import with_out
 from uel.core.runner.importlib import module_import
+from uel.bytecodefile.uncompress import uncompress
 from uel.core.builder.ast.Constant import Constant
 from uel.core.builder.ast.MultNode import MultNode
 from uel.core.errors.RaiseError import RaiseError
+from uel.utils.get_stack_top import get_stack_top
 from uel.core.builder.ast.AddNode import AddNode
 from uel.core.builder.ast.DivNode import DivNode
 from uel.core.builder.ast.IsEqual import IsEqual
@@ -88,14 +90,17 @@ from uel.core.errors.runtime.throw import throw
 from uel.helpers import get_variable_from_frame
 from uel.libary.builtins import BUILTIN_MODULES
 from http.server import BaseHTTPRequestHandler
+from uel.bytecodefile.compress import compress
 from uel.core.builder.Position import Position
 from uel.core.builder.ast.IfNode import IfNode
 from uel.core.object.object_parse import parse
 from uel.core.object.UEObject import UEObject
 from uel.ue_web import start as _ue_web_start
+from uel.bytecodefile.file import uncompress
 from uel.libary.pymodule import pymodule_get
 from uel.libary.helpers import make_exports
 from uel.libary.pymodule import UEModuleNew
+from uel.bytecodefile.file import compress
 from uel.core.builder.Parser import Parser
 from uel.pyexceptions.Nerver import Nerver
 from uel.core.builder.Lexer import Lexer
@@ -114,7 +119,6 @@ from uel.Constants import DEBUG
 from types import FunctionType
 from uel.core.Main import Main
 from unicodedata import lookup
-from collections import deque
 from objprint import objprint
 from uel.colors import YELLOW
 from types import ModuleType
@@ -123,6 +127,8 @@ from typing import TypeAlias
 from uel.colors import GREEN
 from uel.colors import RESET
 from functools import wraps
+from objprint import objstr
+from queue import LifoQueue
 from typing import Callable
 from typing import Optional
 from typing import overload
@@ -151,12 +157,15 @@ from sys import path
 from typing import *
 from types import *
 import typing as t
+import importlib
 import threading
 import builtins
-import objprint
 import os.path
 import atexit
+import pickle
 import typing
+import runpy
+import gzip
 import math
 import time
 import sys

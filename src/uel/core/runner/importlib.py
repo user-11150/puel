@@ -2,7 +2,7 @@ import builtins
 import os
 import re
 
-import objprint
+import runpy
 
 from uel.Constants import ENCODING
 from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
@@ -40,9 +40,7 @@ def module_import(name: str, from_there: str) -> list[BytecodeInfo]:
     if name.startswith("python::"):
         name = name[8:]
         path = path_abs(from_there, name)
-        source = _read_string_from_file(path)
-        namespace = globals()
-        exec(compile(source, name, "exec"), namespace, namespace)  # pylint:disable=W0122
+        namespace = runpy.run_path(path)
         return namespace["bytecodes"]
     else:
         path = path_abs(from_there, name)

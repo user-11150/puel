@@ -11,14 +11,15 @@ from uel.core.runner.importlib import module_import
 
 
 def get_variable_from_frame(name: object, frame: Frame) -> UEObject:
-    try:
-        return frame.variables[name]  # type: ignore
-    except KeyError:
-        if frame.prev_frame is None:
-            throw(UELRuntimeError(f"NameError: {name} is not defined"))
-            return UEObject()
-        else:
-            return get_variable_from_frame(name, frame.prev_frame)
+    current = frame
+    while current is not None:
+        try:
+            return current.variables[name]  #type:ignore
+        except KeyError:
+            if current.prev_frame is None:
+                throw(UELRuntimeError,"Name {name} is not defined")
+                raise SystemExit
+            current = current.prev_frame
 
 
 def u_module_def(compiler: Any, node: ImportNode) -> None:

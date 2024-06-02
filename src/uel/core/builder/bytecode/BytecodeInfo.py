@@ -18,12 +18,11 @@ BT_LOAD_CONST: BT = 0b00000000_00000000_00000111
 BT_QPUT: BT = 0b00000000_00000000_00001000
 BT_QTOP: BT = 0b00000000_00000000_00001001
 BT_PUT: BT = 0b00000000_00000000_00001010
-BT_IF_TRUE_JUMP: BT = 0b00000000_00000000_00001011
-BT_IF_FALSE_JUMP: BT = 0b00000000_00000000_00001100
-BT_JUMP: BT = 0b00000000_00000000_00001101
-BT_IS: BT = 0b00000000_00000000_00001110
-BT_CALL: BT = 0b00000000_00000000_00001111
-BT_RETURN: BT = 0b00000000_00000000_00010000
+BT_JUMP: BT = 0b00000000_00000000_00001011
+BT_IS: BT = 0b00000000_00000000_00001100
+BT_CALL: BT = 0b00000000_00000000_00001101
+BT_RETURN: BT = 0b00000000_00000000_00001110
+BT_POP_JUMP_IF_FALSE = 0b00000000_00000000_00001111
 
 
 class BytecodeInfo:
@@ -57,12 +56,11 @@ class BytecodeInfo:
             BT_QPUT: "queue put",
             BT_QTOP: "queue top",
             BT_PUT: "put",
-            BT_IF_TRUE_JUMP: "if true jump",
-            BT_IF_FALSE_JUMP: "if false jump",
             BT_JUMP: "jump to",
             BT_IS: "is",
             BT_CALL: "call",
-            BT_RETURN: "return"
+            BT_RETURN: "return",
+            BT_POP_JUMP_IF_FALSE: "pop jump if false"
         }
         mapping.setdefault("unknown")  # type: ignore
         return mapping[bt].upper().replace(" ", "_"), bt

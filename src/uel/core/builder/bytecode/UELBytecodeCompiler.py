@@ -106,19 +106,18 @@ class UELBytecodeCompiler:
                 else_do = child.orelse
                 condition = child.condition
                 self.expr(condition)
-                self.bytecode(bytecode.BT_IF_TRUE_JUMP, value=self.idx + 3)
-                jump_to_else_bytecode = BytecodeInfo(bytecode.BT_IF_FALSE_JUMP,
-                                                     None, self.idx + 1)
+                start_index = self.idx
+                else_to = BytecodeInfo(bytecode.BT_POP_JUMP_IF_FALSE, 0, start_index + 1)
+                self.bytecodes.append(else_to)
                 self.idx += 1
-                self.bytecodes.append(jump_to_else_bytecode)
                 self.alwaysExecute(body)
-                jump_to_continue_bytecode = BytecodeInfo(
-                    bytecode.BT_JUMP, None, self.idx + 1)
                 self.idx += 1
-                self.bytecodes.append(jump_to_continue_bytecode)
-                jump_to_else_bytecode.value = self.idx + 1
+                jump_exit = BytecodeInfo(bytecode.BT_JUMP, 0, self.idx)
+                self.bytecodes.append(jump_exit)
+                else_to.value = self.idx + 1
                 self.alwaysExecute(else_do)
-                jump_to_continue_bytecode.value = self.idx + 1
+                jump_exit.value = self.idx + 1
+                
             elif type_ is FunctionNode:
                 child = child.tp(FunctionNode)
                 interpreter_compiler = UELBytecodeCompiler(self.filename)
