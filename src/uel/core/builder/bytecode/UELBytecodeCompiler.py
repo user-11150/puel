@@ -107,7 +107,8 @@ class UELBytecodeCompiler:
                 condition = child.condition
                 self.expr(condition)
                 start_index = self.idx
-                else_to = BytecodeInfo(bytecode.BT_POP_JUMP_IF_FALSE, 0, start_index + 1)
+                else_to = BytecodeInfo(bytecode.BT_POP_JUMP_IF_FALSE, 0,
+                                       start_index + 1)
                 self.bytecodes.append(else_to)
                 self.idx += 1
                 self.alwaysExecute(body)
@@ -117,7 +118,7 @@ class UELBytecodeCompiler:
                 else_to.value = self.idx + 1
                 self.alwaysExecute(else_do)
                 jump_exit.value = self.idx + 1
-                
+
             elif type_ is FunctionNode:
                 child = child.tp(FunctionNode)
                 interpreter_compiler = UELBytecodeCompiler(self.filename)
@@ -164,7 +165,8 @@ class UELBytecodeCompiler:
                 val = node.val
                 value_type = type(val)
 
-            nod = node.val if runtime_type_check(node, ExpressionNode) else node
+            nod = node.val if runtime_type_check(node,
+                                                 ExpressionNode) else node
 
             if type(nod) is VariableNode:
                 self.store_name(val.left, val.right)
@@ -279,7 +281,8 @@ class UELBytecodeCompiler:
         """
         self.idx += 1
         self.bytecodes.append(
-            BytecodeInfo(bytecode_type=bytecode_type, value=value,
+            BytecodeInfo(bytecode_type=bytecode_type,
+                         value=value,
                          pos=self.idx))
 
     def add(self) -> None:

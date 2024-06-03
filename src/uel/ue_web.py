@@ -41,4 +41,3 @@ def start(address: tuple[str, int]) -> None:
     finally:
         print(f"{RED}The server is closed{RESET}")
         exit()
-    

@@ -11,6 +11,7 @@ from uel.core.runner.Stack import Stack
 
 from objprint import objstr
 
+
 class UEFunctionObject(UECallableObject):
 
     def __init__(self, args: List[str], bytecodes: List[BytecodeInfo]) -> None:
@@ -33,4 +34,3 @@ class UEFunctionObject(UECallableObject):
                       variables=dict(
                           zip(self.args, (parse(x, frame) for x in args))))
         ueval.frame = frame
-        

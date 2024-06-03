@@ -11,6 +11,10 @@ build:
 lint:
 	mypy --config-file=mypy.ini
 
+style:
+	yapf -ir $(SOURCE)
+	make imports_flush
+
 imports_flush:
 	python imports_flush.py $(SOURCE)/__init__.py $(SOURCE)
 

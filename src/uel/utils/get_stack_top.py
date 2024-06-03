@@ -1,4 +1,3 @@
-
 def get_stack_top(frame):
     current_frame = frame
     while True:

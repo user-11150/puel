@@ -142,7 +142,8 @@ class Lexer:
             raise Nerver
         string: str = self.current_char
         while self.advance():
-            if (self.current_char not in DIGITS) and (self.current_char != "."):
+            if (self.current_char not in DIGITS) and (self.current_char
+                                                      != "."):
                 break
             if self.current_char is None:
                 raise SystemExit

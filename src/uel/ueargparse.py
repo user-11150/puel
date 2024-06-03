@@ -21,10 +21,10 @@ from uel.bytecodefile.uncompress import uncompress
 
 HELP = ("help", "--help")
 VERSION = ("version", "-V")
-RUN = ("run",)
-REPL = ("repl",)
-WEB = ("web",)
-BUILD_BYTECODE = ("binary",)
+RUN = ("run", )
+REPL = ("repl", )
+WEB = ("web", )
+BUILD_BYTECODE = ("binary", )
 RUN_BYTECODE = ("run-binary", "run_binary")
 
 try:
@@ -84,19 +84,19 @@ class UETaskDesc:
 class UEHelpTaskDesc(UETaskDesc):
     ONLY_COMMAND_HELP = {
         RUN:
-            "Run UEL code",
+        "Run UEL code",
         HELP:
-            "Show help. use of 'python -m uel help' or show help of given command eg: 'python -m help run'",
+        "Show help. use of 'python -m uel help' or show help of given command eg: 'python -m help run'",
         VERSION:
-            "Show python version",
+        "Show python version",
         REPL:
-            "Looks like python REPL",
+        "Looks like python REPL",
         WEB:
-            "The web for UEL, usage: 'python -m uel [<ip> [<port>]]'",
+        "The web for UEL, usage: 'python -m uel [<ip> [<port>]]'",
         BUILD_BYTECODE:
-            "Build the bytecodes, (WARN: If you used Python extension, nerver use this)",
+        "Build the bytecodes, (WARN: If you used Python extension, nerver use this)",
         RUN_BYTECODE:
-            "Run the bytecodes, (WARN: If you used Python extension, nerver use this)"
+        "Run the bytecodes, (WARN: If you used Python extension, nerver use this)"
     }
     EMPTY: list[str] = []
     s = ""
@@ -108,7 +108,7 @@ class UEHelpTaskDesc(UETaskDesc):
         i = ", ".join(sorted(ks))
         s += i.ljust(col + 1)
         s += ":"
-        
+
         if v.count("\n") > 1:
             s += "\n    "
             for n in v.splitlines():
@@ -176,41 +176,42 @@ class _UERunTaskDesc(_Private):
 
 
 class UEBuildBytecodesTask(UETaskDesc):
+
     def run(self):
-        
+
         class BuildFail(Exception):
             pass
-        
+
         assert len(self.rest) == 2
-        
+
         filename = self.rest[0]
         save = self.rest[1]
         string = _read_string_from_file(filename)
         debug = DEBUG
-        
+
         ectx = ExecuteContext()
-        bytecodes = ectx.build_bytecodes(
-            fn=filename,
-            code=string,
-            debug=debug)
+        bytecodes = ectx.build_bytecodes(fn=filename, code=string, debug=debug)
         with open(save, "wb") as fp:
             try:
                 compressd = compress(bytecodes)
-            
+
                 uncompress(compressd)
             except Exception as e:
-                raise BuildFail("Build Fail: (Maybe you used Python extension UEL.)") from e
+                raise BuildFail(
+                    "Build Fail: (Maybe you used Python extension UEL.)"
+                ) from e
             fp.write(compressd)
 
 
 class UERunBytecodesTask(UETaskDesc):
+
     def run(self):
         assert len(self.rest) == 1
-        
+
         filename = self.rest[0]
-        
+
         ectx = ExecuteContext()
-        
+
         ectx.run_bytecodes(uncompress(open(filename, "rb").read()))
 
 

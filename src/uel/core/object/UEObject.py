@@ -4,7 +4,7 @@ T = TypeVar("T")
 
 
 class UEObject:
-    
+
     _create: Any
 
     def __new__(cls, *args) -> "UEObject":

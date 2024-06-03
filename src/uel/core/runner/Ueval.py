@@ -21,6 +21,7 @@ from uel.core.runner.Frame import Frame
 from uel.core.runner.Stack import Stack
 from uel.tools.func.share.runtime_type_check import runtime_type_check
 
+
 class Ueval:
     """
     Runner
@@ -66,12 +67,14 @@ class Ueval:
                     else:
                         self.eval(b)
                 except Exception as e:
-                    print(f"Error on {self.frame.filename}, bytecode: {self.frame.idx} {self.frame.bytecodes}")
+                    print(
+                        f"Error on {self.frame.filename}, bytecode: {self.frame.idx} {self.frame.bytecodes}"
+                    )
                     raise e
             if self.frame.prev_frame is None:
                 break
             self.frame = self.frame.prev_frame
-            
+
             # self.frame.idx += 1
 
     def equal(self, x: UEObject, y: UEObject) -> bool:
@@ -79,7 +82,6 @@ class Ueval:
             return bool(x.val == y.val)
 
         return bool(x == y)
-
 
     def next(self):
         self.frame.idx += 1
@@ -96,15 +98,15 @@ class Ueval:
         elif bytecode_info.bytecode_type == bytecode.BT_MINUS:
             self.binary_op(self.frame, bytecode_info)
             self.next()
-            
+
         elif bytecode_info.bytecode_type == bytecode.BT_MUL:
             self.binary_op(self.frame, bytecode_info)
             self.next()
-            
+
         elif bytecode_info.bytecode_type == bytecode.BT_DIV:
             self.binary_op(self.frame, bytecode_info)
             self.next()
-            
+
         elif bytecode_info.bytecode_type == bytecode.BT_IS:
             left_value = parse(self.stack_top, self.frame)
             right_val = parse(self.stack_top, self.frame)
@@ -114,10 +116,11 @@ class Ueval:
             elif hasattr(right_val, "tp_equal"):
                 self.stack_push(right_val.tp_equal(left_value).tp_bytecode())
             else:
-                result = UEBooleanObject(str(self.equal(left_value, right_val)))
+                result = UEBooleanObject(str(self.equal(left_value,
+                                                        right_val)))
                 self.stack_push(result.tp_bytecode())
             self.next()
-            
+
         elif bytecode_info.bytecode_type == bytecode.BT_STORE_NAME:
             name = bytecode_info.value
             val = parse(self.stack_top, self.frame)
@@ -141,13 +144,14 @@ class Ueval:
 
         elif bytecode_info.bytecode_type == bytecode.BT_JUMP:
             self.jump(bytecode_info.value)
-            
+
+
 #        elif bytecode_info.bytecode_type == bytecode.BT_IF_TRUE_JUMP:
 #            val = parse(self.stack_top, self.frame)
 #            if self.tp_bool(val):
 #                self.jump(bytecode_info.value)
 #            self.next()
-#            
+#
 #        elif bytecode_info.bytecode_type == bytecode.BT_IF_FALSE_JUMP:
 #            value = parse(self.stack_top, self.frame)
 #            if not self.tp_bool(value):
@@ -163,15 +167,14 @@ class Ueval:
 
         elif bytecode_info.bytecode_type == bytecode.BT_CALL:
             self.call_function()
-            
-            
+
         elif bytecode_info.bytecode_type == bytecode.BT_RETURN:
             if self.frame.prev_frame is None:
                 throw(UELRuntimeError, "'return' outside function")
                 return
             self.frame.prev_frame.gqueue.put_nowait(self.stack_top)
             self.frame = self.frame.prev_frame
-            
+
         else:
             prettyd = bytecode_info.pretty_with_bytecode_type(
                 bytecode_info.bytecode_type)[0]
@@ -180,8 +183,8 @@ class Ueval:
     def call_function(self) -> None:
 
         def getFunctionArgumentLength(
-                fn: Union[UEFunctionObject, UECallableObject,
-                          FunctionType]) -> int:
+            fn: Union[UEFunctionObject, UECallableObject,
+                      FunctionType]) -> int:
             if type(fn) is FunctionType:
                 return fn.__code__.co_argcount - 1
             elif issubclass(type(fn), UECallableObject):
@@ -244,4 +247,3 @@ class Ueval:
 
     def print(self, uelobject: UEObject) -> None:
         print(parse(uelobject, self.frame).tp_str(), end="")
-
