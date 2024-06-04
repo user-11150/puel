@@ -21,10 +21,10 @@ from uel.bytecodefile.uncompress import uncompress
 
 HELP = ("help", "--help")
 VERSION = ("version", "-V")
-RUN = ("run", )
-REPL = ("repl", )
-WEB = ("web", )
-BUILD_BYTECODE = ("binary", )
+RUN = ("run",)
+REPL = ("repl",)
+WEB = ("web",)
+BUILD_BYTECODE = ("binary",)
 RUN_BYTECODE = ("run-binary", "run_binary")
 
 try:
@@ -84,19 +84,19 @@ class UETaskDesc:
 class UEHelpTaskDesc(UETaskDesc):
     ONLY_COMMAND_HELP = {
         RUN:
-        "Run UEL code",
+            "Run UEL code",
         HELP:
-        "Show help. use of 'python -m uel help' or show help of given command eg: 'python -m help run'",
+            "Show help. use of 'python -m uel help' or show help of given command eg: 'python -m help run'",
         VERSION:
-        "Show python version",
+            "Show python version",
         REPL:
-        "Looks like python REPL",
+            "Looks like python REPL",
         WEB:
-        "The web for UEL, usage: 'python -m uel [<ip> [<port>]]'",
+            "The web for UEL, usage: 'python -m uel [<ip> [<port>]]'",
         BUILD_BYTECODE:
-        "Build the bytecodes, (WARN: If you used Python extension, nerver use this)",
+            "Build the bytecodes, (WARN: If you used Python extension, nerver use this)",
         RUN_BYTECODE:
-        "Run the bytecodes, (WARN: If you used Python extension, nerver use this)"
+            "Run the bytecodes, (WARN: If you used Python extension, nerver use this)"
     }
     EMPTY: list[str] = []
     s = ""
@@ -198,8 +198,7 @@ class UEBuildBytecodesTask(UETaskDesc):
                 uncompress(compressd)
             except Exception as e:
                 raise BuildFail(
-                    "Build Fail: (Maybe you used Python extension UEL.)"
-                ) from e
+                    "Build Fail: (Maybe you used Python extension UEL.)") from e
             fp.write(compressd)
 
 

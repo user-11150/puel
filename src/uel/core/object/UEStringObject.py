@@ -24,7 +24,7 @@ class UEStringObject(UEObject):
         self.val = string
 
     def tp_equal(self, other):
-        if (runtime_type_check(other, UEStringObject)
-                and other.val == self.val):
+        if (runtime_type_check(other, UEStringObject) and
+                other.val == self.val):
             return UEBooleanObject(True)
         return UEBooleanObject(False)

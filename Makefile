@@ -12,7 +12,7 @@ lint:
 	mypy --config-file=mypy.ini
 
 style:
-	yapf -ir $(SOURCE)
+	autopep8 -ir $(SOURCE)
 	make imports_flush
 
 imports_flush:

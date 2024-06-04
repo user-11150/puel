@@ -170,8 +170,8 @@ class Parser:
         try:
             if self.current_token is None:
                 raise GotoNoElseCase
-            if not (self.current_token.token_type == TT_KEYWORD
-                    and self.current_token.token_val == TT_ELSE):
+            if not (self.current_token.token_type == TT_KEYWORD and
+                    self.current_token.token_val == TT_ELSE):
                 raise GotoNoElseCase
         except GotoNoElseCase:
             else_case = ContainerNode()
@@ -196,8 +196,8 @@ class Parser:
 
     def validate_sequence(self, last_token) -> SequenceNode:
         if self.current_token is None or (
-                self.current_token.token_type != TT_IDENTIFER
-                and self.current_token.token_type != TT_SEMI):
+                self.current_token.token_type != TT_IDENTIFER and
+                self.current_token.token_type != TT_SEMI):
             RaiseError(UELSyntaxError, "SyntaxError", last_token.pos)
         sequence = []
         try:

@@ -165,8 +165,8 @@ class UELBytecodeCompiler:
                 val = node.val
                 value_type = type(val)
 
-            nod = node.val if runtime_type_check(node,
-                                                 ExpressionNode) else node
+            nod = node.val if runtime_type_check(
+                node, ExpressionNode) else node
 
             if type(nod) is VariableNode:
                 self.store_name(val.left, val.right)
@@ -281,8 +281,7 @@ class UELBytecodeCompiler:
         """
         self.idx += 1
         self.bytecodes.append(
-            BytecodeInfo(bytecode_type=bytecode_type,
-                         value=value,
+            BytecodeInfo(bytecode_type=bytecode_type, value=value,
                          pos=self.idx))
 
     def add(self) -> None:
