@@ -1,7 +1,1 @@
-function a;
-  a = a # 可以使查找速度更快
-  put a
-  call a
 end
-
-call a

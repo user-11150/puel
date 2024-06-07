@@ -66,6 +66,7 @@ from uel.core.builder.ast.RepeatNode import RepeatNode
 from uel.core.builder.ast.ReturnNode import ReturnNode
 from uel.core.builder.ast.SingleNode import SingleNode
 from uel.core.builder.token.TokenNode import TokenNode
+from uel._builtins.libary_and_modules import Builtins
 from uel.core.builder.bytecode.BytecodeInfo import BT
 from uel.core.errors.TooDotsError import TooDotsError
 from uel.core.errors.UELException import UELException
@@ -76,11 +77,11 @@ from uel.core.runner.task.BuildCode import BuildCode
 from uel.pyexceptions.CustomError import CustomError
 from uel.tools.func.wrapper.with_out import with_out
 from uel.core.runner.importlib import module_import
-from uel.bytecodefile.uncompress import uncompress
 from uel.core.builder.ast.Constant import Constant
 from uel.core.builder.ast.MultNode import MultNode
 from uel.core.errors.RaiseError import RaiseError
 from uel.utils.get_stack_top import get_stack_top
+from uel.bytecodefile.compress import decompress
 from uel.core.builder.ast.AddNode import AddNode
 from uel.core.builder.ast.DivNode import DivNode
 from uel.core.builder.ast.IsEqual import IsEqual
@@ -96,11 +97,9 @@ from uel.core.builder.ast.IfNode import IfNode
 from uel.core.object.object_parse import parse
 from uel.core.object.UEObject import UEObject
 from uel.ue_web import start as _ue_web_start
-from uel.bytecodefile.file import uncompress
 from uel.libary.pymodule import pymodule_get
 from uel.libary.helpers import make_exports
 from uel.libary.pymodule import UEModuleNew
-from uel.bytecodefile.file import compress
 from uel.core.builder.Parser import Parser
 from uel.pyexceptions.Nerver import Nerver
 from uel.core.builder.Lexer import Lexer
@@ -113,6 +112,7 @@ from importlib import import_module
 from string import digits as DIGITS
 from http.server import HTTPServer
 from uel.Constants import ENCODING
+from uel.Constants import DIRNAME
 from uel.ueargparse import UETask
 from string import ascii_letters
 from uel.Constants import DEBUG

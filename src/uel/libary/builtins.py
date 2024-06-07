@@ -1,8 +1,6 @@
 from typing import Callable
 
 from uel.libary.pymodule import UEModuleNew, pymodule_get
+from uel._builtins.libary_and_modules import Builtins
 
-BUILTIN_MODULES: dict[str, Callable[[], UEModuleNew]] = {
-    "time": (lambda: pymodule_get("_time", "libary")),
-    "math": (lambda: pymodule_get("math", "libary"))
-}
+BUILTIN_MODULES: dict[str, Callable[[], UEModuleNew]] = Builtins.all()

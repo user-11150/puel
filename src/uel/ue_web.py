@@ -2,9 +2,10 @@ import os.path
 import atexit
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from uel.colors import RED, RESET
+from uel.Constants import DIRNAME
 
 dev = False
-dirname = os.path.dirname(__file__)
+dirname = DIRNAME
 
 if dev:
     dirname = "./src/uel"

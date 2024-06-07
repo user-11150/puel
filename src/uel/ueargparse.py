@@ -16,8 +16,7 @@ from uel.colors import GREEN, RED, RESET, YELLOW
 from uel.Constants import DEBUG
 from uel.pyexceptions.CustomError import CustomError
 
-from uel.bytecodefile.compress import compress
-from uel.bytecodefile.uncompress import uncompress
+from uel.bytecodefile.compress import compress, decompress
 
 HELP = ("help", "--help")
 VERSION = ("version", "-V")
@@ -195,7 +194,7 @@ class UEBuildBytecodesTask(UETaskDesc):
             try:
                 compressd = compress(bytecodes)
 
-                uncompress(compressd)
+                decompress(compressd)
             except Exception as e:
                 raise BuildFail(
                     "Build Fail: (Maybe you used Python extension UEL.)") from e
@@ -211,7 +210,7 @@ class UERunBytecodesTask(UETaskDesc):
 
         ectx = ExecuteContext()
 
-        ectx.run_bytecodes(uncompress(open(filename, "rb").read()))
+        ectx.run_bytecodes(decompress(open(filename, "rb").read()))
 
 
 class UERepl(UETaskDesc, _UERunTaskDesc):

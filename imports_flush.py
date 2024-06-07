@@ -66,7 +66,7 @@ def cmp(x: str, y: str):
 def get_imports_by_files(args):
     root, _, files = args
     result = []
-    for file in filter(lambda x: x.endswith(".py"), files):
+    for file in filter(lambda x: x.endswith(".py") or x.endswith(".pyi"), files):
         current = os.path.join(root, file)
         with open(current, "rt") as fd:
             text_content = fd.read()

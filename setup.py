@@ -5,11 +5,13 @@
 Let's compile UEL.
 """
 
+# pylint:disable=W0621
+
 try:
-    import Cython
+    import Cython as _
 except ImportError:
     import pip
-    
+
     while True:
         print("You don't have cython installed,"
               "so you can't build UEL."
@@ -21,26 +23,45 @@ except ImportError:
             break
         elif answer == "no":
             print("Quit")
-            raise SystemExit
+            exit()
         else:
             print("I don't understand what you mean. Please enter your 'yes' or' no '.")
 
+
 from Cython.Build import cythonize
+
+from os import cpu_count
 
 from setuptools import setup
 from setuptools import Extension
 from setuptools import find_namespace_packages
 
+from setuptools.command.build_ext import build_ext
+
+import sys
+
+class PyFastBuildExt(build_ext):
+    def initialize_options(self, *args, **kwargs):
+        super().initialize_options(*args, **kwargs)
+        self.parallel = True
+
+
 kwargs = {
-  "install_requires": ["objprint"]
+    "install_requires": ["objprint"]
 }
 
 BUILD_DIR = "build/uel"
-THREADS = 5
-OPTIMIZE = False
+
+THREADS = cpu_count() or 1
+
 PYX_COMPILE_LANG = "c"
 
-CPP_BUILD_ARGS = ["--std=c++11"]
+# The cpp extensions compile args, don't contains Cython extension
+CUSTOM_CPP_BUILD_ARGS = ["--std=c++14"]
+
+# The c extensions compile args, don't contains Cython extension
+CUSTOM_C_BUILD_ARGS = ["--std=c11"]
+
 
 extensions = [
     *cythonize(
@@ -48,7 +69,8 @@ extensions = [
         ],
         build_dir=BUILD_DIR,
         nthreads=THREADS
-    )
+    ),
+
 ]
 
 setup(
@@ -58,7 +80,10 @@ setup(
         "": "src"
     },
     package_data={
-      "uel": ["py.typed", "web/**"]
+        "uel": ["py.typed", "web/**"]
+    },
+    cmdclass={
+        "build_ext": PyFastBuildExt
     },
     ext_modules=extensions,
     install_requires=["objprint"],
@@ -68,4 +93,3 @@ setup(
         ]
     },
 )
-
