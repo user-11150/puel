@@ -57,7 +57,7 @@ __all__ = ['is_identifier_center_char_or_end_char','get_coroutine_origin_trackin
   'WEXITSTATUS','WIFSIGNALED','getpriority','sched_param','sched_yield','setpriority','stat_result',
   'CustomError','BufferError','ImportError','LookupError','MemoryError','SyntaxError','SystemError',
   'UserWarning','classmethod','PickleError','BINUNICODE8','EMPTY_TUPLE','LONG_BINGET','LONG_BINPUT',
-  'NEXT_BUFFER','BadGzipFile','UEModuleNew','struct_time','thread_time','UEArgParser','TT_FUNCTION',
+  'NEXT_BUFFER','_decompress','UEModuleNew','struct_time','thread_time','UEArgParser','TT_FUNCTION',
   'TT_KEYWORDS','single_call','main_thread','TIMEOUT_MAX','ThreadError','Concatenate','AbstractSet',
   'MappingView','SupportsAbs','SupportsInt','DefaultDict','OrderedDict','assert_type','NotRequired',
   'reveal_type','excepthook','executable','float_info','getprofile','hexversion','maxunicode',
@@ -76,20 +76,20 @@ __all__ = ['is_identifier_center_char_or_end_char','get_coroutine_origin_trackin
   'ftruncate','getgroups','getrandom','getresgid','getresuid','login_tty','setgroups','setresgid',
   'setresuid','tcgetpgrp','tcsetpgrp','P_NOWAITO','importlib','Exception','NameError','TypeError',
   'bytearray','enumerate','frozenset','Unpickler','BINBYTES8','BINPERSID','BINSTRING','EMPTY_SET',
-  'FROZENSET','NEWOBJ_EX','factorial','nextafter','remainder','CLOCK_TAI','localtime','monotonic',
-  'ParamSpec','BinOpNode','MinusNode','TT_IMPORT','TT_REPEAT','TT_RETURN','TT_STRING','TokenNode',
-  'get_ident','Condition','Semaphore','threading','TypeAlias','Annotated','Container','ItemsView',
-  'Awaitable','Coroutine','FrozenSet','TypedDict','Generator','TypeGuard','BuildCode','LifoQueue',
-  'fullmatch','MULTILINE','RegexFlag','abiflags','exc_info','gettrace','int_info','platform',
-  'settrace','normcase','splitext','basename','getmtime','getatime','getctime','normpath',
-  'samefile','samestat','realpath','register','SEEK_SET','SEEK_CUR','SEEK_END','fsencode',
-  'fsdecode','DirEntry','EX_IOERR','EX_OSERR','EX_USAGE','O_APPEND','O_DIRECT','O_NDELAY',
-  'O_NOCTTY','O_RDONLY','O_WRONLY','RTLD_NOW','SCHED_RR','ST_NODEV','WSTOPPED','WSTOPSIG',
-  'WTERMSIG','fstatvfs','getlogin','pathconf','readlink','sendfile','setregid','setreuid',
-  'strerror','truncate','unsetenv','makedirs','environb','P_NOWAIT','spawnvpe','spawnlpe',
-  'compress','EOFError','Ellipsis','KeyError','TabError','callable','property','reversed',
-  'builtins','UEObject','ADDITEMS','BINBYTES','BINFLOAT','NEWFALSE','POP_MARK','SETITEMS',
-  'GzipFile','Callable','Builtins','copysign','isfinite','daylight','strftime','strptime',
+  'FROZENSET','NEWOBJ_EX','_compress','factorial','nextafter','remainder','CLOCK_TAI','localtime',
+  'monotonic','ParamSpec','BinOpNode','MinusNode','TT_IMPORT','TT_REPEAT','TT_RETURN','TT_STRING',
+  'TokenNode','get_ident','Condition','Semaphore','threading','TypeAlias','Annotated','Container',
+  'ItemsView','Awaitable','Coroutine','FrozenSet','TypedDict','Generator','TypeGuard','BuildCode',
+  'LifoQueue','fullmatch','MULTILINE','RegexFlag','abiflags','exc_info','gettrace','int_info',
+  'platform','settrace','normcase','splitext','basename','getmtime','getatime','getctime',
+  'normpath','samefile','samestat','realpath','register','SEEK_SET','SEEK_CUR','SEEK_END',
+  'fsencode','fsdecode','DirEntry','EX_IOERR','EX_OSERR','EX_USAGE','O_APPEND','O_DIRECT',
+  'O_NDELAY','O_NOCTTY','O_RDONLY','O_WRONLY','RTLD_NOW','SCHED_RR','ST_NODEV','WSTOPPED',
+  'WSTOPSIG','WTERMSIG','fstatvfs','getlogin','pathconf','readlink','sendfile','setregid',
+  'setreuid','strerror','truncate','unsetenv','makedirs','environb','P_NOWAIT','spawnvpe',
+  'spawnlpe','compress','EOFError','Ellipsis','KeyError','TabError','callable','property',
+  'reversed','builtins','UEObject','ADDITEMS','BINBYTES','BINFLOAT','NEWFALSE','POP_MARK',
+  'SETITEMS','Callable','Builtins','copysign','isfinite','daylight','strftime','strptime',
   'timezone','objprint','Constant','MultNode','TT_COMMA','TT_EQUAL','TT_FLOAT','TT_MINUS',
   'TT_TYPES','Optional','Position','is_start','overload','bytecode','deepcopy','with_out',
   'ClassVar','Protocol','Hashable','Iterable','Iterator','KeysView','Sequence','ChainMap',
@@ -129,11 +129,11 @@ __all__ = ['is_identifier_center_char_or_end_char','get_coroutine_origin_trackin
   'F_OK','R_OK','W_OK','X_OK','dup2','fork','kill','nice','open','pipe','read','stat','sync','wait',
   'walk','bool','dict','eval','exec','hash','help','iter','list','next','quit','repr','type','vars',
   'Main','dump','load','DICT','EXT1','EXT2','EXT4','INST','LIST','LONG','MARK','NONE','STOP','TRUE',
-  'gzip','acos','asin','atan','cbrt','ceil','comb','cosh','dist','erfc','exp2','fabs','fmod','fsum',
-  'log2','modf','perm','prod','sinh','sqrt','tanh','math','time','List','Self','Lock','Type','Dict',
-  'cast','Text','subn','sys','sep','RED','dup','abs','all','any','bin','chr','dir','hex','int',
-  'len','map','max','min','oct','ord','pow','set','str','sum','zip','DUP','GET','INT','OBJ','POP',
-  'PUT','cos','erf','exp','gcd','inf','lcm','log','nan','sin','tan','tau','ulp','Any','Set','sub',]
+  'acos','asin','atan','cbrt','ceil','comb','cosh','dist','erfc','exp2','fabs','fmod','fsum','log2',
+  'modf','perm','prod','sinh','sqrt','tanh','math','time','List','Self','Lock','Type','Dict','cast',
+  'Text','subn','sys','sep','RED','dup','abs','all','any','bin','chr','dir','hex','int','len','map',
+  'max','min','oct','ord','pow','set','str','sum','zip','DUP','GET','INT','OBJ','POP','PUT','cos',
+  'erf','exp','gcd','inf','lcm','log','nan','sin','tan','tau','ulp','Any','Set','sub','os','id',]
 from uel.core.builder.bytecode.ASTToByteCodeCollectionCompiler import ASTToByteCodeCollectionCompiler
 from uel.core.builder.token.tools.identifier import is_identifier_center_char_or_end_char
 from uel.core.builder.bytecode.UELBytecodeCompiler import UELBytecodeCompiler
@@ -215,10 +215,13 @@ from uel.tools.func.wrapper.with_out import with_out
 from sys import get_coroutine_origin_tracking_depth
 from sys import set_coroutine_origin_tracking_depth
 from uel.core.runner.importlib import module_import
+from uel.bytecodefile._compress import _decompress
 from uel.core.builder.ast.Constant import Constant
 from uel.core.builder.ast.MultNode import MultNode
 from uel.core.errors.RaiseError import RaiseError
 from uel.utils.get_stack_top import get_stack_top
+from uel.bytecodefile._compress import _compress
+from uel.bytecodefile.compress import decompress
 from uel.core.builder.ast.AddNode import AddNode
 from uel.core.builder.ast.DivNode import DivNode
 from uel.core.builder.ast.IsEqual import IsEqual
@@ -230,6 +233,7 @@ from uel.libary.builtins import BUILTIN_MODULES
 from builtins import PendingDeprecationWarning
 from http.server import BaseHTTPRequestHandler
 from os.path import supports_unicode_filenames
+from uel.bytecodefile.compress import compress
 from uel.core.builder.Position import Position
 from uel.core.builder.ast.IfNode import IfNode
 from uel.core.object.object_parse import parse
@@ -511,7 +515,6 @@ from builtins import globals
 from builtins import hasattr
 from builtins import license
 from builtins import setattr
-from gzip import BadGzipFile
 from importlib import reload
 from os import CLD_CONTINUED
 from os import EFD_SEMAPHORE
@@ -572,7 +575,6 @@ from builtins import locals
 from builtins import object
 from builtins import sorted
 from functools import wraps
-from gzip import decompress
 from objprint import objstr
 from os import EFD_NONBLOCK
 from os import EX_CANTCREAT
@@ -709,8 +711,6 @@ from builtins import repr
 from builtins import type
 from builtins import vars
 from copy import deepcopy
-from gzip import GzipFile
-from gzip import compress
 from math import copysign
 from math import isfinite
 from os import CLD_DUMPED
@@ -1166,7 +1166,6 @@ import atexit
 import pickle
 import typing
 import runpy
-import gzip
 import math
 import time
 import sys

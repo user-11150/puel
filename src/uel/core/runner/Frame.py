@@ -23,4 +23,3 @@ class Frame:
         if self.variables is None:
             self.variables = {}
         self.gqueue = Queue[t.Any]()
-        self.result = None

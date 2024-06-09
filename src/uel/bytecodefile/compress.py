@@ -1,9 +1,10 @@
 import pickle
-import gzip
+
+from uel.bytecodefile._compress import _compress, _decompress
 
 def compress(obj):
-	return gzip.compress(pickle.dumps(obj))
+	return _compress(pickle.dumps(obj))
 
 
 def decompress(bytes_):
-	return pickle.loads(gzip.decompress(bytes_))
+	return pickle.loads(_decompress(bytes_))

@@ -41,6 +41,7 @@ from setuptools.command.build import build
 
 from setuptools.dist import Distribution
 import os
+import time
 
 
 def commandwrap(old):
@@ -58,7 +59,7 @@ def get_col():
     except OSError:
         return 80
 
-class PyFastBuildExt(build_ext):
+class UELParallelBuildExtension(build_ext):
     def initialize_options(self, *args, **kwargs):
         super().initialize_options(*args, **kwargs)
         self.parallel = True
@@ -79,16 +80,25 @@ CUSTOM_CPP_BUILD_ARGS = ["--std=c++14"]
 # The c extensions compile args, don't contains Cython extension
 CUSTOM_C_BUILD_ARGS = ["--std=c11"]
 
+include = ["src/uel/include/"]
+
 
 extensions = [
     *cythonize(
         [
-        
         ],
         build_dir=BUILD_DIR,
         nthreads=THREADS
     ),
-    
+    Extension(
+        "uel.bytecodefile._compress",
+        sources=["src/uel/bytecodefile/_compress.cpp"],
+        language="cpp",
+        depends=[
+            *include
+        ],
+        include_dirs=include
+    )
 ]
 
 setup(
@@ -101,7 +111,7 @@ setup(
         "uel": ["py.typed", "web/**"]
     },
     cmdclass={
-        "build_ext": PyFastBuildExt,
+        "build_ext": UELParallelBuildExtension,
     },
     ext_modules=extensions,
     install_requires=["objprint"],
