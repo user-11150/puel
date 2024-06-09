@@ -85,6 +85,7 @@ items = [
         'Python',
         (
             '.py',
+            ".pyi"
         )
     ),
     
@@ -138,6 +139,12 @@ items = [
             ".h",
             ".cpp",
             ".hpp"
+        )
+    ),
+    (
+        "Cython(Pyx)",
+        (
+           ".pyx",
         )
     )
 ]
