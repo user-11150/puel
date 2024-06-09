@@ -1,50 +1,16 @@
-async function showTextNode(node, duration = 2.5) {
-  const dom = node.hide();
-  const raw = dom.html().trim();
-  await Promise.resolve();
-  dom.html("").fadeIn(500);
-  const doms = Array.from(raw).map((v) =>
-    `<span>${v}<span>`).map($).map((v) => v
-    .hide()).map((v) => v.appendTo(dom));
-  const promises = [];
-  let idx = 0;
-  for (const $elemnt of doms) {
-    const timeout = duration / raw.length;
-    promises.push(new Promise(
-      (resolve, reject) =>
-      {
-        setTimeout(() => {
-          $elemnt.fadeIn(725);
-          resolve();
-        }, timeout * 1000);
-      }
-    ));
-    if (promises.length > 2) {
-      await Promise.all(promises);
-      promises.length = 0;
-    }
-    idx ++;
-  }
-  await Promise.all(promises);
-  return node; // 方便链式调用
-}
-async function showInitialHeaderAnimations() {
-  await showTextNode($(".header-text"));
-}
-async function showHtmlTextNode(node, duration) {
-  const html = node.html();
-  await showTextNode(node, duration);
-  node.html(html);
-  return node
-}
-async function showInitialBodyAnimations() {
-  showHtmlTextNode($(".text"), 1.5)
+async function show(element, duration) {
+  const dom = element[0]
+  dom.style.transform = "scale(3,3) translate(0px, 120px)"
+  await gsap.to(dom, {
+    transform: "scale(0.8,0.8)", duration: duration * (2/3)
+  })
+  await gsap.to(dom, {
+    transform: "", duration: duration * (1/3)
+  })
 }
 $(function() {
-  (async () => {
+  const body = $(document.body);
 
-    $(".container,header,footer").css("display", "block")
-    showInitialHeaderAnimations();
-    showInitialBodyAnimations();
-  })()
+
+  show(body, 1);
 });

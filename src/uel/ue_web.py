@@ -4,7 +4,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from uel.colors import RED, RESET
 from uel.Constants import DIRNAME
 
-dev = False
+dev = True
 dirname = DIRNAME
 
 if dev:
