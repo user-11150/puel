@@ -37,14 +37,31 @@ from setuptools import Extension
 from setuptools import find_namespace_packages
 
 from setuptools.command.build_ext import build_ext
+from setuptools.command.build import build
 
-import sys
+from setuptools.dist import Distribution
+import os
+
+
+def commandwrap(old):
+    def new(self, command):
+        print()
+        print(str(command).center(get_col(), "="))
+        old(self, command)
+    return new
+
+Distribution.run_command = commandwrap(Distribution.run_command)
+
+def get_col():
+    try:
+        return os.get_terminal_size().columns
+    except OSError:
+        return 80
 
 class PyFastBuildExt(build_ext):
     def initialize_options(self, *args, **kwargs):
         super().initialize_options(*args, **kwargs)
         self.parallel = True
-
 
 kwargs = {
     "install_requires": ["objprint"]
@@ -66,11 +83,12 @@ CUSTOM_C_BUILD_ARGS = ["--std=c11"]
 extensions = [
     *cythonize(
         [
+        
         ],
         build_dir=BUILD_DIR,
         nthreads=THREADS
     ),
-
+    
 ]
 
 setup(
@@ -83,7 +101,7 @@ setup(
         "uel": ["py.typed", "web/**"]
     },
     cmdclass={
-        "build_ext": PyFastBuildExt
+        "build_ext": PyFastBuildExt,
     },
     ext_modules=extensions,
     install_requires=["objprint"],
