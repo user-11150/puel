@@ -42,7 +42,7 @@ def import_translate(string):
     if match := re.fullmatch(r"from (.+?) import (.+)", string=string):
         return [*from_imports()]
     elif match := re.fullmatch(r"import ([^\s]+)\s*$", string):
-        return imports(match)
+        return [*imports(match), string]
     else:
         return [string]
 
@@ -107,7 +107,7 @@ def weight_removal(imports):
                     return parse_alias(alias)
                 elif isinstance(node, ast.ImportFrom):
                     return parse_alias(node.names[0])
-    names = [*map(get_name, imports)]
+    names = [*filter(lambda x: "." not in x, map(get_name, imports))]
     for _import in imports:
         name = get_name(_import)
         dic[name] = _import

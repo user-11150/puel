@@ -74,63 +74,64 @@ __all__ = ['is_identifier_center_char_or_end_char','get_coroutine_origin_trackin
   'O_NOATIME','O_TMPFILE','PRIO_PGRP','PRIO_USER','RTLD_LAZY','SEEK_DATA','SEEK_HOLE','ST_NOEXEC',
   'ST_NOSUID','ST_RDONLY','WCOREDUMP','WIFEXITED','WUNTRACED','cpu_count','fdatasync','fpathconf',
   'ftruncate','getgroups','getrandom','getresgid','getresuid','login_tty','setgroups','setresgid',
-  'setresuid','tcgetpgrp','tcsetpgrp','P_NOWAITO','Exception','NameError','TypeError','bytearray',
-  'enumerate','frozenset','Unpickler','BINBYTES8','BINPERSID','BINSTRING','EMPTY_SET','FROZENSET',
-  'NEWOBJ_EX','factorial','nextafter','remainder','CLOCK_TAI','localtime','monotonic','ParamSpec',
-  'BinOpNode','MinusNode','TT_IMPORT','TT_REPEAT','TT_RETURN','TT_STRING','TokenNode','get_ident',
-  'Condition','Semaphore','TypeAlias','Annotated','Container','ItemsView','Awaitable','Coroutine',
-  'FrozenSet','TypedDict','Generator','TypeGuard','BuildCode','LifoQueue','fullmatch','MULTILINE',
-  'RegexFlag','abiflags','exc_info','gettrace','int_info','platform','settrace','normcase',
-  'splitext','basename','getmtime','getatime','getctime','normpath','samefile','samestat',
-  'realpath','register','SEEK_SET','SEEK_CUR','SEEK_END','fsencode','fsdecode','DirEntry',
-  'EX_IOERR','EX_OSERR','EX_USAGE','O_APPEND','O_DIRECT','O_NDELAY','O_NOCTTY','O_RDONLY',
-  'O_WRONLY','RTLD_NOW','SCHED_RR','ST_NODEV','WSTOPPED','WSTOPSIG','WTERMSIG','fstatvfs',
-  'getlogin','pathconf','readlink','sendfile','setregid','setreuid','strerror','truncate',
-  'unsetenv','makedirs','environb','P_NOWAIT','spawnvpe','spawnlpe','compress','EOFError',
-  'Ellipsis','KeyError','TabError','callable','property','reversed','UEObject','ADDITEMS',
-  'BINBYTES','BINFLOAT','NEWFALSE','POP_MARK','SETITEMS','GzipFile','Callable','Builtins',
-  'copysign','isfinite','daylight','strftime','strptime','timezone','objprint','Constant',
-  'MultNode','TT_COMMA','TT_EQUAL','TT_FLOAT','TT_MINUS','TT_TYPES','Optional','Position',
-  'is_start','overload','bytecode','deepcopy','with_out','ClassVar','Protocol','Hashable',
-  'Iterable','Iterator','KeysView','Sequence','ChainMap','BinaryIO','get_args','NoReturn',
-  'Required','finditer','template','run_path','ENCODING','maxsize','modules','version','dirname',
-  'getsize','lexists','ismount','abspath','pathsep','defpath','devnull','relpath','DIRNAME',
-  'linesep','F_TLOCK','F_ULOCK','O_ASYNC','O_CREAT','O_DSYNC','O_RSYNC','O_TRUNC','P_PIDFD',
-  'TMP_MAX','WEXITED','WNOHANG','WNOWAIT','environ','eventfd','forkpty','getcwdb','getegid',
-  'geteuid','getpgid','getpgrp','getppid','listdir','makedev','openpty','pwritev','replace',
-  'scandir','setegid','seteuid','setpgid','setpgrp','statvfs','symlink','sysconf','ttyname',
-  'urandom','waitpid','renames','execlpe','execvpe','getenvb','spawnve','spawnvp','spawnle',
-  'spawnlp','IOError','OSError','Warning','compile','complex','credits','delattr','getattr',
-  'globals','hasattr','license','setattr','Pickler','APPENDS','BININT1','BININT2','MEMOIZE',
-  'NEWTRUE','SETITEM','UNICODE','degrees','isclose','radians','altzone','asctime','time_ns',
-  'Generic','TypeVar','c_ulong','pointer','AddNode','DivNode','IsEqual','PutNode','TT_CALL',
-  'TT_ELSE','TT_PUSH','TT_SEMI','Barrier','Literal','Mapping','Counter','Pattern','NewType',
-  'RunCode','findall','VERBOSE','intern','prefix','stderr','stdout','islink','exists','isfile',
-  'curdir','pardir','altsep','extsep','fdopen','F_LOCK','F_TEST','O_EXCL','O_PATH','O_RDWR',
-  'O_SYNC','P_PGID','access','chroot','execve','fchdir','fchmod','fchown','fspath','getcwd',
-  'getgid','getpid','getsid','getuid','isatty','killpg','lchown','mkfifo','preadv','putenv',
-  'pwrite','remove','rename','setgid','setsid','setuid','splice','system','unlink','waitid',
-  'writev','execle','execlp','execvp','getenv','P_WAIT','spawnv','spawnl','reload','YELLOW',
-  'divmod','filter','format','locals','object','sorted','APPEND','BINGET','BININT','BINPUT',
-  'GLOBAL','NEWOBJ','PERSID','REDUCE','STRING','TUPLE1','TUPLE2','TUPLE3','lgamma','gmtime',
-  'mktime','tzname','UETask','objstr','IfNode','TT_ADD','TT_DIV','TT_END','TT_EOF','TT_INT',
-  'TT_MUL','TT_PUT','Nerver','DIGITS','Thread','TextIO','AnyStr','Unpack','lookup','search',
-  'escape','LOCALE','DOTALL','NOFLAG','pprint','Parser','audit','flags','stdin','isabs','split',
-  'isdir','RESET','_exit','EX_OK','P_ALL','P_PID','abort','chdir','chmod','chown','close','error',
-  'execv','fstat','fsync','lockf','lseek','lstat','major','minor','mkdir','mknod','pipe2','pread',
-  'readv','rmdir','times','umask','uname','utime','wait4','write','fwalk','execl','popen','GREEN',
-  'DEBUG','aiter','anext','ascii','bytes','float','input','print','range','round','slice','super',
-  'tuple','throw','Frame','dumps','loads','BUILD','FALSE','FLOAT','FRAME','LONG1','LONG4','PROTO',
-  'TUPLE','acosh','asinh','atan2','atanh','expm1','floor','frexp','gamma','hypot','isinf','isnan',
-  'isqrt','ldexp','log10','log1p','trunc','parse','ctime','sleep','wraps','Stack','Empty','Tuple',
-  'Union','TT_IF','TT_IS','TT_OP','Token','final','Event','RLock','Timer','local','Final','Sized',
-  'Deque','Match','Never','Queue','match','purge','ASCII','Lexer','Ueval','main','argv','exit',
-  'path','join','name','F_OK','R_OK','W_OK','X_OK','dup2','fork','kill','nice','open','pipe','read',
-  'stat','sync','wait','walk','bool','dict','eval','exec','hash','help','iter','list','next','quit',
-  'repr','type','vars','Main','dump','load','DICT','EXT1','EXT2','EXT4','INST','LIST','LONG','MARK',
-  'NONE','STOP','TRUE','acos','asin','atan','cbrt','ceil','comb','cosh','dist','erfc','exp2','fabs',
-  'fmod','fsum','log2','modf','perm','prod','sinh','sqrt','tanh','time','List','Self','Lock','Type',
-  'Dict','cast','Text','subn','sep','RED','dup','abs','all','any','bin','chr','dir','hex','int',
+  'setresuid','tcgetpgrp','tcsetpgrp','P_NOWAITO','importlib','Exception','NameError','TypeError',
+  'bytearray','enumerate','frozenset','Unpickler','BINBYTES8','BINPERSID','BINSTRING','EMPTY_SET',
+  'FROZENSET','NEWOBJ_EX','factorial','nextafter','remainder','CLOCK_TAI','localtime','monotonic',
+  'ParamSpec','BinOpNode','MinusNode','TT_IMPORT','TT_REPEAT','TT_RETURN','TT_STRING','TokenNode',
+  'get_ident','Condition','Semaphore','threading','TypeAlias','Annotated','Container','ItemsView',
+  'Awaitable','Coroutine','FrozenSet','TypedDict','Generator','TypeGuard','BuildCode','LifoQueue',
+  'fullmatch','MULTILINE','RegexFlag','abiflags','exc_info','gettrace','int_info','platform',
+  'settrace','normcase','splitext','basename','getmtime','getatime','getctime','normpath',
+  'samefile','samestat','realpath','register','SEEK_SET','SEEK_CUR','SEEK_END','fsencode',
+  'fsdecode','DirEntry','EX_IOERR','EX_OSERR','EX_USAGE','O_APPEND','O_DIRECT','O_NDELAY',
+  'O_NOCTTY','O_RDONLY','O_WRONLY','RTLD_NOW','SCHED_RR','ST_NODEV','WSTOPPED','WSTOPSIG',
+  'WTERMSIG','fstatvfs','getlogin','pathconf','readlink','sendfile','setregid','setreuid',
+  'strerror','truncate','unsetenv','makedirs','environb','P_NOWAIT','spawnvpe','spawnlpe',
+  'compress','EOFError','Ellipsis','KeyError','TabError','callable','property','reversed',
+  'builtins','UEObject','ADDITEMS','BINBYTES','BINFLOAT','NEWFALSE','POP_MARK','SETITEMS',
+  'GzipFile','Callable','Builtins','copysign','isfinite','daylight','strftime','strptime',
+  'timezone','objprint','Constant','MultNode','TT_COMMA','TT_EQUAL','TT_FLOAT','TT_MINUS',
+  'TT_TYPES','Optional','Position','is_start','overload','bytecode','deepcopy','with_out',
+  'ClassVar','Protocol','Hashable','Iterable','Iterator','KeysView','Sequence','ChainMap',
+  'BinaryIO','get_args','NoReturn','Required','finditer','template','run_path','ENCODING','maxsize',
+  'modules','version','dirname','getsize','lexists','ismount','abspath','pathsep','defpath',
+  'devnull','relpath','os.path','DIRNAME','linesep','F_TLOCK','F_ULOCK','O_ASYNC','O_CREAT',
+  'O_DSYNC','O_RSYNC','O_TRUNC','P_PIDFD','TMP_MAX','WEXITED','WNOHANG','WNOWAIT','environ',
+  'eventfd','forkpty','getcwdb','getegid','geteuid','getpgid','getpgrp','getppid','listdir',
+  'makedev','openpty','pwritev','replace','scandir','setegid','seteuid','setpgid','setpgrp',
+  'statvfs','symlink','sysconf','ttyname','urandom','waitpid','renames','execlpe','execvpe',
+  'getenvb','spawnve','spawnvp','spawnle','spawnlp','IOError','OSError','Warning','compile',
+  'complex','credits','delattr','getattr','globals','hasattr','license','setattr','Pickler',
+  'APPENDS','BININT1','BININT2','MEMOIZE','NEWTRUE','SETITEM','UNICODE','degrees','isclose',
+  'radians','altzone','asctime','time_ns','Generic','TypeVar','c_ulong','pointer','AddNode',
+  'DivNode','IsEqual','PutNode','TT_CALL','TT_ELSE','TT_PUSH','TT_SEMI','Barrier','Literal',
+  'Mapping','Counter','Pattern','NewType','RunCode','findall','VERBOSE','intern','prefix','stderr',
+  'stdout','islink','exists','isfile','curdir','pardir','altsep','extsep','atexit','fdopen',
+  'F_LOCK','F_TEST','O_EXCL','O_PATH','O_RDWR','O_SYNC','P_PGID','access','chroot','execve',
+  'fchdir','fchmod','fchown','fspath','getcwd','getgid','getpid','getsid','getuid','isatty',
+  'killpg','lchown','mkfifo','preadv','putenv','pwrite','remove','rename','setgid','setsid',
+  'setuid','splice','system','unlink','waitid','writev','execle','execlp','execvp','getenv',
+  'P_WAIT','spawnv','spawnl','reload','YELLOW','divmod','filter','format','locals','object',
+  'sorted','APPEND','BINGET','BININT','BINPUT','GLOBAL','NEWOBJ','PERSID','REDUCE','STRING',
+  'TUPLE1','TUPLE2','TUPLE3','pickle','lgamma','gmtime','mktime','tzname','UETask','objstr',
+  'IfNode','TT_ADD','TT_DIV','TT_END','TT_EOF','TT_INT','TT_MUL','TT_PUT','Nerver','DIGITS',
+  'Thread','TextIO','AnyStr','Unpack','typing','lookup','search','escape','LOCALE','DOTALL',
+  'NOFLAG','pprint','Parser','audit','flags','stdin','isabs','split','isdir','RESET','_exit',
+  'EX_OK','P_ALL','P_PID','abort','chdir','chmod','chown','close','error','execv','fstat','fsync',
+  'lockf','lseek','lstat','major','minor','mkdir','mknod','pipe2','pread','readv','rmdir','times',
+  'umask','uname','utime','wait4','write','fwalk','execl','popen','GREEN','DEBUG','aiter','anext',
+  'ascii','bytes','float','input','print','range','round','slice','super','tuple','throw','Frame',
+  'dumps','loads','BUILD','FALSE','FLOAT','FRAME','LONG1','LONG4','PROTO','TUPLE','acosh','asinh',
+  'atan2','atanh','expm1','floor','frexp','gamma','hypot','isinf','isnan','isqrt','ldexp','log10',
+  'log1p','trunc','parse','ctime','sleep','wraps','Stack','Empty','Tuple','Union','TT_IF','TT_IS',
+  'TT_OP','Token','final','Event','RLock','Timer','local','Final','Sized','Deque','Match','Never',
+  'Queue','match','purge','ASCII','runpy','Lexer','Ueval','main','argv','exit','path','join','name',
+  'F_OK','R_OK','W_OK','X_OK','dup2','fork','kill','nice','open','pipe','read','stat','sync','wait',
+  'walk','bool','dict','eval','exec','hash','help','iter','list','next','quit','repr','type','vars',
+  'Main','dump','load','DICT','EXT1','EXT2','EXT4','INST','LIST','LONG','MARK','NONE','STOP','TRUE',
+  'gzip','acos','asin','atan','cbrt','ceil','comb','cosh','dist','erfc','exp2','fabs','fmod','fsum',
+  'log2','modf','perm','prod','sinh','sqrt','tanh','math','time','List','Self','Lock','Type','Dict',
+  'cast','Text','subn','sys','sep','RED','dup','abs','all','any','bin','chr','dir','hex','int',
   'len','map','max','min','oct','ord','pow','set','str','sum','zip','DUP','GET','INT','OBJ','POP',
   'PUT','cos','erf','exp','gcd','inf','lcm','log','nan','sin','tan','tau','ulp','Any','Set','sub',]
 from uel.core.builder.bytecode.ASTToByteCodeCollectionCompiler import ASTToByteCodeCollectionCompiler
@@ -1073,7 +1074,6 @@ from re import search
 from sys import audit
 from sys import flags
 from sys import stdin
-from time import time
 from typing import IO
 from math import cos
 from math import erf
@@ -1158,3 +1158,17 @@ from re import M
 from re import S
 from re import U
 from re import X
+import importlib
+import threading
+import builtins
+import os.path
+import atexit
+import pickle
+import typing
+import runpy
+import gzip
+import math
+import time
+import sys
+import os
+import re
