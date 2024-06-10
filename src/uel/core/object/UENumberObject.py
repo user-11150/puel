@@ -34,4 +34,10 @@ class UENumberObject(UEObject):
         return UEBooleanObject(self.val == other.val)
 
     def __init__(self, string: t.Any) -> None:
-        self.val = float(string)
+        if type(string) in (int, float):
+            self.val = string
+        else:
+            if "." not in string:
+                self.val = int(string)
+            else:
+                self.val = float(string)
