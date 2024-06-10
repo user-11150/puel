@@ -6,8 +6,12 @@ refrensh:
 	
 	make install
 
+dev:
+	$(python) -m pip uninstall -y uel
+	make install
+
 build:
-	$(python) setup.py sdist
+	$(python) setup.py bdist
 
 lint:
 	mypy --config-file=mypy.ini

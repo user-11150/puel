@@ -72,8 +72,6 @@ BUILD_DIR = "build/uel"
 
 THREADS = cpu_count() or 1
 
-PYX_COMPILE_LANG = "c"
-
 # The cpp extensions compile args, don't contains Cython extension
 CUSTOM_CPP_BUILD_ARGS = ["--std=c++14"]
 
@@ -86,13 +84,9 @@ include = ["src/uel/include/"]
 extensions = [
     *cythonize(
         [
-            Extension(
-                "uel.ue_web",
-                sources=["src/uel/ue_web.pyx"]
-            )
         ],
         build_dir=BUILD_DIR,
-        nthreads=THREADS
+        nthreads=THREADS,
     ),
     Extension(
         "uel.bytecodefile._compress",
