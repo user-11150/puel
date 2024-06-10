@@ -21,11 +21,7 @@ def import_translate(string):
     def getall(m):
         if hasattr(m, "__all__"):
             return m.__all__
-        r = [*filter(lambda x: not x.startswith("_") and not x.endswith("_") and x not in keyword.kwlist, dir(m))]
-        
-        if not r:
-            raise
-        return r
+        return []
     def from_imports():
         module_name = match.group(1)
         for attr in match.group(2).split(","):
