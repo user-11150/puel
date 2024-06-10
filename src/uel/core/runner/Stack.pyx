@@ -1,5 +1,5 @@
 from queue import LifoQueue
-from typing import Generic, TypeVar
+from typing import Generic, TypeVar, Iterator
 
 T = TypeVar("T")
 
@@ -18,3 +18,6 @@ class Stack(Generic[T]):
 
     def push(self, value: T) -> None:
         self._queue.append(value)
+
+    def is_empty(self):
+        return not self._queue

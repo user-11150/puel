@@ -1,92 +1,91 @@
 __all__ = ['is_identifier_center_char_or_end_char','ASTToByteCodeCollectionCompiler',
   'get_variable_from_frame','no_type_check_decorator','sched_get_priority_max',
   'sched_get_priority_min','waitstatus_to_exitcode','supports_bytes_environ',
-  '_read_string_from_file','POSIX_FADV_SEQUENTIAL','sched_rr_get_interval','UELBuildtimeException',
-  'POSIX_FADV_DONTNEED','POSIX_FADV_WILLNEED','SCHED_RESET_ON_FORK','UELBytecodeCompiler',
-  'AsyncContextManager','dataclass_transform','POSIX_FADV_NOREUSE','sched_getscheduler',
-  'sched_setscheduler','UELMakeObjectError','runtime_type_check','PushStackValueNode',
-  'UnknownSyntaxError','BrokenBarrierError','IS_CAN_MAKE_OBJECT','POSIX_FADV_NORMAL',
-  'POSIX_FADV_RANDOM','SPLICE_F_NONBLOCK','get_terminal_size','sched_getaffinity',
-  'sched_setaffinity','invalidate_caches','runtime_checkable','register_at_fork','DEFAULT_PROTOCOL',
-  'HIGHEST_PROTOCOL','SHORT_BINUNICODE','UEFunctionObject','UECallableObject','CallFunctionNode',
-  'BoundedSemaphore','UELBaseException','device_encoding','get_inheritable','posix_fallocate',
-  'set_inheritable','UELRuntimeError','UnpicklingError','READONLY_BUFFER','SHORT_BINSTRING',
-  'UEBooleanObject','MutableSequence','SupportsComplex','clear_overloads','ParamSpecKwargs',
-  'BUILTIN_MODULES','EX_UNAVAILABLE','ST_SYNCHRONOUS','pathconf_names','sched_getparam',
-  'sched_setparam','statvfs_result','ExecuteContext','SHORT_BINBYTES','UENumberObject',
-  'UEStringObject','ExpressionNode','ThrowException','UELSyntaxError','current_thread',
-  'ExceptHookArgs','uel_new_object','ContextManager','MutableMapping','AsyncGenerator',
-  'get_type_hints','get_exec_path','CLD_CONTINUED','EFD_SEMAPHORE','GRND_NONBLOCK','RTLD_NODELETE',
-  'SPLICE_F_MORE','SPLICE_F_MOVE','ST_NODIRATIME','eventfd_write','posix_fadvise','sysconf_names',
-  'terminal_size','waitid_result','import_module','_ue_web_start','module_import','PicklingError',
-  'BT_LOAD_CONST','BT_STORE_NAME','AttributeOnly','ContainerNode','get_native_id','AsyncIterator',
-  'AsyncIterable','SupportsBytes','SupportsFloat','SupportsIndex','SupportsRound','get_overloads',
-  'LiteralString','no_type_check','ParamSpecArgs','TYPE_CHECKING','ascii_letters','get_stack_top',
-  'EFD_NONBLOCK','EX_CANTCREAT','PRIO_PROCESS','WIFCONTINUED','eventfd_read','get_blocking',
-  'getgrouplist','set_blocking','times_result','uname_result','BytecodeInfo','PickleBuffer',
-  'STACK_GLOBAL','FunctionType','pymodule_get','make_exports','AbstractNode','FunctionNode',
-  'SequenceNode','VariableNode','TT_IDENTIFER','TooDotsError','active_count','UELException',
-  'TypeVarTuple','assert_never','is_typeddict','AbstractTask','CLD_STOPPED','CLD_TRAPPED',
-  'EFD_CLOEXEC','EX_PROTOCOL','EX_SOFTWARE','EX_TEMPFAIL','GRND_RANDOM','NGROUPS_MAX','O_DIRECTORY',
-  'O_LARGEFILE','RTLD_GLOBAL','RTLD_NOLOAD','SCHED_BATCH','SCHED_OTHER','ST_MANDLOCK','ST_RELATIME',
-  'WEXITSTATUS','WIFSIGNALED','getpriority','sched_param','sched_yield','setpriority','stat_result',
-  'CustomError','PickleError','BINUNICODE8','EMPTY_TUPLE','LONG_BINGET','LONG_BINPUT','NEXT_BUFFER',
-  '_decompress','UEModuleNew','UEArgParser','TT_FUNCTION','TT_KEYWORDS','single_call','main_thread',
-  'TIMEOUT_MAX','ThreadError','Concatenate','AbstractSet','MappingView','SupportsAbs','SupportsInt',
-  'DefaultDict','OrderedDict','assert_type','NotRequired','reveal_type','CLD_DUMPED','CLD_EXITED',
-  'CLD_KILLED','EX_DATAERR','EX_NOINPUT','O_NOFOLLOW','O_NONBLOCK','RTLD_LOCAL','SCHED_FIFO',
-  'SCHED_IDLE','ST_NOATIME','WCONTINUED','WIFSTOPPED','closerange','initgroups','pidfd_open',
-  'removedirs','__import__','decompress','ImportNode','BINUNICODE','BYTEARRAY8','EMPTY_DICT',
-  'EMPTY_LIST','ModuleType','ModuleNode','RepeatNode','ReturnNode','SingleNode','TT_KEYWORD',
-  'RaiseError','setprofile','stack_size','excepthook','getprofile','ForwardRef','ByteString',
-  'MutableSet','ValuesView','Collection','Reversible','NamedTuple','get_origin','IGNORECASE',
-  'run_module','EX_CONFIG','EX_NOHOST','EX_NOPERM','EX_NOUSER','EX_OSFILE','O_ACCMODE','O_CLOEXEC',
-  'O_NOATIME','O_TMPFILE','PRIO_PGRP','PRIO_USER','RTLD_LAZY','SEEK_DATA','SEEK_HOLE','ST_NOEXEC',
-  'ST_NOSUID','ST_RDONLY','WCOREDUMP','WIFEXITED','WUNTRACED','cpu_count','fdatasync','fpathconf',
-  'ftruncate','getgroups','getrandom','getresgid','getresuid','login_tty','setgroups','setresgid',
-  'setresuid','tcgetpgrp','tcsetpgrp','P_NOWAITO','importlib','Unpickler','BINBYTES8','BINPERSID',
+  'POSIX_FADV_SEQUENTIAL','sched_rr_get_interval','UELBuildtimeException','POSIX_FADV_DONTNEED',
+  'POSIX_FADV_WILLNEED','SCHED_RESET_ON_FORK','UELBytecodeCompiler','AsyncContextManager',
+  'dataclass_transform','POSIX_FADV_NOREUSE','sched_getscheduler','sched_setscheduler',
+  'UELMakeObjectError','runtime_type_check','PushStackValueNode','UnknownSyntaxError',
+  'BrokenBarrierError','IS_CAN_MAKE_OBJECT','POSIX_FADV_NORMAL','POSIX_FADV_RANDOM',
+  'SPLICE_F_NONBLOCK','get_terminal_size','sched_getaffinity','sched_setaffinity',
+  'runtime_checkable','register_at_fork','DEFAULT_PROTOCOL','HIGHEST_PROTOCOL','SHORT_BINUNICODE',
+  'UEFunctionObject','UECallableObject','CallFunctionNode','BoundedSemaphore','UELBaseException',
+  'device_encoding','get_inheritable','posix_fallocate','set_inheritable','UELRuntimeError',
+  'UnpicklingError','READONLY_BUFFER','SHORT_BINSTRING','UEBooleanObject','MutableSequence',
+  'SupportsComplex','clear_overloads','ParamSpecKwargs','BUILTIN_MODULES','EX_UNAVAILABLE',
+  'ST_SYNCHRONOUS','pathconf_names','sched_getparam','sched_setparam','statvfs_result',
+  'SHORT_BINBYTES','UENumberObject','UEStringObject','ExpressionNode','ThrowException',
+  'UELSyntaxError','current_thread','ExceptHookArgs','uel_new_object','ContextManager',
+  'MutableMapping','AsyncGenerator','get_type_hints','get_exec_path','CLD_CONTINUED',
+  'EFD_SEMAPHORE','GRND_NONBLOCK','RTLD_NODELETE','SPLICE_F_MORE','SPLICE_F_MOVE','ST_NODIRATIME',
+  'eventfd_write','posix_fadvise','sysconf_names','terminal_size','waitid_result','module_import',
+  'PicklingError','BT_LOAD_CONST','BT_STORE_NAME','import_module','AttributeOnly','ContainerNode',
+  'get_native_id','AsyncIterator','AsyncIterable','SupportsBytes','SupportsFloat','SupportsIndex',
+  'SupportsRound','get_overloads','LiteralString','no_type_check','ParamSpecArgs','TYPE_CHECKING',
+  'ascii_letters','get_stack_top','EFD_NONBLOCK','EX_CANTCREAT','PRIO_PROCESS','WIFCONTINUED',
+  'eventfd_read','get_blocking','getgrouplist','set_blocking','times_result','uname_result',
+  'BytecodeInfo','PickleBuffer','STACK_GLOBAL','FunctionType','pymodule_get','make_exports',
+  'AbstractNode','FunctionNode','SequenceNode','VariableNode','TT_IDENTIFER','TooDotsError',
+  'active_count','UELException','TypeVarTuple','assert_never','is_typeddict','AbstractTask',
+  'CLD_STOPPED','CLD_TRAPPED','EFD_CLOEXEC','EX_PROTOCOL','EX_SOFTWARE','EX_TEMPFAIL','GRND_RANDOM',
+  'NGROUPS_MAX','O_DIRECTORY','O_LARGEFILE','RTLD_GLOBAL','RTLD_NOLOAD','SCHED_BATCH','SCHED_OTHER',
+  'ST_MANDLOCK','ST_RELATIME','WEXITSTATUS','WIFSIGNALED','getpriority','sched_param','sched_yield',
+  'setpriority','stat_result','PickleError','BINUNICODE8','EMPTY_TUPLE','LONG_BINGET','LONG_BINPUT',
+  'NEXT_BUFFER','_decompress','UEModuleNew','UEArgParser','TT_FUNCTION','TT_KEYWORDS','single_call',
+  'main_thread','TIMEOUT_MAX','ThreadError','CustomError','Concatenate','AbstractSet','MappingView',
+  'SupportsAbs','SupportsInt','DefaultDict','OrderedDict','assert_type','NotRequired','reveal_type',
+  'CLD_DUMPED','CLD_EXITED','CLD_KILLED','EX_DATAERR','EX_NOINPUT','O_NOFOLLOW','O_NONBLOCK',
+  'RTLD_LOCAL','SCHED_FIFO','SCHED_IDLE','ST_NOATIME','WCONTINUED','WIFSTOPPED','closerange',
+  'initgroups','pidfd_open','removedirs','ImportNode','decompress','BINUNICODE','BYTEARRAY8',
+  'EMPTY_DICT','EMPTY_LIST','ModuleType','ModuleNode','RepeatNode','ReturnNode','SingleNode',
+  'TT_KEYWORD','RaiseError','setprofile','stack_size','excepthook','getprofile','ForwardRef',
+  'ByteString','MutableSet','ValuesView','Collection','Reversible','NamedTuple','get_origin',
+  'IGNORECASE','run_module','EX_CONFIG','EX_NOHOST','EX_NOPERM','EX_NOUSER','EX_OSFILE','O_ACCMODE',
+  'O_CLOEXEC','O_NOATIME','O_TMPFILE','PRIO_PGRP','PRIO_USER','RTLD_LAZY','SEEK_DATA','SEEK_HOLE',
+  'ST_NOEXEC','ST_NOSUID','ST_RDONLY','WCOREDUMP','WIFEXITED','WUNTRACED','cpu_count','fdatasync',
+  'fpathconf','ftruncate','getgroups','getrandom','getresgid','getresuid','login_tty','setgroups',
+  'setresgid','setresuid','tcgetpgrp','tcsetpgrp','P_NOWAITO','Unpickler','BINBYTES8','BINPERSID',
   'BINSTRING','EMPTY_SET','FROZENSET','NEWOBJ_EX','_compress','ParamSpec','BinOpNode','MinusNode',
   'TT_IMPORT','TT_REPEAT','TT_RETURN','TT_STRING','TokenNode','get_ident','Condition','enumerate',
   'Semaphore','threading','TypeAlias','Annotated','Container','ItemsView','Awaitable','Coroutine',
-  'FrozenSet','TypedDict','Generator','TypeGuard','BuildCode','LifoQueue','fullmatch','MULTILINE',
-  'RegexFlag','SEEK_SET','SEEK_CUR','SEEK_END','fsencode','fsdecode','DirEntry','EX_IOERR',
-  'EX_OSERR','EX_USAGE','O_APPEND','O_DIRECT','O_NDELAY','O_NOCTTY','O_RDONLY','O_WRONLY',
-  'RTLD_NOW','SCHED_RR','ST_NODEV','WSTOPPED','WSTOPSIG','WTERMSIG','fstatvfs','getlogin',
-  'pathconf','readlink','sendfile','setregid','setreuid','strerror','truncate','unsetenv',
-  'makedirs','environb','P_NOWAIT','spawnvpe','spawnlpe','compress','builtins','UEObject',
-  'ADDITEMS','BINBYTES','BINFLOAT','NEWFALSE','POP_MARK','SETITEMS','Callable','Builtins',
-  'objprint','Constant','MultNode','TT_COMMA','TT_EQUAL','TT_FLOAT','TT_MINUS','TT_TYPES',
-  'Optional','Position','is_start','overload','settrace','gettrace','bytecode','deepcopy',
-  'with_out','ClassVar','Protocol','Hashable','Iterable','Iterator','KeysView','Sequence',
-  'ChainMap','BinaryIO','get_args','NoReturn','Required','finditer','template','run_path',
-  'ENCODING','pathsep','linesep','defpath','devnull','F_TLOCK','F_ULOCK','O_ASYNC','O_CREAT',
-  'O_DSYNC','O_RSYNC','O_TRUNC','P_PIDFD','TMP_MAX','WEXITED','WNOHANG','WNOWAIT','environ',
-  'eventfd','forkpty','getcwdb','getegid','geteuid','getpgid','getpgrp','getppid','listdir',
-  'makedev','openpty','pwritev','replace','scandir','setegid','seteuid','setpgid','setpgrp',
-  'statvfs','symlink','sysconf','ttyname','urandom','waitpid','renames','execlpe','execvpe',
-  'getenvb','spawnve','spawnvp','spawnle','spawnlp','Pickler','APPENDS','BININT1','BININT2',
-  'MEMOIZE','NEWTRUE','SETITEM','UNICODE','Generic','TypeVar','c_ulong','pointer','DIRNAME',
-  'AddNode','DivNode','IsEqual','PutNode','TT_CALL','TT_ELSE','TT_PUSH','TT_SEMI','Barrier',
-  'Literal','Mapping','Counter','Pattern','NewType','RunCode','findall','compile','VERBOSE',
-  'altsep','curdir','pardir','fdopen','extsep','F_LOCK','F_TEST','O_EXCL','O_PATH','O_RDWR',
-  'O_SYNC','P_PGID','access','chroot','execve','fchdir','fchmod','fchown','fspath','getcwd',
-  'getgid','getpid','getsid','getuid','isatty','killpg','lchown','mkfifo','preadv','putenv',
-  'pwrite','remove','rename','setgid','setsid','setuid','splice','system','unlink','waitid',
-  'writev','execle','execlp','execvp','getenv','P_WAIT','spawnv','spawnl','reload','YELLOW',
-  'APPEND','BINGET','BININT','BINPUT','GLOBAL','NEWOBJ','PERSID','REDUCE','STRING','TUPLE1',
-  'TUPLE2','TUPLE3','pickle','UETask','objstr','IfNode','TT_ADD','TT_DIV','TT_END','TT_EOF',
-  'TT_INT','TT_MUL','TT_PUT','Nerver','DIGITS','Thread','TextIO','AnyStr','Unpack','typing',
-  'lookup','stderr','search','escape','LOCALE','DOTALL','NOFLAG','pprint','Parser','_exit','EX_OK',
-  'P_ALL','P_PID','abort','chdir','chmod','chown','close','error','execv','fstat','fsync','lockf',
-  'lseek','lstat','major','minor','mkdir','mknod','pipe2','pread','readv','rmdir','times','umask',
-  'uname','utime','wait4','write','fwalk','execl','popen','GREEN','RESET','DEBUG','throw','Frame',
-  'dumps','loads','BUILD','FALSE','FLOAT','FRAME','LONG1','LONG4','PROTO','TUPLE','parse','wraps',
-  'Stack','Empty','Tuple','Union','TT_IF','TT_IS','TT_OP','Token','final','Event','RLock','Timer',
-  'local','Final','Sized','Deque','Match','Never','Queue','match','split','purge','ASCII','runpy',
-  'Lexer','Ueval','main','exit','name','path','F_OK','R_OK','W_OK','X_OK','dup2','fork','kill',
-  'nice','open','pipe','read','stat','sync','wait','walk','argv','Main','dump','load','DICT','EXT1',
-  'EXT2','EXT4','INST','LIST','LONG','MARK','NONE','STOP','TRUE','math','time','List','Self','Lock',
-  'Type','Dict','cast','Text','subn','sys','sep','dup','RED','DUP','GET','INT','OBJ','POP','PUT',]
+  'FrozenSet','TypedDict','Generator','TypeGuard','BuildCode','fullmatch','MULTILINE','RegexFlag',
+  'SEEK_SET','SEEK_CUR','SEEK_END','fsencode','fsdecode','DirEntry','EX_IOERR','EX_OSERR',
+  'EX_USAGE','O_APPEND','O_DIRECT','O_NDELAY','O_NOCTTY','O_RDONLY','O_WRONLY','RTLD_NOW',
+  'SCHED_RR','ST_NODEV','WSTOPPED','WSTOPSIG','WTERMSIG','fstatvfs','getlogin','pathconf',
+  'readlink','sendfile','setregid','setreuid','strerror','truncate','unsetenv','makedirs',
+  'environb','P_NOWAIT','spawnvpe','spawnlpe','builtins','UEObject','compress','ADDITEMS',
+  'BINBYTES','BINFLOAT','NEWFALSE','POP_MARK','SETITEMS','Callable','Builtins','objprint',
+  'Constant','MultNode','TT_COMMA','TT_EQUAL','TT_FLOAT','TT_MINUS','TT_TYPES','Optional',
+  'Position','is_start','overload','settrace','gettrace','bytecode','deepcopy','with_out',
+  'ClassVar','Protocol','Hashable','Iterable','Iterator','KeysView','Sequence','ChainMap',
+  'BinaryIO','get_args','NoReturn','Required','finditer','template','run_path','ENCODING','pathsep',
+  'linesep','defpath','devnull','F_TLOCK','F_ULOCK','O_ASYNC','O_CREAT','O_DSYNC','O_RSYNC',
+  'O_TRUNC','P_PIDFD','TMP_MAX','WEXITED','WNOHANG','WNOWAIT','environ','eventfd','forkpty',
+  'getcwdb','getegid','geteuid','getpgid','getpgrp','getppid','listdir','makedev','openpty',
+  'pwritev','replace','scandir','setegid','seteuid','setpgid','setpgrp','statvfs','symlink',
+  'sysconf','ttyname','urandom','waitpid','renames','execlpe','execvpe','getenvb','spawnve',
+  'spawnvp','spawnle','spawnlp','Pickler','APPENDS','BININT1','BININT2','MEMOIZE','NEWTRUE',
+  'SETITEM','UNICODE','Generic','TypeVar','c_ulong','pointer','DIRNAME','AddNode','DivNode',
+  'IsEqual','PutNode','TT_CALL','TT_ELSE','TT_PUSH','TT_SEMI','Barrier','Literal','Mapping',
+  'Counter','Pattern','NewType','RunCode','findall','compile','VERBOSE','altsep','curdir','pardir',
+  'fdopen','extsep','F_LOCK','F_TEST','O_EXCL','O_PATH','O_RDWR','O_SYNC','P_PGID','access',
+  'chroot','execve','fchdir','fchmod','fchown','fspath','getcwd','getgid','getpid','getsid',
+  'getuid','isatty','killpg','lchown','mkfifo','preadv','putenv','pwrite','remove','rename',
+  'setgid','setsid','setuid','splice','system','unlink','waitid','writev','execle','execlp',
+  'execvp','getenv','P_WAIT','spawnv','spawnl','APPEND','BINGET','BININT','BINPUT','GLOBAL',
+  'NEWOBJ','PERSID','REDUCE','STRING','TUPLE1','TUPLE2','TUPLE3','pickle','UETask','objstr',
+  'IfNode','TT_ADD','TT_DIV','TT_END','TT_EOF','TT_INT','TT_MUL','TT_PUT','Nerver','DIGITS',
+  'Thread','TextIO','AnyStr','Unpack','typing','lookup','stderr','search','escape','LOCALE',
+  'DOTALL','NOFLAG','pprint','Parser','_exit','EX_OK','P_ALL','P_PID','abort','chdir','chmod',
+  'chown','close','error','execv','fstat','fsync','lockf','lseek','lstat','major','minor','mkdir',
+  'mknod','pipe2','pread','readv','rmdir','times','umask','uname','utime','wait4','write','fwalk',
+  'execl','popen','throw','Frame','dumps','loads','BUILD','FALSE','FLOAT','FRAME','LONG1','LONG4',
+  'PROTO','TUPLE','parse','wraps','Stack','Empty','Tuple','Union','TT_IF','TT_IS','TT_OP','Token',
+  'final','Event','RLock','Timer','local','Final','Sized','Deque','Match','Never','Queue','DEBUG',
+  'match','split','purge','ASCII','runpy','Lexer','Ueval','main','exit','name','path','F_OK','R_OK',
+  'W_OK','X_OK','dup2','fork','kill','nice','open','pipe','read','stat','sync','wait','walk','argv',
+  'Main','dump','load','DICT','EXT1','EXT2','EXT4','INST','LIST','LONG','MARK','NONE','STOP','TRUE',
+  'math','time','List','Self','Lock','Type','Dict','cast','Text','subn','sys','sep','dup','DUP',
+  'GET','INT','OBJ','POP','PUT','Any','Set','sub','os','BT','IO','re','t','A','I','L','M','S','X',]
 from uel.core.builder.bytecode.ASTToByteCodeCollectionCompiler import ASTToByteCodeCollectionCompiler
 from uel.core.builder.token.tools.identifier import is_identifier_center_char_or_end_char
 from uel.core.builder.bytecode.UELBytecodeCompiler import UELBytecodeCompiler
@@ -112,7 +111,6 @@ from uel.core.object.UEFunctionObject import UEFunctionObject
 from uel.core.builder.ast.ContainerNode import ContainerNode
 from uel.core.builder.token.TokenConstants import TT_KEYWORD
 from uel.core.builder.token.tools.identifier import is_start
-from uel.core.runner.importlib import _read_string_from_file
 from uel.core.builder.token.TokenConstants import TT_IMPORT
 from uel.core.builder.token.TokenConstants import TT_REPEAT
 from uel.core.builder.token.TokenConstants import TT_RETURN
@@ -138,7 +136,6 @@ from uel.core.errors.UELSyntaxError import UELSyntaxError
 from uel.core.object.UENumberObject import UENumberObject
 from uel.core.object.UEStringObject import UEStringObject
 from uel.core.object.object_new import IS_CAN_MAKE_OBJECT
-from uel.core.runner.ExecuteContext import ExecuteContext
 from uel.core.builder.token.TokenConstants import TT_ADD
 from uel.core.builder.token.TokenConstants import TT_DIV
 from uel.core.builder.token.TokenConstants import TT_END
@@ -186,7 +183,6 @@ from uel.core.builder.Position import Position
 from uel.core.builder.ast.IfNode import IfNode
 from uel.core.object.object_parse import parse
 from uel.core.object.UEObject import UEObject
-from uel.ue_web import start as _ue_web_start
 from uel.libary.pymodule import pymodule_get
 from uel.libary.helpers import make_exports
 from uel.libary.pymodule import UEModuleNew
@@ -196,7 +192,6 @@ from uel.pyexceptions.Nerver import Nerver
 from threading import BrokenBarrierError
 from uel.core.builder.Lexer import Lexer
 from uel.tools.attr import AttributeOnly
-from importlib import invalidate_caches
 from uel.core.runner.Frame import Frame
 from uel.core.runner.Stack import Stack
 from uel.core.runner.Ueval import Ueval
@@ -244,7 +239,6 @@ from typing import MutableMapping
 from typing import get_type_hints
 from uel.Constants import DIRNAME
 from uel.ueargparse import UETask
-from importlib import __import__
 from os import POSIX_FADV_NORMAL
 from os import POSIX_FADV_RANDOM
 from os import SPLICE_F_NONBLOCK
@@ -324,8 +318,6 @@ from typing import NamedTuple
 from typing import Reversible
 from typing import ValuesView
 from typing import get_origin
-from uel.colors import YELLOW
-from importlib import reload
 from os import CLD_CONTINUED
 from os import EFD_SEMAPHORE
 from os import GRND_NONBLOCK
@@ -360,8 +352,6 @@ from typing import ParamSpec
 from typing import TypeAlias
 from typing import TypeGuard
 from typing import TypedDict
-from uel.colors import GREEN
-from uel.colors import RESET
 from functools import wraps
 from objprint import objstr
 from os import EFD_NONBLOCK
@@ -380,7 +370,6 @@ from pickle import BINFLOAT
 from pickle import NEWFALSE
 from pickle import POP_MARK
 from pickle import SETITEMS
-from queue import LifoQueue
 from threading import Event
 from threading import RLock
 from threading import Timer
@@ -440,7 +429,6 @@ from typing import Literal
 from typing import Mapping
 from typing import NewType
 from typing import TypeVar
-from uel.colors import RED
 from copy import deepcopy
 from os import CLD_DUMPED
 from os import CLD_EXITED
@@ -778,7 +766,6 @@ from re import M
 from re import S
 from re import U
 from re import X
-import importlib
 import threading
 import builtins
 import pickle

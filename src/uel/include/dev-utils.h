@@ -1,4 +1,4 @@
-#include<Python.h>
+#include<core.h>
 
 #ifdef DEBUG
 #ifdef __cplusplus

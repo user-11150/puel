@@ -1,3 +1,5 @@
+.PHONY: refrensh dev build lint imports_flush install clean report
+
 SOURCE=./src/uel
 python=python
 
@@ -11,7 +13,7 @@ dev:
 	make install
 
 build:
-	$(python) setup.py bdist
+	$(python) setup.py build
 
 lint:
 	mypy --config-file=mypy.ini
