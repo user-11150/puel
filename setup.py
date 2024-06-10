@@ -86,6 +86,10 @@ include = ["src/uel/include/"]
 extensions = [
     *cythonize(
         [
+            Extension(
+                "uel.ue_web",
+                sources=["src/uel/ue_web.pyx"]
+            )
         ],
         build_dir=BUILD_DIR,
         nthreads=THREADS
