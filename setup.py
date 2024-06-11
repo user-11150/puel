@@ -95,10 +95,6 @@ def get_extensions():
     extensions.extend(cythonize(
         [
             Extension(
-                "uel.ue_web",
-                sources=["src/uel/ue_web.pyx"]
-            ),
-            Extension(
                 "uel.core.runner.Stack",
                 sources=["src/uel/core/runner/Stack.pyx"]
             ),
@@ -109,6 +105,10 @@ def get_extensions():
             Extension(
                 "uel.ueargparse",
                 sources=["src/uel/ueargparse.pyx"]
+            ),
+            Extension(
+                "uel.ue_web.ueweb",
+                sources=["src/uel/ue_web/ueweb.pyx"]
             )
         ],
         build_dir=BUILD_DIR,
