@@ -1,7 +1,8 @@
-import os.path
 import atexit
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import HTTPServer
 from uel.colors import RED, RESET
+import os.path
+from http.server import BaseHTTPRequestHandler, HTTPServer
 from uel.Constants import DIRNAME
 
 dev = False
@@ -11,7 +12,6 @@ if dev:
     dirname = "./src/uel"
 
 static = os.path.join(dirname, "web")
-
 
 class Handler(BaseHTTPRequestHandler):
 
@@ -31,8 +31,7 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(data)
 
-
-def start(address: tuple[str, int]) -> None:
+cdef void _start(address: tuple[str, int]):
     ip, port = address
     print(
         f"Please open http://{ip if ip != '0.0.0.0' else '127.0.0.1'}:{port}/")
@@ -42,3 +41,6 @@ def start(address: tuple[str, int]) -> None:
     finally:
         print(f"{RED}The server is closed{RESET}")
         exit()
+
+def start(address) -> None:
+    _start(address)

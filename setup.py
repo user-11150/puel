@@ -95,20 +95,8 @@ def get_extensions():
     extensions.extend(cythonize(
         [
             Extension(
-                "uel.ue_web",
-                sources=["src/uel/ue_web.pyx"]
-            ),
-            Extension(
-                "uel.core.runner.Stack",
-                sources=["src/uel/core/runner/Stack.pyx"]
-            ),
-            Extension(
-                "uel.core.runner.Frame",
-                sources=["src/uel/core/runner/Frame.pyx"]
-            ),
-            Extension(
-                "uel.ueargparse",
-                sources=["src/uel/ueargparse.pyx"]
+                "uel.ue_web.ueweb",
+                sources=["src/uel/ue_web/ueweb.pyx"]
             )
         ],
         build_dir=BUILD_DIR,
@@ -117,7 +105,7 @@ def get_extensions():
     ))
     extensions.append(
         Extension(
-            "uel.bytecodefile._compress",
+            name="uel.bytecodefile._compress",
             sources=["src/uel/bytecodefile/_compress.cpp"],
             language="cpp",
             depends=[
@@ -125,6 +113,17 @@ def get_extensions():
             ],
             include_dirs=include,
             extra_compile_args=CUSTOM_CPP_BUILD_ARGS
+        ))
+    extensions.append(
+        Extension(
+            name="uel.brainfuck._brainfuck",
+            sources=["src/uel/brainfuck/_brainfuck.cpp"],
+            language="cpp",
+            depends=[
+                *include
+            ],
+            include_dirs=include,
+            extra_compile_args=CUSTOM_CPP_BUILD_ARGS + ["-g"],
         )
     )
     return extensions
@@ -150,7 +149,7 @@ metadata = dict(
     install_requires=["objprint"],
     entry_points={
         'console_scripts': [
-            'uel = uel.uel:main',
+            'uel = uel.cli:main',
         ]
     },
 )
