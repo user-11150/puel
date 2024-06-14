@@ -114,18 +114,7 @@ def get_extensions():
             include_dirs=include,
             extra_compile_args=CUSTOM_CPP_BUILD_ARGS
         ))
-    extensions.append(
-        Extension(
-            name="uel.brainfuck._brainfuck",
-            sources=["src/uel/brainfuck/_brainfuck.cpp"],
-            language="cpp",
-            depends=[
-                *include
-            ],
-            include_dirs=include,
-            extra_compile_args=CUSTOM_CPP_BUILD_ARGS + ["-g"],
-        )
-    )
+    
     return extensions
 
 
