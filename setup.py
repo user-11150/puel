@@ -67,7 +67,7 @@ def get_col():
 class UELParallelBuildExtension(build_ext):
     def initialize_options(self, *args, **kwargs):
         super().initialize_options(*args, **kwargs)
-        self.parallel = True
+        self.parallel = None
 
 def is_building():
     if len(sys.argv) < 2:
@@ -95,18 +95,6 @@ def get_extensions():
     extensions.extend(cythonize(
         [
             Extension(
-                "uel.core.runner.Stack",
-                sources=["src/uel/core/runner/Stack.pyx"]
-            ),
-            Extension(
-                "uel.core.runner.Frame",
-                sources=["src/uel/core/runner/Frame.pyx"]
-            ),
-            Extension(
-                "uel.ueargparse",
-                sources=["src/uel/ueargparse.pyx"]
-            ),
-            Extension(
                 "uel.ue_web.ueweb",
                 sources=["src/uel/ue_web/ueweb.pyx"]
             )
@@ -124,7 +112,7 @@ def get_extensions():
                 *include
             ],
             include_dirs=include,
-            extra_compile_args=CUSTOM_CPP_BUILD_ARGS
+            extra_compile_args=[*CUSTOM_CPP_BUILD_ARGS]
         )
     )
     return extensions
@@ -150,7 +138,7 @@ metadata = dict(
     install_requires=["objprint"],
     entry_points={
         'console_scripts': [
-            'uel = uel.uel:main',
+            'uel = uel.cli:main',
         ]
     },
 )

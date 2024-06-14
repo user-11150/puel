@@ -1,5 +1,4 @@
 import atexit
-from uel.ue_web._ue_web import Handler
 from http.server import HTTPServer
 from uel.colors import RED, RESET
 import os.path
