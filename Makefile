@@ -1,4 +1,4 @@
-.PHONY: refrensh dev build lint install clean report
+.PHONY: refrensh dev build lint install clean report test
 
 SOURCE=./src/uel
 python=python
@@ -28,3 +28,13 @@ clean:
 
 report:
 	$(python) report.py
+
+coverage:
+	coverage run -m unittest
+	coverage html
+	python -m http.server --directory htmlcov -b 127.0.0.1
+
+test:
+	$(python) -m unittest
+
+

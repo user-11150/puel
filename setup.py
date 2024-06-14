@@ -67,7 +67,7 @@ def get_col():
 class UELParallelBuildExtension(build_ext):
     def initialize_options(self, *args, **kwargs):
         super().initialize_options(*args, **kwargs)
-        self.parallel = None
+        self.parallel = True
 
 def is_building():
     if len(sys.argv) < 2:
@@ -105,14 +105,25 @@ def get_extensions():
     ))
     extensions.append(
         Extension(
-            "uel.bytecodefile._compress",
+            name="uel.bytecodefile._compress",
             sources=["src/uel/bytecodefile/_compress.cpp"],
             language="cpp",
             depends=[
                 *include
             ],
             include_dirs=include,
-            extra_compile_args=[*CUSTOM_CPP_BUILD_ARGS]
+            extra_compile_args=CUSTOM_CPP_BUILD_ARGS
+        ))
+    extensions.append(
+        Extension(
+            name="uel.brainfuck._brainfuck",
+            sources=["src/uel/brainfuck/_brainfuck.cpp"],
+            language="cpp",
+            depends=[
+                *include
+            ],
+            include_dirs=include,
+            extra_compile_args=CUSTOM_CPP_BUILD_ARGS + ["-g"],
         )
     )
     return extensions
