@@ -53,7 +53,7 @@ class UEArgParser:
     def rest(self) -> list[str]:
         return self.args[self.idx + 1:]
 
-    def parser(self) -> None:
+    def parser(self) -> None: # pragma: no cover
         if self.current in HELP:
             self.tsk = UEHelpTaskDesc(self.rest)
         elif self.current in VERSION:
@@ -169,9 +169,9 @@ class _Private:
 
 class _UERunTaskDesc(_Private):
 
-    def run_uel(self, fn: str, string: str) -> None:
+    def run_uel(self, fn: str, string: str, debug=DEBUG) -> None:
         ectx = ExecuteContext()
-        ectx.run_code_from_basic(fn, string, DEBUG)
+        ectx.run_code_from_basic(fn, string, debug)
 
 
 class UEBuildBytecodesTask(UETaskDesc):

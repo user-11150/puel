@@ -96,7 +96,7 @@ def get_extensions():
         [
             Extension(
                 "uel.ue_web.ueweb",
-                sources=["src/uel/ue_web/ueweb.pyx"]
+                sources=["src/uel/ue_web/ueweb.pyx"],
             )
         ],
         build_dir=BUILD_DIR,
