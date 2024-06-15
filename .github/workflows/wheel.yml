@@ -20,4 +20,4 @@ jobs:
       - name: Install dependency
         run: pip install build
       - name: Build wheel
-        python -m build
+        run: python -m build
