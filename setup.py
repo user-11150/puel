@@ -42,9 +42,14 @@ from setuptools.command.build import build
 from concurrent.futures import ThreadPoolExecutor
 
 from setuptools.dist import Distribution
+
 import os
 import time
 import sys
+import re
+
+with open("src/uel/version.py", "rt", encoding="utf8") as f:
+    version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
 
 
 def commandwrap(old):
@@ -125,6 +130,8 @@ kwargs = {
 
 metadata = dict(
     name="uel",
+    version=version,
+    author="XingHao. Li<3584434540@qq.com>",
     packages=find_namespace_packages("src"),
     package_dir={
         "": "src"
