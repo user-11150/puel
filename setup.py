@@ -46,6 +46,8 @@ from setuptools.dist import Distribution
 import os
 import sys
 import re
+import platform
+import warnings
 
 with open("src/uel/version.py", "rt", encoding="utf8") as f:
     version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
@@ -72,7 +74,13 @@ class UELParallelBuildExtension(build_ext):
     def initialize_options(self, *args, **kwargs):
         super().initialize_options(*args, **kwargs)
         self.parallel = True
-
+def check_environment():
+    if platform.python_implementation() != "CPython" \
+            or sys.version_info < (3, 7, 0):
+        if platform.python_implementation() != "CPython":
+            raise EnvironmentError("Python implementation must be CPython")
+        else:
+            raise EnvironmentError("Python version is too low")
 def is_building():
     if len(sys.argv) < 2:
         return True
@@ -118,7 +126,6 @@ def get_extensions():
             include_dirs=include,
             extra_compile_args=CUSTOM_CPP_BUILD_ARGS
         ))
-    
     return extensions
 
 
@@ -148,6 +155,8 @@ metadata = dict(
         ]
     },
 )
+
+check_environment()
 
 if is_building():
     metadata["ext_modules"] = get_extensions()
