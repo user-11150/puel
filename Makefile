@@ -1,4 +1,4 @@
-.PHONY: refrensh dev build lint install clean report test
+.PHONY: refrensh dev build lint install clean report test coverage dist
 
 SOURCE=./src/uel
 python=python
@@ -7,18 +7,21 @@ refrensh:
 	make clean
 	make install
 
-dev:
-	$(python) -m pip uninstall -y uel
-	make install
-
 build:
-	$(python) setup.py build
+	$(python) -m build
+
+dist:
+	$(python) -m setup sdist --format=tar
+	$(python) -m setup sdist --format=zip
+	$(python) -m setup bdist_wheel
+	$(python) -m setup bdist_egg
+	
 
 lint:
 	mypy --config-file=mypy.ini
 
 install:
-	$(python) setup.py install
+	$(python) -m pip install .
 
 clean:
 	rm -rf build

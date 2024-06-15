@@ -88,7 +88,7 @@ def is_building():
     build_commands = ['build', 'build_py', 'build_ext', 'build_clib'
                       'build_scripts', 'install', 'install_lib',
                       'install_headers', 'install_scripts', 'install_data',
-                      'sdist', 'bdist', 'bdist_dumb', 'bdist_rpm', "bdist_wheel"
+                      'sdist', 'bdist', 'bdist_dumb', 'bdist_rpm', "bdist_wheel",
                        'check', 'bdist_egg', 'develop']
     return any(bc in sys.argv[1:] for bc in build_commands)
 
