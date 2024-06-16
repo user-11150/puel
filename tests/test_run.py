@@ -1,20 +1,10 @@
-from uel.ueargparse import _UERunTaskDesc
-
-import unittest
-import unittest.mock
 import contextlib
 import math
-import io
-import os
+import unittest
 
-class TestRun(unittest.TestCase):
-    def do_uel_test(self, code, rr, fn="<test-case>"):
-        stdout = io.StringIO()
-        
-        with contextlib.redirect_stdout(stdout):
-            _UERunTaskDesc.run_uel(None, fn, code, False)
-        self.assertEqual(rr, stdout.getvalue())
-    
+from uel.testing.mixins import UELRunMixin
+
+class TestRun(unittest.TestCase, UELRunMixin):
     def test_run(self):
         self.do_uel_test("put 5", "5")
 
@@ -48,5 +38,8 @@ call a
         self.do_uel_test("""a = 2\nb=3\nput a + b""", str(5))
 
     def test_import2(self):
-        self.do_uel_test("""import "data/a.uel"
+        self.do_uel_test("""import "data/test_module/a.uel"
 """, "1", __file__)
+
+    def test_if_statement(self):
+        self.do_uel_test("if 1 put 5 end", 5)

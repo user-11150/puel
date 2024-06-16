@@ -1,4 +1,4 @@
-.PHONY: refrensh dev build lint install clean report test coverage dist
+.PHONY: refrensh lint install clean report test coverage wheel
 
 SOURCE=./src/uel
 python=python
@@ -7,10 +7,7 @@ refrensh:
 	make clean
 	make install
 
-build:
-	$(python) -m build
-
-dist:
+wheel:
 	$(python) -m setup bdist_wheel
 
 lint:
@@ -35,5 +32,3 @@ coverage:
 
 test:
 	$(python) -m unittest
-
-
