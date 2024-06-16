@@ -52,7 +52,6 @@ import warnings
 with open("src/uel/version.py", "rt", encoding="utf8") as f:
     version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
 
-
 def commandwrap(old):
     def new(self, command):
         print(f" {str(command)} ".center(get_col(), "*"))
@@ -120,9 +119,7 @@ def get_extensions():
             name="uel.bytecodefile._compress",
             sources=["src/uel/bytecodefile/_compress.cpp"],
             language="cpp",
-            depends=[
-                *include
-            ],
+            depends=include,
             include_dirs=include,
             extra_compile_args=CUSTOM_CPP_BUILD_ARGS
         ))

@@ -1,4 +1,4 @@
-.PHONY: refrensh lint install clean report test coverage wheel
+.PHONY: refrensh lint install clean report test coverage build
 
 SOURCE=./src/uel
 python=python
@@ -7,11 +7,11 @@ refrensh:
 	make clean
 	make install
 
-wheel:
-	$(python) -m setup bdist_wheel
+build:
+	python -m build
 
 lint:
-	mypy --config-file=mypy.ini
+	mypy
 
 install:
 	$(python) -m pip install .

@@ -1,0 +1,6 @@
+include MANIFEST.in
+include README.py
+include setup.py
+include LICENSE
+
+recursive-include src *.c *.cpp *.h *.hpp *.pyx
