@@ -11,11 +11,7 @@ build:
 	$(python) -m build
 
 dist:
-	$(python) -m setup sdist --format=tar
-	$(python) -m setup sdist --format=zip
 	$(python) -m setup bdist_wheel
-	$(python) -m setup bdist_egg
-	
 
 lint:
 	mypy --config-file=mypy.ini
