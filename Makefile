@@ -1,4 +1,4 @@
-.PHONY: refrensh lint install clean report test coverage build
+.PHONY: refrensh lint install clean report test coverage build upload
 
 SOURCE=./src/uel
 python=python
@@ -8,13 +8,17 @@ refrensh:
 	make install
 
 build:
-	python -m build
+	python -m setup sdist
+
+upload:
+	twine upload dist/*
 
 lint:
 	mypy
 
 install:
-	$(python) -m pip install .
+	$(pyyhon) -m pip uninstall uel -y
+	$(python) -m setup install
 
 clean:
 	rm -rf build
