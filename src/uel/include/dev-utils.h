@@ -1,5 +1,5 @@
-#include<core.h>
-
 #ifdef DEBUG
-extern void PRINT(PyObject *object)
+#include<Python.h>
+
+extern void PRINT(PyObject *object);
 #endif

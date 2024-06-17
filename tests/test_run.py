@@ -2,7 +2,7 @@ import contextlib
 import math
 import unittest
 
-from uel.testing.mixins import UELRunMixin
+from uel.omit.testing.mixins import UELRunMixin
 
 class TestRun(unittest.TestCase, UELRunMixin):
     def test_run(self):

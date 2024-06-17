@@ -1,5 +1,7 @@
 #define PY_SSIZE_T_CLEAN
 
+#define DEBUG
+
 #include <core.h>
 #include <dev-utils.h>
 
