@@ -97,9 +97,6 @@ def get_extensions():
 
     BUILD_DIR = "build/uel"
 
-    # The cpp extensions compile args, don't contains Cython extension
-    CUSTOM_CPP_BUILD_ARGS = ["--std=gnu++17"]
-
     # The c extensions compile args, don't contains Cython extension
     CUSTOM_C_BUILD_ARGS = ["--std=gnu11"]
     include = ["src/uel/include/"]
@@ -117,11 +114,14 @@ def get_extensions():
     extensions.append(
         Extension(
             name="uel.bytecodefile._compress",
-            sources=["src/uel/bytecodefile/_compress.cpp"],
-            language="cpp",
+            sources=[
+                "src/uel/bytecodefile/_compress.c",
+                "src/uel/puel/dev-utils.c"
+            ],
+            language="c",
             depends=include,
             include_dirs=include,
-            extra_compile_args=CUSTOM_CPP_BUILD_ARGS
+            extra_compile_args=CUSTOM_C_BUILD_ARGS
         ))
     return extensions
 

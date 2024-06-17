@@ -3,33 +3,7 @@
 #include <core.h>
 #include <dev-utils.h>
 
-class Compressor
-{
-  public:
-    Compressor(PyObject *bytes)
-    {
-        this->gzipmodule = PyImport_ImportModule("gzip");
-        this->bytes = bytes;
-    };
-    inline PyObject *compress()
-    {
-        return PyObject_CallOneArg(
-            PyObject_GetAttrString(
-                this->gzipmodule, "compress"),
-            this->bytes);
-    };
-    inline PyObject *decompress()
-    {
-        return PyObject_CallOneArg(
-            PyObject_GetAttrString(
-                this->gzipmodule, "decompress"),
-            this->bytes);
-    };
-
-  private:
-    PyObject *bytes;
-    PyObject *gzipmodule;
-};
+PyObject* gzipmodule = NULL;
 
 PyObject *
 _compress(PyObject *self, PyObject *args)
@@ -40,9 +14,11 @@ _compress(PyObject *self, PyObject *args)
     {
         return NULL;
     }
-
-    Compressor *compressor = new Compressor(raw_text);
-    return compressor->compress();
+    
+    return PyObject_CallOneArg(
+        PyObject_GetAttrString(gzipmodule, "compress"),
+        raw_text
+    );
 }
 
 PyObject *
@@ -54,8 +30,11 @@ _decompress(PyObject *self, PyObject *args)
     {
         return NULL;
     }
-    Compressor *compressor = new Compressor(compressd);
-    return compressor->decompress();
+    
+    return PyObject_CallOneArg(
+       PyObject_GetAttrString(gzipmodule, "decompress"),
+       compressd
+    );
 }
 
 static PyMethodDef
@@ -78,5 +57,8 @@ PyMODINIT_FUNC
 PyInit__compress(void)
 {
     PyObject *module = PyModule_Create(&_compressmodule);
+    
+    gzipmodule = PyImport_ImportModule("gzip");
+    
     return module;
 }
