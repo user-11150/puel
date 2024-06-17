@@ -27,7 +27,7 @@ clean:
 	$(python) -m pip uninstall -y uel
 
 report:
-	$(python) report.py
+	$(python) tools/report.py
 
 coverage:
 	coverage run -m unittest
