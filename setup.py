@@ -109,6 +109,17 @@ def get_extensions():
                 "src/uel/puel/dev-utils.c"
             ],
         ))
+    extensions.append(
+        Extension(
+            name="uel.impl.sequence",
+            sources=[
+                "src/uel/impl/sequence/sequence.c"
+            ],
+            depends=[
+                "src/uel/impl/sequence/sequence.h"
+            ]
+        )
+    )
     return extensions
 
 
