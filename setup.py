@@ -7,29 +7,6 @@ Let's compile UEL.
 
 # pylint:disable=W0621
 
-try:
-    import Cython as _
-except ImportError:
-    import pip
-
-    while True:
-        print("You don't have cython installed,"
-              "so you can't build UEL."
-              "Do you want to install cython?")
-        answer = input("(yes: install cython / no: no install cython)")
-        if answer == "yes":
-            print("Let's install cython!")
-            pip.main(["install", "Cython"])
-            break
-        elif answer == "no":
-            print("Quit")
-            exit()
-        else:
-            print("I don't understand what you mean. Please enter your 'yes' or' no '.")
-
-
-from Cython.Build import cythonize
-
 from os import cpu_count
 
 from setuptools import setup
@@ -37,9 +14,6 @@ from setuptools import Extension
 from setuptools import find_namespace_packages
 
 from setuptools.command.build_ext import build_ext
-from setuptools.command.build import build
-
-from concurrent.futures import ThreadPoolExecutor
 
 from setuptools.dist import Distribution
 
@@ -73,6 +47,38 @@ class UELParallelBuildExtension(build_ext):
     def initialize_options(self, *args, **kwargs):
         super().initialize_options(*args, **kwargs)
         self.parallel = True
+    
+    def finalize_options(self):
+        super().finalize_options()
+        
+        self.global_include_c_sources = []
+        self.global_include_c_sources_dirs = []
+        
+        
+        self.global_include_dirs = ["src/uel/include/"]
+        
+        for include_dir in self.global_include_c_sources_dirs:
+            for root, dirs, files in os.walk(include_dir):
+                for file in files:
+                    if not file.endswith(".c"):
+                        continue
+                    self.global_include_c_sources.append(os.path.join(root, file))
+
+    def build_extension(self, extension: Extension):
+        extra_compile_args = ["--std=gnu11"]
+        
+        extension.sources.extend(self.global_include_c_sources)
+        extension.depends.extend(self.global_include_c_sources)
+        
+        extension.depends.extend(self.global_include_dirs)
+        
+        extension.extra_compile_args.extend(extra_compile_args)
+        extension.include_dirs.extend(self.global_include_dirs)
+        
+        extension.language = "c"
+        
+        super().build_extension(extension)
+
 def check_environment():
     if platform.python_implementation() != "CPython" \
             or sys.version_info < (3, 7, 0):
@@ -95,22 +101,6 @@ def is_building():
 def get_extensions():
     extensions = []
 
-    BUILD_DIR = "build/uel"
-
-    # The c extensions compile args, don't contains Cython extension
-    CUSTOM_C_BUILD_ARGS = ["--std=gnu11"]
-    include = ["src/uel/include/"]
-    extensions.extend(cythonize(
-        [
-            Extension(
-                "uel.ue_web.ueweb",
-                sources=["src/uel/ue_web/ueweb.pyx"],
-            )
-        ],
-        build_dir=BUILD_DIR,
-        nthreads=THREADS,
-        language_level="3str"
-    ))
     extensions.append(
         Extension(
             name="uel.bytecodefile._compress",
@@ -118,10 +108,6 @@ def get_extensions():
                 "src/uel/bytecodefile/_compress.c",
                 "src/uel/puel/dev-utils.c"
             ],
-            language="c",
-            depends=include,
-            include_dirs=include,
-            extra_compile_args=CUSTOM_C_BUILD_ARGS
         ))
     return extensions
 

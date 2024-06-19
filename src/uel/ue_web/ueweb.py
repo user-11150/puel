@@ -31,7 +31,7 @@ class Handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(data)
 
-cdef void _start(address: tuple[str, int]):
+def start(address: tuple[str, int]):
     ip, port = address
     print(
         f"Please open http://{ip if ip != '0.0.0.0' else '127.0.0.1'}:{port}/")
@@ -39,8 +39,5 @@ cdef void _start(address: tuple[str, int]):
     try:
         server.serve_forever()
     finally:
-        print(f"{RED}The server is closed{RESET}")
+        print(f"{RED}The server was closed{RESET}")
         exit()
-
-def start(address) -> None:
-    _start(address)
