@@ -1,4 +1,4 @@
-from uel.core.builder.bytecode.BytecodeInfo import (BT_LOAD_CONST,
+from uel.builder.bytecode.bytecodeinfo import (BT_LOAD_CONST,
                                                     BT_STORE_NAME, BytecodeInfo)
 
 from types import FunctionType

@@ -1,6 +1,6 @@
 from sys import argv
 
-from uel.core.Main import Main
+from uel.main import Main
 
 
 def main() -> None:

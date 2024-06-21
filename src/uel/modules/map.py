@@ -2,8 +2,8 @@ from functools import wraps
 from types import FunctionType, ModuleType
 from typing import Any, Generic, TypeVar
 
-from uel.core.object.object_parse import parse
-from uel.core.object.UENumberObject import UENumberObject
+from uel.object.object_parse import parse
+from uel.object.uenumberobject import UENumberObject
 from uel.tools.attr import AttributeOnly
 
 T = TypeVar("T")

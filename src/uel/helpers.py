@@ -1,13 +1,13 @@
 import builtins
 from typing import *
 
-from uel.core.builder.ast.ImportNode import ImportNode
-from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
-from uel.core.errors.runtime.throw import throw
-from uel.core.errors.runtime.UELRuntimeError import UELRuntimeError
-from uel.core.object.UEObject import UEObject
-from uel.core.runner.Frame import Frame
-from uel.core.runner.importlib import module_import
+from uel.builder.ast.importnode import ImportNode
+from uel.builder.bytecode.bytecodeinfo import BytecodeInfo
+from uel.errors.runtime.throw import throw
+from uel.errors.runtime.uelruntimeerror import UELRuntimeError
+from uel.object.ueobject import UEObject
+from uel.runner.frame import Frame
+from uel.runner.importlib import module_import
 
 
 def get_variable_from_frame(name: object, frame: Frame) -> UEObject:

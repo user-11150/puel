@@ -1,5 +1,5 @@
 import os
-from uel.Constants import DIRNAME
+from uel.constants import DIRNAME
 
 class Builtins:
     @staticmethod

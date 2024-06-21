@@ -1,7 +1,7 @@
 from importlib import import_module
 from types import ModuleType
 
-from uel.core.builder.bytecode.BytecodeInfo import BytecodeInfo
+from uel.builder.bytecode.bytecodeinfo import BytecodeInfo
 
 
 class UELModuleNewError(Exception):

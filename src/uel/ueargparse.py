@@ -8,13 +8,13 @@ import sys
 import importlib
 
 from sys import path
-from uel.core.runner.ExecuteContext import ExecuteContext
-from uel.core.runner.importlib import _read_string_from_file
+from uel.runner.executecontext import ExecuteContext
+from uel.runner.importlib import _read_string_from_file
 from uel.ue_web import start as _ue_web_start
 
 from uel.colors import GREEN, RED, RESET, YELLOW
-from uel.Constants import DEBUG
-from uel.pyexceptions.CustomError import CustomError
+from uel.constants import DEBUG
+from uel.pyexceptions.customerror import CustomError
 
 from uel.bytecodefile.compress import compress, decompress
 

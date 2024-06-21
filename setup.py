@@ -6,6 +6,13 @@ Let's compile UEL.
 """
 
 # pylint:disable=W0621
+try:
+    import Cython as _
+except ImportError:
+    import pip
+    pip.main(["install", "Cython"])
+
+from Cython.Build import cythonize
 
 from os import cpu_count
 
@@ -47,37 +54,6 @@ class UELParallelBuildExtension(build_ext):
     def initialize_options(self, *args, **kwargs):
         super().initialize_options(*args, **kwargs)
         self.parallel = True
-    
-    def finalize_options(self):
-        super().finalize_options()
-        
-        self.global_include_c_sources = []
-        self.global_include_c_sources_dirs = ["src/uel/puel"]
-        
-        
-        self.global_include_dirs = ["src/uel/include/"]
-        
-        for include_dir in self.global_include_c_sources_dirs:
-            for root, dirs, files in os.walk(include_dir):
-                for file in files:
-                    if not file.endswith(".c"):
-                        continue
-                    self.global_include_c_sources.append(os.path.join(root, file))
-
-    def build_extension(self, extension: Extension):
-        extra_compile_args = ["--std=gnu11"]
-        
-        extension.sources.extend(self.global_include_c_sources)
-        extension.depends.extend(self.global_include_c_sources)
-        
-        extension.depends.extend(self.global_include_dirs)
-        
-        extension.extra_compile_args.extend(extra_compile_args)
-        extension.include_dirs.extend(self.global_include_dirs)
-        
-        extension.language = "c"
-        
-        super().build_extension(extension)
 
 def check_environment():
     if platform.python_implementation() != "CPython" \
@@ -100,23 +76,38 @@ def is_building():
 
 def get_extensions():
     extensions = []
+    
+    BUILD_DIR = "build/uel"
+    INCLUDE = ["src/uel/include/"]
+    
+    extensions.extend(cythonize(
+        [
+            Extension(
+                name="uel.ue_web.ueweb",
+                sources=["src/uel/ue_web/ueweb.pyx"]
+            )
+        ],
+        build_dir=BUILD_DIR
+    ))
 
     extensions.append(
         Extension(
             name="uel.bytecodefile._compress",
             sources=[
                 "src/uel/bytecodefile/_compress.c",
+                "src/uel/puel/dev-utils.c"
             ],
+            include_dirs=INCLUDE
         ))
     extensions.append(
         Extension(
             name="uel.impl.sequence",
             sources=[
-                "src/uel/impl/sequence/sequence.c"
+                "src/uel/impl/sequence/sequence.c",
+                "src/uel/puel/dev-utils.c"
             ],
-            depends=[
-                "src/uel/impl/sequence/sequence.h",
-            ]
+            include_dirs=INCLUDE,
+            depends=["src/uel/impl/sequence/sequence.h"]
         )
     )
     return extensions

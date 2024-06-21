@@ -1,7 +1,7 @@
 import math
 
-from uel.core.object.object_parse import parse
-from uel.core.object.UENumberObject import UENumberObject
+from uel.object.object_parse import parse
+from uel.object.uenumberobject import UENumberObject
 from uel.libary.helpers import make_exports
 
 PI = UENumberObject(math.pi)
