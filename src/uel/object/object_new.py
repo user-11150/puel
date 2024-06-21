@@ -18,8 +18,8 @@ def _CHECKOUT_TYP_TYPE(typ: str) -> None:
 
 
 def IS_CAN_MAKE_OBJECT(typ: str) -> bool:
-    if (typ != "string" and typ != "number" and typ != "boolean" and
-            typ != "function"):
+    if (typ != "string" and typ != "number" and typ != "boolean"
+            and typ != "function"):
         return False
     return True
 

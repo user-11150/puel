@@ -20,10 +20,10 @@ from uel.bytecodefile.compress import compress, decompress
 
 HELP = ("help", "--help")
 VERSION = ("version", "-V")
-RUN = ("run",)
-REPL = ("repl",)
-WEB = ("web",)
-BUILD_BYTECODE = ("binary",)
+RUN = ("run", )
+REPL = ("repl", )
+WEB = ("web", )
+BUILD_BYTECODE = ("binary", )
 RUN_BYTECODE = ("run-binary", "run_binary")
 
 try:
@@ -53,7 +53,7 @@ class UEArgParser:
     def rest(self) -> list[str]:
         return self.args[self.idx + 1:]
 
-    def parser(self) -> None: # pragma: no cover
+    def parser(self) -> None:  # pragma: no cover
         if self.current in HELP:
             self.tsk = UEHelpTaskDesc(self.rest)
         elif self.current in VERSION:
@@ -83,19 +83,19 @@ class UETaskDesc:
 class UEHelpTaskDesc(UETaskDesc):
     ONLY_COMMAND_HELP = {
         RUN:
-            "Run UEL code",
+        "Run UEL code",
         HELP:
-            "Show help. use of 'python -m uel help' or show help of given command eg: 'python -m help run'",
+        "Show help. use of 'python -m uel help' or show help of given command eg: 'python -m help run'",
         VERSION:
-            "Show python version",
+        "Show python version",
         REPL:
-            "Looks like python REPL",
+        "Looks like python REPL",
         WEB:
-            "The web for UEL, usage: 'python -m uel [<ip> [<port>]]'",
+        "The web for UEL, usage: 'python -m uel [<ip> [<port>]]'",
         BUILD_BYTECODE:
-            "Build the bytecodes, (WARN: If you used Python extension, nerver use this)",
+        "Build the bytecodes, (WARN: If you used Python extension, nerver use this)",
         RUN_BYTECODE:
-            "Run the bytecodes, (WARN: If you used Python extension, nerver use this)"
+        "Run the bytecodes, (WARN: If you used Python extension, nerver use this)"
     }
     EMPTY: list[str] = []
     s = ""
@@ -197,7 +197,8 @@ class UEBuildBytecodesTask(UETaskDesc):
                 decompress(compressd)
             except Exception as e:
                 raise BuildFail(
-                    "Build Fail: (Maybe you used Python extension UEL.)") from e
+                    "Build Fail: (Maybe you used Python extension UEL.)"
+                ) from e
             fp.write(compressd)
 
 

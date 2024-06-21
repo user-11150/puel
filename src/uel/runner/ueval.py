@@ -116,8 +116,8 @@ class Ueval:
             elif hasattr(right_val, "tp_equal"):
                 self.stack_push(right_val.tp_equal(left_value).tp_bytecode())
             else:
-                result = UEBooleanObject(
-                    str(self.equal(left_value, right_val)))
+                result = UEBooleanObject(str(self.equal(left_value,
+                                                        right_val)))
                 self.stack_push(result.tp_bytecode())
             self.next()
 
@@ -183,8 +183,8 @@ class Ueval:
     def call_function(self) -> None:
 
         def getFunctionArgumentLength(
-                fn: Union[UEFunctionObject, UECallableObject,
-                          FunctionType]) -> int:
+            fn: Union[UEFunctionObject, UECallableObject,
+                      FunctionType]) -> int:
             if type(fn) is FunctionType:
                 return fn.__code__.co_argcount - 1
             elif issubclass(type(fn), UECallableObject):

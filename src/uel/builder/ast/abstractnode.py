@@ -15,7 +15,7 @@ class AbstractNode:
     """
 
     def __init__(self) -> None:
-        raise NotImplementedError # pragma: no cover
+        raise NotImplementedError  # pragma: no cover
 
     def tp(self, typ: type[T]) -> T:
         return self  # type: ignore

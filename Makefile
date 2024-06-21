@@ -16,6 +16,9 @@ upload:
 lint:
 	mypy
 
+format:
+	yapf -ir ./src
+
 install:
 	$(python) -m pip uninstall uel -y
 	$(python) -m setup install

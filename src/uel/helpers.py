@@ -14,14 +14,16 @@ def get_variable_from_frame(name: object, frame: Frame) -> UEObject:
     current = frame
     while True:
         if current is None:
-            throw(UELRuntimeError,"Name {name} is not defined") # pragma: no cover
-            raise SystemExit # pragma: no cover
+            throw(UELRuntimeError,
+                  "Name {name} is not defined")  # pragma: no cover
+            raise SystemExit  # pragma: no cover
         try:
             return current.variables[name]  # type:ignore
         except KeyError:
             if current.prev_frame is None:
-                throw(UELRuntimeError,"Name {name} is not defined") # pragma: no cover
-                raise SystemExit # pragma: no cover
+                throw(UELRuntimeError,
+                      "Name {name} is not defined")  # pragma: no cover
+                raise SystemExit  # pragma: no cover
             current = current.prev_frame
 
 

@@ -19,8 +19,8 @@ def _read_string_from_file(pathname: str, encoding: str | None = None) -> str:
         throw(UELRuntimeError(emsg))
         return ""
     try:
-        with builtins.open(pathname, mode="rt", encoding=encoding or
-                           ENCODING) as f:
+        with builtins.open(pathname, mode="rt", encoding=encoding
+                           or ENCODING) as f:
             return f.read()
     except PermissionError as e:
         emsg = emsgf % e.__str__()

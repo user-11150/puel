@@ -2,9 +2,11 @@ from string import digits as DIGITS
 from typing import List, Optional
 
 from uel.builder.position import Position
-from uel.builder.token.tokenconstants import (
-    TT_ADD, TT_COMMA, TT_DIV, TT_EOF, TT_EQUAL, TT_FLOAT, TT_IDENTIFER, TT_INT,
-    TT_KEYWORD, TT_KEYWORDS, TT_MINUS, TT_MUL, TT_SEMI, TT_STRING)
+from uel.builder.token.tokenconstants import (TT_ADD, TT_COMMA, TT_DIV, TT_EOF,
+                                              TT_EQUAL, TT_FLOAT, TT_IDENTIFER,
+                                              TT_INT, TT_KEYWORD, TT_KEYWORDS,
+                                              TT_MINUS, TT_MUL, TT_SEMI,
+                                              TT_STRING)
 from uel.builder.token.tokennode import TokenNode as Token
 from uel.builder.token.tools.identifier import (
     is_identifier_center_char_or_end_char, is_start)
@@ -142,7 +144,8 @@ class Lexer:
             raise Nerver
         string: str = self.current_char
         while self.advance():
-            if (self.current_char not in DIGITS) and (self.current_char != "."):
+            if (self.current_char not in DIGITS) and (self.current_char
+                                                      != "."):
                 break
             if self.current_char is None:
                 raise SystemExit
