@@ -17,7 +17,7 @@ lint:
 	mypy
 
 install:
-	$(pyyhon) -m pip uninstall uel -y
+	$(python) -m pip uninstall uel -y
 	$(python) -m setup install
 
 clean:

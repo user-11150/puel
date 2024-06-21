@@ -52,7 +52,7 @@ class UELParallelBuildExtension(build_ext):
         super().finalize_options()
         
         self.global_include_c_sources = []
-        self.global_include_c_sources_dirs = []
+        self.global_include_c_sources_dirs = ["src/uel/puel"]
         
         
         self.global_include_dirs = ["src/uel/include/"]
@@ -106,7 +106,6 @@ def get_extensions():
             name="uel.bytecodefile._compress",
             sources=[
                 "src/uel/bytecodefile/_compress.c",
-                "src/uel/puel/dev-utils.c"
             ],
         ))
     extensions.append(
@@ -116,7 +115,7 @@ def get_extensions():
                 "src/uel/impl/sequence/sequence.c"
             ],
             depends=[
-                "src/uel/impl/sequence/sequence.h"
+                "src/uel/impl/sequence/sequence.h",
             ]
         )
     )
