@@ -80,6 +80,9 @@ def get_extensions():
     BUILD_DIR = "build/uel"
     INCLUDE = ["src/uel/include/"]
     
+    C_COMPILE_ARGS = ["--std=gnu11"]
+    CPP_COMPILE_ARGS = ["--std=gnu++11"]
+    
     extensions.extend(cythonize(
         [
             Extension(
@@ -97,7 +100,9 @@ def get_extensions():
                 "src/uel/bytecodefile/_compress.c",
                 "src/uel/puel/dev-utils.c"
             ],
-            include_dirs=INCLUDE
+            include_dirs=INCLUDE,
+            langauge="c",
+            extra_compile_args=C_COMPILE_ARGS
         ))
     extensions.append(
         Extension(
@@ -107,6 +112,8 @@ def get_extensions():
                 "src/uel/puel/dev-utils.c"
             ],
             include_dirs=INCLUDE,
+            langauge="c",
+            extra_compile_args=C_COMPILE_ARGS,
             depends=["src/uel/impl/sequence/sequence.h"]
         )
     )
