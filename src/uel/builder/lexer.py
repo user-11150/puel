@@ -6,7 +6,7 @@ from uel.builder.token.tokenconstants import (TT_ADD, TT_COMMA, TT_DIV, TT_EOF,
                                               TT_EQUAL, TT_FLOAT, TT_IDENTIFER,
                                               TT_INT, TT_KEYWORD, TT_KEYWORDS,
                                               TT_MINUS, TT_MUL, TT_SEMI,
-                                              TT_STRING)
+                                              TT_STRING, TT_RPAR, TT_LPAR)
 from uel.builder.token.tokennode import TokenNode as Token
 from uel.builder.token.tools.identifier import (
     is_identifier_center_char_or_end_char, is_start)
@@ -59,7 +59,8 @@ class Lexer:
                 continue
 
             # 空白
-            elif self.current_char == " " or self.current_char == "\n":
+            elif (self.current_char == " " or self.current_char == "\n"
+                  or self.current_char == "\t"):
                 self.advance()
                 continue
 
@@ -96,13 +97,26 @@ class Lexer:
             elif self.current_char == ";":
                 tokens.append(Token(TT_SEMI, pos=self.pos.copy()))
                 self.advance()
+                continue
             elif self.current_char == ",":
                 tokens.append(Token(TT_COMMA, pos=self.pos.copy()))
                 self.advance()
+                continue
 
             elif is_start(self.current_char):
                 tokens.append(self.make_identifier())
                 continue
+
+            # 序列
+            elif self.current_char == "(":
+                tokens.append(Token(TT_LPAR, pos=self.pos.copy()))
+                self.advance()
+                continue
+            elif self.current_char == ")":
+                tokens.append(Token(TT_RPAR, pos=self.pos.copy()))
+                self.advance()
+                continue
+
             else:
                 ThrowException.throw(
                     UnknownSyntaxError('Unknown syntax', self.pos))

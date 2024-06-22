@@ -28,7 +28,7 @@ from uel.builder.token.tokenconstants import (
     TT_ADD, TT_CALL, TT_COMMA, TT_DIV, TT_ELSE, TT_END, TT_EOF, TT_EQUAL,
     TT_FLOAT, TT_FUNCTION, TT_IDENTIFER, TT_IF, TT_IMPORT, TT_INT, TT_IS,
     TT_KEYWORD, TT_KEYWORDS, TT_MINUS, TT_MUL, TT_OP, TT_PUSH, TT_PUT,
-    TT_REPEAT, TT_RETURN, TT_SEMI, TT_STRING, TT_TYPES)
+    TT_REPEAT, TT_RETURN, TT_SEMI, TT_STRING, TT_LPAR, TT_RPAR)
 from uel.builder.token.tokennode import TokenNode
 from uel.errors.raiseerror import RaiseError
 from uel.errors.throwexception import ThrowException
@@ -114,6 +114,8 @@ class Parser:
             return Constant(val, typ)
 
         left_token = self.current_token
+        if left_token.token_type == TT_LPAR:
+            return self.validate_sequence_node(left_token)
         if left_token is None or left_token.token_type == TT_EOF:
             if left_token is None:
                 raise Nerver
@@ -127,9 +129,11 @@ class Parser:
             container.val = left_val
             self.rollback()
             return container
+        
         self.advance()
         right_val = self.validate_expr().val
         left_val = wrap_single(left_token)
+        
 
         ast_type: Any
         if op.token_type == TT_ADD:
@@ -215,6 +219,25 @@ class Parser:
             RaiseError(UELSyntaxError, "SyntaxError", self.current_token.pos)
         return SequenceNode(sequence)
 
+    def validate_sequence_node(self, last_token) -> SequenceNode:
+        if self.current_token is None:
+            RaiseError(UELSyntaxError, "SyntaxError: sequence need a LPAR, but get a EOF", last_token.pos)
+        sequence = []
+        self.advance()
+        try:
+            while True:
+                if self.current_token.token_type == TT_RPAR:
+                    break
+                sequence.append(self.validate_expr())
+                self.advance()
+                if self.current_token.token_type == TT_COMMA:
+                    self.advance()
+                    continue
+        except Exception as e:
+            raise e
+            RaiseError(UELSyntaxError, "SyntaxError", self.current_token.pos)
+        return SequenceNode(sequence)
+
     def validate_function(self) -> FunctionNode:
         last_token = self.current_token
         assert last_token is not None and last_token.pos is not None
@@ -296,9 +319,6 @@ class Parser:
         return self.validate_expr()
 
     def stmts(self, push_target: ContainerNode, eof_type: str = TT_EOF) -> Any:
-        if eof_type not in TT_TYPES:
-            raise TypeError(
-                f'Cannot parse {eof_type}: This is developer error')
         # while self.current_token.token_type != TT_EOF and self.current_token is not None:
         while self.current_token is not None and self.current_token.token_type != TT_EOF:
             if self.current_token is None:

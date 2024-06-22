@@ -21,6 +21,7 @@ from uel.builder.ast.putnode import PutNode
 from uel.builder.ast.repeatnode import RepeatNode
 from uel.builder.ast.returnnode import ReturnNode
 from uel.builder.ast.variablenode import VariableNode
+from uel.builder.ast.sequencenode import SequenceNode
 from uel.builder.bytecode import bytecodeinfo as bytecode
 from uel.builder.bytecode.bytecodeinfo import BT, BytecodeInfo
 from uel.errors.raiseerror import RaiseError
@@ -145,8 +146,16 @@ class UELBytecodeCompiler:
                 child = child.tp(ImportNode)
                 from uel.helpers import u_module_def
                 u_module_def(self, child)
+            elif type_ is SequenceNode:
+                self.sequence(child)
             else:
                 raise CustomError("Developer not completed")
+
+    def sequence(self, child: SequenceNode) -> None:
+        self.bytecode(bytecode.BT_MAKE_SEQUENCE)
+        for val in child.values:
+            self.expr(val)
+            self.bytecode(bytecode.BT_SEQUENCE_APPEND)
 
     def expr(self, node: t.Any) -> int:
         """
@@ -178,6 +187,9 @@ class UELBytecodeCompiler:
             elif type(nod) in (AddNode, MinusNode, MultNode, DivNode, IsEqual):
                 self.calculator(nod)
                 raise ExitAndReturn
+            elif type(nod) is SequenceNode:
+                self.sequence(nod)
+                counter += 1
 
             else:
                 raise NotSupportType
@@ -232,15 +244,15 @@ class UELBytecodeCompiler:
                 _symbol(node)
                 yield from g
 
-        if type(node) is Constant:
+        if type(node) is Constant or type(node) is SequenceNode:
             self.expr(node)
             return
-        elif type(node) is ExpressionNode and type(node.val) is Constant:
+        elif type(node) is ExpressionNode and (type(node.val) is Constant or type(node.val) is SequenceNode):
             self.expr(node.val)
             return
         elif type(node) is BinOpNode and runtime_type_check(
-                node.left, Constant) and runtime_type_check(
-                    node.right, Constant):
+                node.left, Constant, SequenceNode) and runtime_type_check(
+                    node.right, Constant, SequenceNode):
             self.calculator(node.left)
             self.calculator(node.right)
             _symbol(node)

@@ -16,6 +16,7 @@ from uel.object.object_parse import parse
 from uel.object.uebooleanobject import UEBooleanObject
 from uel.object.uecallableobject import UECallableObject
 from uel.object.uefunctionobject import UEFunctionObject
+from uel.object.uesequenceobject import UESequenceObject
 from uel.object.ueobject import UEObject
 from uel.runner.frame import Frame
 from uel.runner.stack import Stack
@@ -175,6 +176,20 @@ class Ueval:
             self.frame.prev_frame.gqueue.put_nowait(self.stack_top)
             self.frame = self.frame.prev_frame
 
+        elif bytecode_info.bytecode_type == bytecode.BT_MAKE_SEQUENCE:
+            self.stack_push(UESequenceObject())
+            self.next()
+
+        elif bytecode_info.bytecode_type == bytecode.BT_SEQUENCE_APPEND:
+            item = parse(self.stack_top, self.frame)
+            sequ = parse(self.stack_top, self.frame)
+            
+            if type(sequ) is not UESequenceObject:
+                return
+            sequ.val.append(item)
+            self.stack_push(sequ)
+            self.next()
+            
         else:
             prettyd = bytecode_info.pretty_with_bytecode_type(
                 bytecode_info.bytecode_type)[0]

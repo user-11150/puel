@@ -1,11 +1,3 @@
-function fraction x;
-    if x is 1 return 1 end
-    push x - 1 call fraction
-    return x * TOP
-end
+a = (1,2)
 
-push 9
-call fraction
-
-
-put TOP
+put a

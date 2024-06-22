@@ -8,22 +8,23 @@ from uel.tools.func.share.runtime_type_check import runtime_type_check
 # Bytecode types
 BT: TypeAlias = int
 
-BT_ADD: BT = 0b00000000_00000000_00000001
-BT_MINUS: BT = 0b00000000_00000000_00000010
-BT_MUL: BT = 0b00000000_00000000_00000011
-BT_DIV: BT = 0b00000000_00000000_00000100
-BT_STORE_NAME: BT = 0b00000000_00000000_00000101
-BT_POP: BT = 0b00000000_00000000_00000110
-BT_LOAD_CONST: BT = 0b00000000_00000000_00000111
-BT_QPUT: BT = 0b00000000_00000000_00001000
-BT_QTOP: BT = 0b00000000_00000000_00001001
-BT_PUT: BT = 0b00000000_00000000_00001010
-BT_JUMP: BT = 0b00000000_00000000_00001011
-BT_IS: BT = 0b00000000_00000000_00001100
-BT_CALL: BT = 0b00000000_00000000_00001101
-BT_RETURN: BT = 0b00000000_00000000_00001110
-BT_POP_JUMP_IF_FALSE = 0b00000000_00000000_00001111
-
+BT_ADD: BT = 1
+BT_MINUS: BT = 2
+BT_MUL: BT = 3
+BT_DIV: BT = 4
+BT_STORE_NAME: BT = 5
+BT_POP: BT = 6
+BT_LOAD_CONST: BT = 7
+BT_QPUT: BT = 8
+BT_QTOP: BT = 9
+BT_PUT: BT = 10
+BT_JUMP: BT = 11
+BT_IS: BT = 12
+BT_CALL: BT = 13
+BT_RETURN: BT = 14
+BT_POP_JUMP_IF_FALSE = 15
+BT_MAKE_SEQUENCE = 16
+BT_SEQUENCE_APPEND = 17
 
 class BytecodeInfo:
 
@@ -60,7 +61,9 @@ class BytecodeInfo:
             BT_IS: "is",
             BT_CALL: "call",
             BT_RETURN: "return",
-            BT_POP_JUMP_IF_FALSE: "pop jump if false"
+            BT_POP_JUMP_IF_FALSE: "pop jump if false",
+            BT_MAKE_SEQUENCE: "make sequence",
+            BT_SEQUENCE_APPEND: "sequence append"
         }
         mapping.setdefault("unknown")  # type: ignore
         return mapping[bt].upper().replace(" ", "_"), bt
