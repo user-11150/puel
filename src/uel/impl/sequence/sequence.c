@@ -19,14 +19,30 @@ sequence_append(SequenceObject *self, PyObject *args)
 
     if (self)
     {
-        PyObject_CallOneArg(
-            PyObject_GetAttrString(
-                self->list,
-                "append"),
-            item);
+        PyList_Append(self->list, item);
     }
     Py_RETURN_NONE;
 };
+
+PyObject *
+sequence_register(SequenceObject *self, PyObject *args)
+{
+    PyObject *item;
+
+    if (!PyArg_ParseTuple(args, "O", &item))
+    {
+        PyErr_SetString(PyExc_TypeError, "Arg 1 must be a object");
+        return NULL;
+    };
+
+    if (self)
+    {
+        self->list = item;
+    }
+    Py_RETURN_NONE;
+};
+
+
 
 PyObject *
 sequence_as_list(SequenceObject *self, PyObject *args)
@@ -54,6 +70,7 @@ Sequence_New(PyTypeObject *type, PyObject *args, PyObject *kwgs)
 static PyMethodDef
     sequencemethods[] = {
         {"append", (PyCFunction)sequence_append, METH_VARARGS},
+        {"register", (PyCFunction)sequence_register, METH_VARARGS},
         {"as_list", (PyCFunction)sequence_as_list, METH_VARARGS},
         {NULL, NULL, 0, NULL}};
 
