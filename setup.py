@@ -113,8 +113,7 @@ def get_extensions():
             ],
             include_dirs=INCLUDE,
             langauge="c",
-            extra_compile_args=C_COMPILE_ARGS,
-            depends=["src/uel/impl/sequence/sequence.h"]
+            extra_compile_args=C_COMPILE_ARGS
         )
     )
     return extensions
