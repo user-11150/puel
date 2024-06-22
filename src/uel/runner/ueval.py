@@ -21,7 +21,7 @@ from uel.object.ueobject import UEObject
 from uel.runner.frame import Frame
 from uel.runner.stack import Stack
 from uel.tools.func.share.runtime_type_check import runtime_type_check
-
+from inspect import getfullargspec
 
 class Ueval:
     """
@@ -201,7 +201,7 @@ class Ueval:
             fn: Union[UEFunctionObject, UECallableObject,
                       FunctionType]) -> int:
             if type(fn) is FunctionType:
-                return fn.__code__.co_argcount - 1
+                return len(getfullargspec(fn).args) + -1
             elif issubclass(type(fn), UECallableObject):
                 if type(fn) is UEFunctionObject:
                     return len(fn.args)
