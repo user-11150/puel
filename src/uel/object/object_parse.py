@@ -17,7 +17,11 @@ def parse(info: tuple[str, UEObject] | UEObject, frame: Frame) -> UEObject:
         try:
             return parse(frame.gqueue.get_nowait(), frame)
         except Empty:
-            throw(UELRuntimeError("[ValueError] At least one PUSH before TOP"))
+            throw(
+                UELRuntimeError(
+                    "[ValueError] At least one PUSH before TOP"
+                )
+            )
     elif typ == "object":
         return val
     elif typ == "name":

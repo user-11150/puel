@@ -4,7 +4,6 @@ from uel.runner.ueval import Ueval
 
 
 class RunCode(AbstractTask):
-
     def run(self, tup: tuple[list[BytecodeInfo], str]) -> None:
         bytecodes, filename = tup
         execer = Ueval(bytecodes, filename=filename)

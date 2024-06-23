@@ -2,14 +2,15 @@ from string import digits as DIGITS
 from typing import List, Optional
 
 from uel.builder.position import Position
-from uel.builder.token.tokenconstants import (TT_ADD, TT_COMMA, TT_DIV, TT_EOF,
-                                              TT_EQUAL, TT_FLOAT, TT_IDENTIFER,
-                                              TT_INT, TT_KEYWORD, TT_KEYWORDS,
-                                              TT_MINUS, TT_MUL, TT_SEMI,
-                                              TT_STRING, TT_RPAR, TT_LPAR)
+from uel.builder.token.tokenconstants import (
+    TT_ADD, TT_COMMA, TT_DIV, TT_EOF, TT_EQUAL, TT_FLOAT, TT_IDENTIFER,
+    TT_INT, TT_KEYWORD, TT_KEYWORDS, TT_MINUS, TT_MUL, TT_SEMI, TT_STRING,
+    TT_RPAR, TT_LPAR
+)
 from uel.builder.token.tokennode import TokenNode as Token
 from uel.builder.token.tools.identifier import (
-    is_identifier_center_char_or_end_char, is_start)
+    is_identifier_center_char_or_end_char, is_start
+)
 from uel.errors.raiseerror import RaiseError
 from uel.errors.throwexception import ThrowException
 from uel.errors.toodotserror import TooDotsError
@@ -21,7 +22,6 @@ class Lexer:
     """
     源代码 => Tokens
     """
-
     def __init__(self, fn: str, content: str):
         self.fn: str = fn
         self.content: str = content
@@ -59,8 +59,10 @@ class Lexer:
                 continue
 
             # 空白
-            elif (self.current_char == " " or self.current_char == "\n"
-                  or self.current_char == "\t"):
+            elif (
+                self.current_char == " " or self.current_char == "\n" or
+                self.current_char == "\t"
+            ):
                 self.advance()
                 continue
 
@@ -119,7 +121,8 @@ class Lexer:
 
             else:
                 ThrowException.throw(
-                    UnknownSyntaxError('Unknown syntax', self.pos))
+                    UnknownSyntaxError('Unknown syntax', self.pos)
+                )
 
         tokens.append(Token(TT_EOF, pos=self.pos.copy()))
         return tokens
@@ -146,7 +149,9 @@ class Lexer:
             self.advance()
             if self.current_char is None:
                 break
-            if not is_identifier_center_char_or_end_char(self.current_char):
+            if not is_identifier_center_char_or_end_char(
+                self.current_char
+            ):
                 break
             identifer += self.current_char
         token_val: str = identifer.strip()
@@ -158,8 +163,8 @@ class Lexer:
             raise Nerver
         string: str = self.current_char
         while self.advance():
-            if (self.current_char not in DIGITS) and (self.current_char
-                                                      != "."):
+            if (self.current_char
+                not in DIGITS) and (self.current_char != "."):
                 break
             if self.current_char is None:
                 raise SystemExit
@@ -168,7 +173,9 @@ class Lexer:
             ThrowException.throw(
                 TooDotsError(
                     f"At most one dot appears in a number, but more than one appear: '{string}'",
-                    self.pos))
+                    self.pos
+                )
+            )
         type_function = TT_FLOAT if "." in string else TT_INT
         return Token(type_function, string, pos=self.pos.copy())
 

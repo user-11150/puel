@@ -3,7 +3,6 @@ class AttributeOnlyError(Exception):
 
 
 class AttributeOnly:
-
     def __init__(self, obj: object, names: list[str]) -> None:
         self.__obj = obj
         self.__names = names

@@ -26,9 +26,11 @@ BT_POP_JUMP_IF_FALSE = 15
 BT_MAKE_SEQUENCE = 16
 BT_SEQUENCE_APPEND = 17
 
-class BytecodeInfo:
 
-    def __init__(self, bytecode_type: BT, value: t.Optional[t.Any], pos: int):
+class BytecodeInfo:
+    def __init__(
+        self, bytecode_type: BT, value: t.Optional[t.Any], pos: int
+    ):
         # 只有bytecode运行到哪的位置，token的位置被我搞丢了
         assert pos > 0, "the arg 1 must be great 0"
 

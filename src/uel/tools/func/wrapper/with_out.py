@@ -7,7 +7,6 @@ E = TypeVar("E")
 
 
 class Withable(Generic[E]):
-
     def __init__(self, value: E):
         self.value = value
 
@@ -22,7 +21,6 @@ class Withable(Generic[E]):
 
 
 def with_out(func: Callable[P, R]) -> Callable[P, Withable[R]]:
-
     @wraps(func)
     def inner(*args: Any, **kwargs: Any) -> Withable[R]:
         return Withable(func(*args, **kwargs))

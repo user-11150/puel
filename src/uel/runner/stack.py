@@ -8,7 +8,6 @@ class Stack(Generic[T]):
     """
     First in last out
     """
-
     def __init__(self) -> None:
         self._queue: list[T] = []
 

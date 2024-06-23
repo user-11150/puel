@@ -39,7 +39,6 @@ class UELBytecodeCompiler:
     """
     Bytecode compiler
     """
-
     def __init__(self, filename: str) -> None:
         self.ast: t.Optional[ModuleNode] = None
         self.mutex = threading.Lock()
@@ -108,8 +107,9 @@ class UELBytecodeCompiler:
                 condition = child.condition
                 self.expr(condition)
                 start_index = self.idx
-                else_to = BytecodeInfo(bytecode.BT_POP_JUMP_IF_FALSE, 0,
-                                       start_index + 1)
+                else_to = BytecodeInfo(
+                    bytecode.BT_POP_JUMP_IF_FALSE, 0, start_index + 1
+                )
                 self.bytecodes.append(else_to)
                 self.idx += 1
                 self.alwaysExecute(body)
@@ -125,8 +125,9 @@ class UELBytecodeCompiler:
                 interpreter_compiler = UELBytecodeCompiler(self.filename)
                 interpreter_compiler.read(child.tp(ModuleNode))
                 bytecodes = interpreter_compiler.toBytecodes()
-                function_object = uel_new_object("function",
-                                                 (child.args, bytecodes))
+                function_object = uel_new_object(
+                    "function", (child.args, bytecodes)
+                )
                 self.load_const(("object", function_object))
                 self._store_name(child.name)
             elif type_ is RepeatNode:
@@ -174,8 +175,9 @@ class UELBytecodeCompiler:
                 val = node.val
                 value_type = type(val)
 
-            nod = node.val if runtime_type_check(node,
-                                                 ExpressionNode) else node
+            nod = node.val if runtime_type_check(
+                node, ExpressionNode
+            ) else node
 
             if type(nod) is VariableNode:
                 self.store_name(val.left, val.right)
@@ -184,7 +186,9 @@ class UELBytecodeCompiler:
                 self.load_const((nod.type, nod.val))
                 counter += 1
                 raise ExitAndReturn
-            elif type(nod) in (AddNode, MinusNode, MultNode, DivNode, IsEqual):
+            elif type(nod) in (
+                AddNode, MinusNode, MultNode, DivNode, IsEqual
+            ):
                 self.calculator(nod)
                 raise ExitAndReturn
             elif type(nod) is SequenceNode:
@@ -205,11 +209,12 @@ class UELBytecodeCompiler:
     def equal(self) -> None:
         self.bytecode(bytecode.BT_IS)
 
-    def calculator(self, node: t.Union[Constant, BinOpNode, t.Any]) -> None:
+    def calculator(
+        self, node: t.Union[Constant, BinOpNode, t.Any]
+    ) -> None:
         """
         Four arithmetic
         """
-
         def _symbol(node: t.Any) -> None:
             type_node = type(node)
             if type_node is AddNode:
@@ -247,12 +252,14 @@ class UELBytecodeCompiler:
         if type(node) is Constant or type(node) is SequenceNode:
             self.expr(node)
             return
-        elif type(node) is ExpressionNode and (type(node.val) is Constant or type(node.val) is SequenceNode):
+        elif type(node) is ExpressionNode and (
+            type(node.val) is Constant or type(node.val) is SequenceNode
+        ):
             self.expr(node.val)
             return
         elif type(node) is BinOpNode and runtime_type_check(
-                node.left, Constant, SequenceNode) and runtime_type_check(
-                    node.right, Constant, SequenceNode):
+            node.left, Constant, SequenceNode
+        ) and runtime_type_check(node.right, Constant, SequenceNode):
             self.calculator(node.left)
             self.calculator(node.right)
             _symbol(node)
@@ -271,7 +278,9 @@ class UELBytecodeCompiler:
         """
         Push a value to stack
         """
-        if not issubclass(type(val), UEObject) and IS_CAN_MAKE_OBJECT(val[0]):
+        if not issubclass(type(val), UEObject) and IS_CAN_MAKE_OBJECT(
+            val[0]
+        ):
             val = ("object", uel_new_object(*val))
         self.bytecode(bytecode.BT_LOAD_CONST, val)
 
@@ -285,17 +294,18 @@ class UELBytecodeCompiler:
     def _store_name(self, value: t.Any) -> None:
         self.bytecode(bytecode.BT_STORE_NAME, value)
 
-    def bytecode(self,
-                 bytecode_type: BT,
-                 value: t.Optional[t.Any] = None) -> None:
+    def bytecode(
+        self, bytecode_type: BT, value: t.Optional[t.Any] = None
+    ) -> None:
         """
         Push a bytecode
         """
         self.idx += 1
         self.bytecodes.append(
-            BytecodeInfo(bytecode_type=bytecode_type,
-                         value=value,
-                         pos=self.idx))
+            BytecodeInfo(
+                bytecode_type=bytecode_type, value=value, pos=self.idx
+            )
+        )
 
     def add(self) -> None:
         self.bytecode(bytecode.BT_ADD)

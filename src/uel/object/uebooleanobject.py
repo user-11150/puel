@@ -6,7 +6,6 @@ FALSE = "false"
 
 
 class UEBooleanObject(UEObject):
-
     def tp_str(self):
         return str(self.val)
 

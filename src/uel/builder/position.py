@@ -2,7 +2,6 @@ from typing import Any, overload, final
 
 
 class Position:
-
     def __new__(cls, *args, **kwargs) -> "Position":
         if args == () and kwargs == {}:
             return  # type: ignore

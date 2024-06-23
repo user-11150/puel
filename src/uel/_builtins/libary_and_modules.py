@@ -3,7 +3,6 @@ from uel.constants import DIRNAME
 
 
 class Builtins:
-
     @staticmethod
     def all():
         return _get_all_modules()

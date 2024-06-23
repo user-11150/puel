@@ -6,6 +6,5 @@ from uel.builder.ast.singlenode import SingleNode
 
 
 class ExpressionNode(AbstractNode):
-
     def __init__(self, val: typing.Any) -> None:
         self.val = val

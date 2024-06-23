@@ -33,7 +33,6 @@ except OSError:
 
 
 class UEArgParser:
-
     def __init__(self, args: list[str]):
         self.tsk: UETaskDesc | None = None
         self.args: list[str] = args
@@ -69,11 +68,12 @@ class UEArgParser:
         elif self.current in RUN_BYTECODE:
             self.tsk = UERunBytecodesTask(self.rest)
         else:
-            print(f"{YELLOW}[WARNNING] Unknown argument, print help{RESET}")
+            print(
+                f"{YELLOW}[WARNNING] Unknown argument, print help{RESET}"
+            )
 
 
 class UETaskDesc:
-
     def __init__(self, rest: list[str] | None = None) -> None:
         if rest is None:
             rest = []
@@ -83,27 +83,32 @@ class UETaskDesc:
 class UEHelpTaskDesc(UETaskDesc):
     ONLY_COMMAND_HELP = {
         RUN:
-        "Run UEL code",
+            "Run UEL code",
         HELP:
-        "Show help. use of 'python -m uel help' or show help of given command eg: 'python -m help run'",
+            "Show help. use of 'python -m uel help' or show help of given command eg: 'python -m help run'",
         VERSION:
-        "Show python version",
+            "Show python version",
         REPL:
-        "Looks like python REPL",
+            "Looks like python REPL",
         WEB:
-        "The web for UEL, usage: 'python -m uel [<ip> [<port>]]'",
+            "The web for UEL, usage: 'python -m uel [<ip> [<port>]]'",
         BUILD_BYTECODE:
-        "Build the bytecodes, (WARN: If you used Python extension, nerver use this)",
+            "Build the bytecodes, (WARN: If you used Python extension, nerver use this)",
         RUN_BYTECODE:
-        "Run the bytecodes, (WARN: If you used Python extension, nerver use this)"
+            "Run the bytecodes, (WARN: If you used Python extension, nerver use this)"
     }
     EMPTY: list[str] = []
     s = ""
-    col = max(*map(lambda x: len(", ".join(x[0])), ONLY_COMMAND_HELP.items()))
-    for ks, v in sorted(ONLY_COMMAND_HELP.items(),
-                        key=lambda x:
-                        (y := bytes(",".join(x[0]), "utf-8"), int.from_bytes(y)
-                         if not y.count(b"-") else 0)[1]):
+    col = max(
+        *map(lambda x: len(", ".join(x[0])), ONLY_COMMAND_HELP.items())
+    )
+    for ks, v in sorted(
+        ONLY_COMMAND_HELP.items(),
+        key=lambda x: (
+            y := bytes(",".join(x[0]), "utf-8"), int.from_bytes(y)
+            if not y.count(b"-") else 0
+        )[1]
+    ):
         i = ", ".join(sorted(ks))
         s += i.ljust(col + 1)
         s += ":"
@@ -141,18 +146,18 @@ Usage: python -m uel [arguments]
 
 
 class UEVersionTaskDesc(UETaskDesc):
-
     def run(self) -> None:
         assert len(self.rest) == 0
         print(sys.version)
 
 
 class UEWebTask(UETaskDesc):
-
     def run(self) -> None:
         if not (0 <= len(self.rest) and len(self.rest) <= 2):
-            print(f"Unkown argument: '{self.rest}'\n"
-                  "Usage: python -m uel [<ip> [<port>]]")
+            print(
+                f"Unkown argument: '{self.rest}'\n"
+                "Usage: python -m uel [<ip> [<port>]]"
+            )
             exit()
         default_address = ("0.0.0.0", 2521)
         address = default_address
@@ -168,16 +173,13 @@ class _Private:
 
 
 class _UERunTaskDesc(_Private):
-
     def run_uel(self, fn: str, string: str, debug=DEBUG) -> None:
         ectx = ExecuteContext()
         ectx.run_code_from_basic(fn, string, debug)
 
 
 class UEBuildBytecodesTask(UETaskDesc):
-
     def run(self):
-
         class BuildFail(Exception):
             pass
 
@@ -189,7 +191,9 @@ class UEBuildBytecodesTask(UETaskDesc):
         debug = DEBUG
 
         ectx = ExecuteContext()
-        bytecodes = ectx.build_bytecodes(fn=filename, code=string, debug=debug)
+        bytecodes = ectx.build_bytecodes(
+            fn=filename, code=string, debug=debug
+        )
         with open(save, "wb") as fp:
             try:
                 compressd = compress(bytecodes)
@@ -203,7 +207,6 @@ class UEBuildBytecodesTask(UETaskDesc):
 
 
 class UERunBytecodesTask(UETaskDesc):
-
     def run(self):
         assert len(self.rest) == 1
 
@@ -215,7 +218,6 @@ class UERunBytecodesTask(UETaskDesc):
 
 
 class UERepl(UETaskDesc, _UERunTaskDesc):
-
     def run(self) -> None:
         UEVersionTaskDesc().run()
         print("Use '.exit' quit")
@@ -232,7 +234,6 @@ class UERepl(UETaskDesc, _UERunTaskDesc):
 
 
 class UERun(UETaskDesc, _UERunTaskDesc):
-
     def run(self) -> None:
         if len(self.rest) != 1:
             print(
@@ -246,7 +247,6 @@ class UERun(UETaskDesc, _UERunTaskDesc):
 
 
 class UETask:
-
     def __init__(self, parser: UEArgParser) -> None:
         self.parser = parser
         self.tsk = parser.tsk

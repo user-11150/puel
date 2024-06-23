@@ -5,15 +5,16 @@ from uel.runner.stack import Stack
 
 
 class Frame:
-
-    def __init__(self,
-                 stack: Stack[t.Any],
-                 idx: int,
-                 bytecodes: t.List[t.Any],
-                 prev_frame: t.Optional["Frame"] = None,
-                 filename: str = "<unknown>",
-                 variables: t.Optional[dict[str, t.Any]] = None,
-                 gqueue: t.Optional[Queue] = None):
+    def __init__(
+        self,
+        stack: Stack[t.Any],
+        idx: int,
+        bytecodes: t.List[t.Any],
+        prev_frame: t.Optional["Frame"] = None,
+        filename: str = "<unknown>",
+        variables: t.Optional[dict[str, t.Any]] = None,
+        gqueue: t.Optional[Queue] = None
+    ):
         self.stack: Stack = stack
         self.idx = idx
         self.bytecodes = bytecodes

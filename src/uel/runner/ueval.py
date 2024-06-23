@@ -23,15 +23,17 @@ from uel.runner.stack import Stack
 from uel.tools.func.share.runtime_type_check import runtime_type_check
 from inspect import getfullargspec
 
+
 class Ueval:
     """
     Runner
     """
-
-    def __init__(self,
-                 bytecodes: List[BytecodeInfo],
-                 frame: Optional[Frame] = None,
-                 filename: str | None = None) -> None:
+    def __init__(
+        self,
+        bytecodes: List[BytecodeInfo],
+        frame: Optional[Frame] = None,
+        filename: str | None = None
+    ) -> None:
         self.stopd = False
         self.frame = frame or Frame(
             # Stack
@@ -46,7 +48,8 @@ class Ueval:
             # Variables
             {},
             # Gqueue
-            Queue())
+            Queue()
+        )
 
     @property
     def stack_top(self) -> Any:
@@ -113,12 +116,17 @@ class Ueval:
             right_val = parse(self.stack_top, self.frame)
 
             if hasattr(left_value, "tp_equal"):
-                self.stack_push(left_value.tp_equal(right_val).tp_bytecode())
+                self.stack_push(
+                    left_value.tp_equal(right_val).tp_bytecode()
+                )
             elif hasattr(right_val, "tp_equal"):
-                self.stack_push(right_val.tp_equal(left_value).tp_bytecode())
+                self.stack_push(
+                    right_val.tp_equal(left_value).tp_bytecode()
+                )
             else:
-                result = UEBooleanObject(str(self.equal(left_value,
-                                                        right_val)))
+                result = UEBooleanObject(
+                    str(self.equal(left_value, right_val))
+                )
                 self.stack_push(result.tp_bytecode())
             self.next()
 
@@ -183,37 +191,40 @@ class Ueval:
         elif bytecode_info.bytecode_type == bytecode.BT_SEQUENCE_APPEND:
             item = parse(self.stack_top, self.frame)
             sequ = parse(self.stack_top, self.frame)
-            
+
             if type(sequ) is not UESequenceObject:
                 return
             sequ.val.append(item)
             self.stack_push(sequ)
             self.next()
-            
+
         else:
             prettyd = bytecode_info.pretty_with_bytecode_type(
-                bytecode_info.bytecode_type)[0]
+                bytecode_info.bytecode_type
+            )[0]
             raise ValueError("Not support type:" + f"{prettyd}")
 
     def call_function(self) -> None:
-
         def getFunctionArgumentLength(
-            fn: Union[UEFunctionObject, UECallableObject,
-                      FunctionType]) -> int:
+            fn: Union[UEFunctionObject, UECallableObject, FunctionType]
+        ) -> int:
             if type(fn) is UEFunctionObject:
                 return len(fn.args)
             try:
                 return len(getfullargspec(fn).args) - 1
             except Exception as e:
                 if issubclass(type(fn), UEObject):
-                    throw(UELRuntimeError, f"TypeError: {fn.tp_str()} is not a callable")
+                    throw(
+                        UELRuntimeError,
+                        f"TypeError: {fn.tp_str()} is not a callable"
+                    )
                 else:
                     raise e
-                
 
         function: Union[UEFunctionObject, UECallableObject,
-                        FunctionType] = parse(self.stack_top,
-                                              self.frame)  # type: ignore
+                        FunctionType] = parse(
+                            self.stack_top, self.frame
+                        )  # type: ignore
 
         arguments: list[UEObject] = []
         for _ in range(0, getFunctionArgumentLength(function)):
@@ -224,7 +235,10 @@ class Ueval:
             # print(self.frame)
         else:
             if not hasattr(function, "__call__"):
-                throw(UELRuntimeError, f"TypeError: {function.tp_str()} is not a callable")
+                throw(
+                    UELRuntimeError,
+                    f"TypeError: {function.tp_str()} is not a callable"
+                )
             result: UEObject = function(self.frame, *arguments)
             if result is not None:
                 self.frame.gqueue.put_nowait(result)
@@ -256,7 +270,12 @@ class Ueval:
             fn_name = "tp_div"
         else:
             raise ValueError
-        if ((hasattr(left_value, fn_name) and hasattr(right_value, fn_name))):
+        if (
+            (
+                hasattr(left_value, fn_name) and
+                hasattr(right_value, fn_name)
+            )
+        ):
             result = getattr(left_value, fn_name)(right_value)
         else:
             throw(UELRuntimeError("[TypeError] Unable add"))

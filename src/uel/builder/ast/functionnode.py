@@ -3,9 +3,9 @@ from uel.builder.ast.containernode import ContainerNode
 
 
 class FunctionNode(ContainerNode):
-
-    def __init__(self, children: list[AbstractNode], name: str,
-                 args: list[str]) -> None:
+    def __init__(
+        self, children: list[AbstractNode], name: str, args: list[str]
+    ) -> None:
         super().__init__(children)
         self.args = args
         self.name = name

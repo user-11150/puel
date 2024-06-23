@@ -15,7 +15,6 @@ from uel.runner.task.abstracttask import AbstractTask
 
 
 class BuildCode(AbstractTask):
-
     def __init__(self, fn: str, code: str):
         self.fn = fn
         self.code = code

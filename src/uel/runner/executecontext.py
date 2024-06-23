@@ -6,7 +6,6 @@ from uel.runner.task.runcode import RunCode
 
 
 class ExecuteContext:
-
     def run_code_from_basic(self, fn: str, code: str, debug: bool) -> Any:
         bytecodeCompiler: BuildCode = BuildCode(fn, code)
         bytecodes = bytecodeCompiler.run(debug=debug)
@@ -21,8 +20,7 @@ class ExecuteContext:
     def run_bytecodes(self, bytecodes):
         RunCode().run(bytecodes)
 
-    def run_code_from_fd(self,
-                         fd: IO[str],
-                         source: str,
-                         debug: bool = DEBUG) -> Any:
+    def run_code_from_fd(
+        self, fd: IO[str], source: str, debug: bool = DEBUG
+    ) -> Any:
         self.run_code_from_basic(source, fd.read(), debug=DEBUG)

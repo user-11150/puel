@@ -7,7 +7,6 @@ from uel.tools.func.share.runtime_type_check import runtime_type_check
 
 
 class UECallableObject(UEObject):
-
     def __init__(self) -> None:
         pass
 

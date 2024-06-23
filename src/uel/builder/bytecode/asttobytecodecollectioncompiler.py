@@ -10,7 +10,6 @@ from uel.tools.func.wrapper.with_out import with_out
 
 
 class ASTToByteCodeCollectionCompiler:
-
     @with_out
     def with_ast(self, ast: ModuleNode,
                  filename: str) -> tuple[list[BytecodeInfo], str]:
@@ -18,5 +17,7 @@ class ASTToByteCodeCollectionCompiler:
         compiler.read(ast)
         return compiler.toBytecodes(), compiler.filename
 
-    def createCompiler(self, *args: Any, **kwargs: Any) -> UELBytecodeCompiler:
+    def createCompiler(
+        self, *args: Any, **kwargs: Any
+    ) -> UELBytecodeCompiler:
         return UELBytecodeCompiler(*args, **kwargs)

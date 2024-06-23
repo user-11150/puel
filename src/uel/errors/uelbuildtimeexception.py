@@ -3,7 +3,6 @@ from uel.errors.uelexception import UELException
 
 
 class UELBuildtimeException(UELException):
-
     def __init__(self, error_message: str, pos: Position):
         super().__init__(error_message)
         self.line = pos.ln

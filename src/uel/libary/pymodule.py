@@ -13,7 +13,6 @@ class UELImportError(Exception):
 
 
 class UEModuleNew:
-
     def __init__(self, pymodule: ModuleType) -> None:
         self.module = pymodule
         try:

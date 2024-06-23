@@ -7,7 +7,6 @@ STATUS = 1
 
 
 class ThrowException:
-
     @staticmethod
     def throw(e: UELBaseException) -> None:
         stderr.write(str(e))

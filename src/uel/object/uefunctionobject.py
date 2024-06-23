@@ -13,8 +13,9 @@ from objprint import objstr
 
 
 class UEFunctionObject(UECallableObject):
-
-    def __init__(self, args: List[str], bytecodes: List[BytecodeInfo]) -> None:
+    def __init__(
+        self, args: List[str], bytecodes: List[BytecodeInfo]
+    ) -> None:
         self.args = args
         self.bytecodes = bytecodes
 
@@ -25,12 +26,17 @@ class UEFunctionObject(UECallableObject):
             throw(
                 UELRuntimeError(
                     f"Only {len(self.args)} parameters are accepted,"
-                    f"but there are {args} arguments."))
-        frame = Frame(stack=Stack(),
-                      idx=0,
-                      bytecodes=self.bytecodes,
-                      prev_frame=frame,
-                      filename=frame.filename,
-                      variables=dict(
-                          zip(self.args, (parse(x, frame) for x in args))))
+                    f"but there are {args} arguments."
+                )
+            )
+        frame = Frame(
+            stack=Stack(),
+            idx=0,
+            bytecodes=self.bytecodes,
+            prev_frame=frame,
+            filename=frame.filename,
+            variables=dict(
+                zip(self.args, (parse(x, frame) for x in args))
+            )
+        )
         ueval.frame = frame

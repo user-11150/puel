@@ -33,6 +33,7 @@ import warnings
 with open("src/uel/version.py", "rt", encoding="utf8") as f:
     version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
 
+
 def commandwrap(old):
     def new(self, command):
         print(f" {str(command)} ".center(get_col(), "*"))
@@ -42,6 +43,7 @@ def commandwrap(old):
 
 Distribution.run_command = commandwrap(Distribution.run_command)
 THREADS = cpu_count() or 1
+
 
 def get_col():
     try:
@@ -53,7 +55,8 @@ def get_col():
 class UELParallelBuildExtension(build_ext):
     def initialize_options(self, *args, **kwargs):
         super().initialize_options(*args, **kwargs)
-        self.parallel = False # 并行编译虽然速度快了，但是错误信息不容易看
+        self.parallel = False  # 并行编译虽然速度快了，但是错误信息不容易看
+
 
 def check_environment():
     if platform.python_implementation() != "CPython" \
@@ -62,6 +65,8 @@ def check_environment():
             raise EnvironmentError("Python implementation must be CPython")
         else:
             raise EnvironmentError("Python version is too low")
+
+
 def is_building():
     if len(sys.argv) < 2:
         return True
@@ -76,13 +81,13 @@ def is_building():
 
 def get_extensions():
     extensions = []
-    
+
     BUILD_DIR = "build/uel"
     INCLUDE = ["src/uel/include/"]
-    
+
     C_COMPILE_ARGS = ["--std=gnu11"]
-    CPP_COMPILE_ARGS = ["--std=gnu++11"]
-    
+    CPP_COMPILE_ARGS = ["--std=gnu++17"]
+
     extensions.extend(cythonize(
         module_list=[
             Extension(
@@ -103,7 +108,7 @@ def get_extensions():
         language_level="3str"
     ))
 
-    extensions.append(
+    extensions.extend([
         Extension(
             name="uel.bytecodefile._compress",
             sources=[
@@ -113,8 +118,7 @@ def get_extensions():
             include_dirs=INCLUDE,
             language="c",
             extra_compile_args=C_COMPILE_ARGS
-        ))
-    extensions.append(
+        ),
         Extension(
             name="uel.impl.sequence",
             sources=[
@@ -125,34 +129,36 @@ def get_extensions():
             language="c",
             extra_compile_args=C_COMPILE_ARGS
         )
-    )
-    
+    ])
+
     extensions.sort(key=lambda ext: sum(map(os.path.getsize, ext.sources)))
-    
+
     return extensions
 
 
 kwargs = {
     "install_requires": ["objprint"]
+
+
 }
 
 
 metadata = dict(
-    name="uel",
-    version=version,
-    author="XingHao. Li<3584434540@qq.com>",
-    packages=find_namespace_packages("src"),
-    package_dir={
+    name = "uel",
+    version = version,
+    author = "XingHao. Li<3584434540@qq.com>",
+    packages = find_namespace_packages("src"),
+    package_dir = {
         "": "src"
     },
-    package_data={
+    package_data = {
         "uel": ["py.typed", "web/**"]
     },
-    cmdclass={
+    cmdclass = {
         "build_ext": UELParallelBuildExtension,
     },
-    install_requires=["objprint"],
-    entry_points={
+    install_requires = ["objprint"],
+    entry_points = {
         'console_scripts': [
             'uel = uel.cli:main',
         ]

@@ -7,7 +7,6 @@ from uel.ueargparse import UEArgParser, UETask
 
 
 class Main:
-
     @staticmethod
     def main(argv: List[str]) -> None:
         parser = UEArgParser(argv[1:])
