@@ -17,9 +17,9 @@ class UEBooleanObject(UEObject):
         return UENumberObject(self.val + other.val)
 
     def __init__(self, val: str | bool):
-        if type(val) == str:
+        if type(val) is str:
             self.val = True if val == TRUE else False
-        elif type(val) == bool:
+        elif type(val) is bool:
             self.val = val
         else:
             raise TypeError(f"Unable to convert {type(val)} to Boolean")

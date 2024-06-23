@@ -6,6 +6,8 @@ from uel.object.object_parse import parse
 from uel.object.uenumberobject import UENumberObject
 from uel.tools.attr import AttributeOnly
 
+from uel.modules import sequence
+
 T = TypeVar("T")
 
 
@@ -37,7 +39,7 @@ class Wrap(Generic[T]):
     def __call__(self, name: str) -> T:
         return self._modules[name]
 
-    def __enter__(self) -> AttributeOnly:
+    def __enter__(self) -> "Wrap":
         self.mode = self.WRITE_ONLY
         return AttributeOnly(self, ["add"])
 
@@ -47,6 +49,8 @@ class Wrap(Generic[T]):
 
 wrap = Wrap[ModuleType]()
 with wrap as modules:
-    pass  # the uel modules with the c extensions
+   @modules.add("sequence", sequence)
+   def _(name, mod): return mod
+   
 del modules
-MAP: dict[str, ModuleType] = {}
+MAP: dict[str, ModuleType] = wrap._modules

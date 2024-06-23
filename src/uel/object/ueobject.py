@@ -18,6 +18,9 @@ class UEObject:
     def __repr__(self):
         return self.tp_str()
 
+    def __eq__(self, other):
+        return self.tp_equal(other).val
+
     def tp_bytecode(self) -> Tuple[str, Any]:
         return "object", self
 

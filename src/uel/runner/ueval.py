@@ -200,14 +200,16 @@ class Ueval:
         def getFunctionArgumentLength(
             fn: Union[UEFunctionObject, UECallableObject,
                       FunctionType]) -> int:
-            if type(fn) is FunctionType:
-                return len(getfullargspec(fn).args) + -1
-            elif issubclass(type(fn), UECallableObject):
-                if type(fn) is UEFunctionObject:
-                    return len(fn.args)
+            if type(fn) is UEFunctionObject:
+                return len(fn.args)
+            try:
+                return len(getfullargspec(fn).args) - 1
+            except Exception as e:
+                if issubclass(type(fn), UEObject):
+                    throw(UELRuntimeError, f"TypeError: {fn.tp_str()} is not a callable")
                 else:
-                    throw(UELRuntimeError, f"{fn} is not callable")
-            return 0
+                    raise e
+                
 
         function: Union[UEFunctionObject, UECallableObject,
                         FunctionType] = parse(self.stack_top,
@@ -220,13 +222,13 @@ class Ueval:
             self.next()
             function.tp_call(self, args=arguments, frame=self.frame)
             # print(self.frame)
-        elif isinstance(function, FunctionType):
+        else:
+            if not hasattr(function, "__call__"):
+                throw(UELRuntimeError, f"TypeError: {function.tp_str()} is not a callable")
             result: UEObject = function(self.frame, *arguments)
             if result is not None:
                 self.frame.gqueue.put_nowait(result)
             self.next()
-        else:
-            print(function)
 
     def jump(self, idx: t.Any) -> None:
         if type(idx) is not int:

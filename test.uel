@@ -1,3 +1,11 @@
-a = (1,2)
+import "sequence"
 
+a = (3)
+b = (1,2)
+
+push b
+push a
 put a
+put b
+call contains
+put TOP

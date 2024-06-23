@@ -53,7 +53,7 @@ def get_col():
 class UELParallelBuildExtension(build_ext):
     def initialize_options(self, *args, **kwargs):
         super().initialize_options(*args, **kwargs)
-        self.parallel = True
+        self.parallel = False # 并行编译虽然速度快了，但是错误信息不容易看
 
 def check_environment():
     if platform.python_implementation() != "CPython" \
@@ -84,13 +84,23 @@ def get_extensions():
     CPP_COMPILE_ARGS = ["--std=gnu++11"]
     
     extensions.extend(cythonize(
-        [
+        module_list=[
             Extension(
                 name="uel.ue_web.ueweb",
                 sources=["src/uel/ue_web/ueweb.pyx"]
+            ),
+            Extension(
+                name="uel.modules.map",
+                sources=["src/uel/modules/map.pyx"]
+            ),
+            Extension(
+                name="uel.modules.sequence",
+                sources=["src/uel/modules/sequence.pyx"]
             )
         ],
-        build_dir=BUILD_DIR
+        build_dir=BUILD_DIR,
+        nthreads=os.cpu_count(),
+        language_level="3str"
     ))
 
     extensions.append(
@@ -101,7 +111,7 @@ def get_extensions():
                 "src/uel/puel/dev-utils.c"
             ],
             include_dirs=INCLUDE,
-            langauge="c",
+            language="c",
             extra_compile_args=C_COMPILE_ARGS
         ))
     extensions.append(
@@ -112,10 +122,13 @@ def get_extensions():
                 "src/uel/puel/dev-utils.c"
             ],
             include_dirs=INCLUDE,
-            langauge="c",
+            language="c",
             extra_compile_args=C_COMPILE_ARGS
         )
     )
+    
+    extensions.sort(key=lambda ext: sum(map(os.path.getsize, ext.sources)))
+    
     return extensions
 
 

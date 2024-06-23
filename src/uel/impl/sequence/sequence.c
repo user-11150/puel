@@ -42,17 +42,16 @@ sequence_register(SequenceObject *self, PyObject *args)
     Py_RETURN_NONE;
 };
 
-
-
 PyObject *
 sequence_as_list(SequenceObject *self, PyObject *args)
 {
+    Py_INCREF(self->list);
     return self->list;
 };
 
 void Sequence_dealloc(SequenceObject *self)
 {
-    PyMem_FREE(self);
+    Py_DECREF(self);
 }
 
 static PyObject *
