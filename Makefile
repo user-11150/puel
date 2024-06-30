@@ -1,4 +1,4 @@
-.PHONY: refrensh lint install clean report test coverage build upload docs-serve docs-build
+.PHONY: refrensh lint install clean report test coverage build upload docs-serve docs-build imports_flush
 
 SOURCE=./src/uel
 python=python
@@ -45,3 +45,6 @@ docs-serve:
 
 docs-build:
 	mkdocs build
+
+imports_flush:
+	python tools/imports_flush.py src/uel/__init__.py src/
