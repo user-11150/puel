@@ -1,4 +1,4 @@
-.PHONY: refrensh lint install clean report test coverage build upload
+.PHONY: refrensh lint install clean report test coverage build upload docs-serve docs-build
 
 SOURCE=./src/uel
 python=python
@@ -39,3 +39,9 @@ coverage:
 
 test:
 	$(python) -m unittest
+
+docs-serve:
+	mkdocs serve
+
+docs-build:
+	mkdocs build
