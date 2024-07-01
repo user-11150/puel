@@ -13,6 +13,8 @@ from uel.builder.parser import Parser
 from uel.builder.token.tokennode import TokenNode as Token
 from uel.runner.task.abstracttask import AbstractTask
 
+__all__ = ["BuildCode"]
+
 
 class BuildCode(AbstractTask):
     def __init__(self, fn: str, code: str):

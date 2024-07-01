@@ -9,6 +9,8 @@ from uel.objects import UEObject
 from uel.runner.frame import Frame
 from uel.runner.importlib import module_import
 
+__all__ = ["get_variable_from_frame", "u_module_def"]
+
 
 def get_variable_from_frame(name: object, frame: Frame) -> UEObject:
     current = frame

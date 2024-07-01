@@ -1,3 +1,6 @@
+__all__ = ["AttributeOnly"]
+
+
 class AttributeOnlyError(Exception):
     pass
 

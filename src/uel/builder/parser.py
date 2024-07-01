@@ -37,6 +37,8 @@ from uel.errors.uelsyntaxerror import UELSyntaxError
 from uel.pyexceptions.nerver import Nerver
 from uel.tools.func.wrapper.single_call import single_call
 
+__all__ = ["Parser"]
+
 
 class Parser:
     """

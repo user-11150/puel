@@ -26,6 +26,11 @@ BT_POP_JUMP_IF_FALSE = 15
 BT_MAKE_SEQUENCE = 16
 BT_SEQUENCE_APPEND = 17
 
+__all__ = [
+    *filter(lambda x: x.startswith("BT"),
+            locals().keys()), "BytecodeInfo"
+]
+
 
 class BytecodeInfo:
     def __init__(

@@ -8,6 +8,8 @@ from typing import *
 T = ParamSpec("T")
 R = TypeVar("R")
 
+__all__ = ["single_call"]
+
 
 def single_call(fn: Callable[T, R]) -> Callable[T, R]:
     run_count: Any = pointer(c_ulong(0))

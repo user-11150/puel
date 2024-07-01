@@ -1,6 +1,10 @@
 import threading
 import typing as t
-
+from uel.builder.bytecode.bytecodeinfo import (
+    BT_ADD, BT_CALL, BT_DIV, BT_IS, BT_JUMP, BT_LOAD_CONST,
+    BT_MAKE_SEQUENCE, BT_MINUS, BT_MUL, BT_POP, BT_POP_JUMP_IF_FALSE,
+    BT_PUT, BT_QPUT, BT_QTOP, BT_RETURN, BT_SEQUENCE_APPEND, BT_STORE_NAME
+)
 from uel.builder.ast.abstractnode import AbstractNode
 from uel.builder.ast.addnode import AddNode
 from uel.builder.ast.binopnode import BinOpNode
@@ -65,7 +69,7 @@ class UELBytecodeCompiler:
                     raise RuntimeError("Multiple calls to read")
             self.ast = abstract_syntax_tree
 
-    def toBytecodes(self) -> t.List[bytecode.BytecodeInfo]:
+    def toBytecodes(self) -> t.List[BytecodeInfo]:
         """
         Return the saved AST compile to bytecodes
         """
@@ -94,11 +98,11 @@ class UELBytecodeCompiler:
             elif type_ is PushStackValueNode:
                 child_ = child.tp(PushStackValueNode)
                 self.expr(child_.val)
-                self.bytecode(bytecode.BT_QPUT)
+                self.bytecode(BT_QPUT)
             elif type_ is PutNode:
                 child_ = child.tp(PutNode)
                 self.expr(child_.val)
-                self.bytecode(bytecode.BT_PUT)
+                self.bytecode(BT_PUT)
 
             elif type_ is IfNode:
                 child = child.tp(IfNode)
@@ -108,13 +112,13 @@ class UELBytecodeCompiler:
                 self.expr(condition)
                 start_index = self.idx
                 else_to = BytecodeInfo(
-                    bytecode.BT_POP_JUMP_IF_FALSE, 0, start_index + 1
+                    BT_POP_JUMP_IF_FALSE, 0, start_index + 1
                 )
                 self.bytecodes.append(else_to)
                 self.idx += 1
                 self.alwaysExecute(body)
                 self.idx += 1
-                jump_exit = BytecodeInfo(bytecode.BT_JUMP, 0, self.idx)
+                jump_exit = BytecodeInfo(BT_JUMP, 0, self.idx)
                 self.bytecodes.append(jump_exit)
                 else_to.value = self.idx + 1
                 self.alwaysExecute(else_do)
@@ -134,15 +138,15 @@ class UELBytecodeCompiler:
                 child = child.tp(RepeatNode)
                 start_index = self.idx
                 self.alwaysExecute(child)
-                self.bytecode(bytecode.BT_JUMP, value=start_index + 1)
+                self.bytecode(BT_JUMP, value=start_index + 1)
             elif type_ is CallFunctionNode:
                 child = child.tp(CallFunctionNode)
                 self.expr(child.val)
-                self.bytecode(bytecode.BT_CALL)
+                self.bytecode(BT_CALL)
             elif type_ is ReturnNode:
                 child = child.tp(ReturnNode)
                 self.expr(child.val)
-                self.bytecode(bytecode.BT_RETURN)
+                self.bytecode(BT_RETURN)
             elif type_ is ImportNode:
                 child = child.tp(ImportNode)
                 from uel.helpers import u_module_def
@@ -153,10 +157,10 @@ class UELBytecodeCompiler:
                 raise CustomError("Developer not completed")
 
     def sequence(self, child: SequenceNode) -> None:
-        self.bytecode(bytecode.BT_MAKE_SEQUENCE)
+        self.bytecode(BT_MAKE_SEQUENCE)
         for val in child.values:
             self.expr(val)
-            self.bytecode(bytecode.BT_SEQUENCE_APPEND)
+            self.bytecode(BT_SEQUENCE_APPEND)
 
     def expr(self, node: t.Any) -> int:
         """
@@ -207,7 +211,7 @@ class UELBytecodeCompiler:
         return counter
 
     def equal(self) -> None:
-        self.bytecode(bytecode.BT_IS)
+        self.bytecode(BT_IS)
 
     def calculator(
         self, node: t.Union[Constant, BinOpNode, t.Any]
@@ -272,7 +276,7 @@ class UELBytecodeCompiler:
         Pop stack value
         """
         for _ in range(each_number or 0):
-            self.bytecode(bytecode.BT_POP)
+            self.bytecode(BT_POP)
 
     def load_const(self, val: t.Any) -> None:
         """
@@ -282,7 +286,7 @@ class UELBytecodeCompiler:
             val[0]
         ):
             val = ("object", uel_new_object(*val))
-        self.bytecode(bytecode.BT_LOAD_CONST, val)
+        self.bytecode(BT_LOAD_CONST, val)
 
     def store_name(self, name: Constant, value: t.Any) -> None:
         """
@@ -292,7 +296,7 @@ class UELBytecodeCompiler:
         self._store_name(name.val)
 
     def _store_name(self, value: t.Any) -> None:
-        self.bytecode(bytecode.BT_STORE_NAME, value)
+        self.bytecode(BT_STORE_NAME, value)
 
     def bytecode(
         self, bytecode_type: BT, value: t.Optional[t.Any] = None
@@ -308,13 +312,13 @@ class UELBytecodeCompiler:
         )
 
     def add(self) -> None:
-        self.bytecode(bytecode.BT_ADD)
+        self.bytecode(BT_ADD)
 
     def minus(self) -> None:
-        self.bytecode(bytecode.BT_MINUS)
+        self.bytecode(BT_MINUS)
 
     def mult(self) -> None:
-        self.bytecode(bytecode.BT_MUL)
+        self.bytecode(BT_MUL)
 
     def div(self) -> None:
-        self.bytecode(bytecode.BT_DIV)
+        self.bytecode(BT_DIV)

@@ -4,6 +4,8 @@ from uel.objects import parse
 from uel.objects import UENumberObject
 from uel.libary.helpers import make_exports
 
+__all__ = ["PI", "sin", "bytecodes"]
+
 PI = UENumberObject(math.pi)
 
 

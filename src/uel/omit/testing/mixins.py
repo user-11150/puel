@@ -3,6 +3,8 @@ import io
 
 from uel.ueargparse import _UERunTaskDesc
 
+__all__ = ["UELRunMixin"]
+
 
 class UELRunMixin:
     def do_uel_test(self, code, rr, fn="<test-case>"):

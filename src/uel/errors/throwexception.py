@@ -5,6 +5,8 @@ from uel.errors.uelbaseexception import UELBaseException
 
 STATUS = 1
 
+__all__ = ["ThrowException"]
+
 
 class ThrowException:
     @staticmethod

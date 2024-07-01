@@ -3,6 +3,8 @@ from typing import *
 
 from uel.errors.runtime.uelruntimeerror import UELRuntimeError
 
+__all__ = ["throw"]
+
 
 @overload
 def throw(e: UELRuntimeError) -> None:

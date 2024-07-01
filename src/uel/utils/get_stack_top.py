@@ -1,3 +1,6 @@
+__all__ = ["get_stack_top"]
+
+
 def get_stack_top(frame):
     current_frame = frame
     while True:

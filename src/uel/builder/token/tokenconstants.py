@@ -33,3 +33,5 @@ TT_KEYWORDS = [
     TT_PUSH, TT_PUT, TT_END, TT_IF, TT_ELSE, TT_IS, TT_REPEAT, TT_FUNCTION,
     TT_CALL, TT_RETURN, TT_IMPORT
 ]
+
+__all__ = [*locals().keys()]

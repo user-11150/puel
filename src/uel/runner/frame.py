@@ -3,6 +3,8 @@ from queue import Queue
 
 from uel.runner.stack import Stack
 
+__all__ = ["Frame"]
+
 
 class Frame:
     def __init__(

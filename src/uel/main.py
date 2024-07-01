@@ -5,6 +5,8 @@ from typing import List
 
 from uel.ueargparse import UEArgParser, UETask
 
+__all__ = ["Main"]
+
 
 class Main:
     @staticmethod

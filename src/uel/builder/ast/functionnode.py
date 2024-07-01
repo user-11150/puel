@@ -1,6 +1,8 @@
 from uel.builder.ast.abstractnode import AbstractNode
 from uel.builder.ast.containernode import ContainerNode
 
+__all__ = ["FunctionNode"]
+
 
 class FunctionNode(ContainerNode):
     def __init__(

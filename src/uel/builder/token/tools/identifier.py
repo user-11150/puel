@@ -2,6 +2,8 @@ import sys
 from string import ascii_letters
 from unicodedata import lookup
 
+__all__ = ["is_start", "is_identifier_center_char_or_end_char"]
+
 
 def is_start(char: str) -> bool:
     if sys.version_info.major < 3:

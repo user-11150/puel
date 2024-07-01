@@ -8,6 +8,8 @@ from uel.builder.bytecode.uelbytecodecompiler import UELBytecodeCompiler
 from uel.tools.func.share.runtime_type_check import runtime_type_check
 from uel.tools.func.wrapper.with_out import with_out
 
+__all__ = ["ASTToByteCodeCollectionCompiler"]
+
 
 class ASTToByteCodeCollectionCompiler:
     @with_out

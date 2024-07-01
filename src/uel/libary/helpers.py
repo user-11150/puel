@@ -4,6 +4,8 @@ from uel.builder.bytecode.bytecodeinfo import (
 
 from types import FunctionType
 
+__all__ = ["make_exports"]
+
 
 def make_exports(exports):
 

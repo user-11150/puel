@@ -1,5 +1,7 @@
 from uel.builder.ast.abstractnode import AbstractNode
 
+__all__ = ["IfNode"]
+
 
 class IfNode(AbstractNode):
     def __init__(

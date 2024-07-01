@@ -14,6 +14,9 @@ class UELImportError(Exception):
     pass
 
 
+__all__ = ["UEModuleNew", "pymodule_get"]
+
+
 class UEModuleNew:
     def __init__(self, pymodule: ModuleType) -> None:
         self.module = pymodule

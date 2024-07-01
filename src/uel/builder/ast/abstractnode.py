@@ -6,6 +6,8 @@ from typing import Any, TypeVar
 
 T = TypeVar("T")
 
+__all__ = ["AbstractNode"]
+
 
 class AbstractNode:
     """

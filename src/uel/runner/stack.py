@@ -3,6 +3,8 @@ from typing import Generic, TypeVar, Iterator
 
 T = TypeVar("T")
 
+__all__ = ["Stack"]
+
 
 class Stack(Generic[T]):
     """

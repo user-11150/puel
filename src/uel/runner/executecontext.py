@@ -4,6 +4,8 @@ from uel.constants import DEBUG
 from uel.runner.task.buildcode import BuildCode
 from uel.runner.task.runcode import RunCode
 
+__all__ = ["ExecuteContext"]
+
 
 class ExecuteContext:
     def run_code_from_basic(self, fn: str, code: str, debug: bool) -> Any:

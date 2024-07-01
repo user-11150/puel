@@ -150,7 +150,8 @@ def main():
         f.write(data)
         f.write("\n")
         result = f.getvalue()
-        result = ast.unparse(ast.parse(result)).replace("\n", ";")
+        result = ast.unparse(ast.parse(result))
+        result = f"# yapf: disable\n{result}"
         fp.write(result)
 
 if __name__ == "__main__":

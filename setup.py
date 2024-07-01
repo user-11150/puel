@@ -10,9 +10,11 @@ Let's compile UEL.
 
 try:
     import Cython as _
-except ImportError:
+    import python_minifier as _
+except:
     import pip
-    pip.main(["install", "Cython"])
+    
+    pip.main(["install", "Cython", "python-minifier"])
 
 from Cython.Build import cythonize
 
@@ -48,7 +50,11 @@ def copy_file_contents(src, dst, buffer_size=16 * 1024):  # noqa: C901
     # custom error-handling added.
     def _handler(data, file):
         if file.endswith(".py"):
-            return python_minifier.minify(data.decode()).encode()
+            if "nominify" in os.path.split(file)[0]:
+                return data
+            return python_minifier.minify(data.decode(),
+                remove_literal_statements=True,
+                rename_globals=True).encode()
         return data
     
     fsrc = None
@@ -79,7 +85,7 @@ def copy_file_contents(src, dst, buffer_size=16 * 1024):  # noqa: C901
         if fsrc:
             fsrc.close()
 
-with open("src/uel/version.py", "rt", encoding="utf8") as f:
+with open("src/uel/nominify/version.py", "rt", encoding="utf8") as f:
     version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
 
 
@@ -110,7 +116,7 @@ class UELParallelBuildExtension(build_ext):
 
 def check_environment():
     if platform.python_implementation() != "CPython" \
-            or sys.version_info < (3, 7, 0):
+            or sys.version_info < (3, 11, 0):
         if platform.python_implementation() != "CPython":
             raise EnvironmentError("Python implementation must be CPython")
         else:
@@ -141,12 +147,12 @@ def get_extensions():
     extensions.extend(cythonize(
         module_list=[
             Extension(
-                name="uel.ue_web.ueweb",
-                sources=["src/uel/ue_web/ueweb.pyx"]
-            ),
-            Extension(
                 name="uel.libary.sequence",
                 sources=["src/uel/libary/sequence/module.pyx"]
+            ),
+            Extension(
+                name="uel.ueargparse",
+                sources=["src/uel/ueargparse.pyx"]
             )
             
         ],
@@ -211,7 +217,7 @@ metadata = dict(
     cmdclass = {
         "build_ext": UELParallelBuildExtension,
     },
-    install_requires = ["objprint"],
+    install_requires=["objprint"],
     entry_points = {
         'console_scripts': [
             'uel = uel.cli:main',

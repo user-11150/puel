@@ -17,6 +17,8 @@ from uel.errors.toodotserror import TooDotsError
 from uel.errors.unknownsyntaxerror import UnknownSyntaxError
 from uel.pyexceptions.nerver import Nerver
 
+__all__ = ["Lexer"]
+
 
 class Lexer:
     """

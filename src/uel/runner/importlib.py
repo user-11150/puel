@@ -11,6 +11,8 @@ from uel.errors.runtime.uelruntimeerror import UELRuntimeError
 from uel.libary.builtins import BUILTIN_MODULES
 from uel.libary.pymodule import pymodule_get
 
+__all__ = ["_read_string_from_file", "module_import", "path_abs"]
+
 
 def _read_string_from_file(
     pathname: str, encoding: str | None = None
