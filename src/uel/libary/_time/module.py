@@ -4,7 +4,7 @@ from uel.libary.helpers import make_exports
 
 
 def uel_export_time(frame):
-    from uel.object.object_new import uel_new_object
+    from uel.objects import uel_new_object
     return uel_new_object("number", time.time())
 
 

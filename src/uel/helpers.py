@@ -5,7 +5,7 @@ from uel.builder.ast.importnode import ImportNode
 from uel.builder.bytecode.bytecodeinfo import BytecodeInfo
 from uel.errors.runtime.throw import throw
 from uel.errors.runtime.uelruntimeerror import UELRuntimeError
-from uel.object.ueobject import UEObject
+from uel.objects import UEObject
 from uel.runner.frame import Frame
 from uel.runner.importlib import module_import
 

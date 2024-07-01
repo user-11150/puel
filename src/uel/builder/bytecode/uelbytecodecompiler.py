@@ -26,9 +26,9 @@ from uel.builder.bytecode import bytecodeinfo as bytecode
 from uel.builder.bytecode.bytecodeinfo import BT, BytecodeInfo
 from uel.errors.raiseerror import RaiseError
 from uel.errors.uelexception import UELException
-from uel.object.object_new import IS_CAN_MAKE_OBJECT, uel_new_object
-from uel.object.uefunctionobject import UEFunctionObject
-from uel.object.ueobject import UEObject
+from uel.objects import IS_CAN_MAKE_OBJECT, uel_new_object
+from uel.objects import UEFunctionObject
+from uel.objects import UEObject
 from uel.pyexceptions.customerror import CustomError
 from uel.tools.func.share.runtime_type_check import runtime_type_check
 

@@ -5,6 +5,7 @@ from uel.builder.bytecode.bytecodeinfo import BytecodeInfo
 
 from uel.libary.default.patch import default_patch
 
+
 class UELModuleNewError(Exception):
     pass
 
@@ -33,10 +34,10 @@ def pymodule_get(module_name: str) -> UEModuleNew:
     pymodule_name = f"uel.libary.{module_name}.module"
     patch_module_name = f"uel.libary.{module_name}.patch"
     module = import_module(pymodule_name)
-    
+
     try:
         patch = import_module(patch_module_name).patch
-        
+
     except ImportError:
         patch = default_patch
 
