@@ -99,7 +99,12 @@ def get_extensions():
             Extension(
                 name="uel.libary.sequence",
                 sources=["src/uel/libary/sequence/module.pyx"]
+            ),
+            Extension(
+                name="uel.ueargparse",
+                sources=["src/uel/ueargparse.pyx"]
             )
+            
         ],
         build_dir=BUILD_DIR,
         nthreads=os.cpu_count(),

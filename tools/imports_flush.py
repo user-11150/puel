@@ -20,6 +20,8 @@ def import_translate(string):
     import_translate
     """
     def getall(m):
+        if m.__name__ not in ".":
+            return []
         if hasattr(m, "__all__"):
             return m.__all__
         return []
