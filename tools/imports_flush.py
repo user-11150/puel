@@ -9,6 +9,7 @@ import functools
 import importlib
 import multiprocessing
 import keyword
+import io
 import pprint
 
 INIT = sys.argv[1]
@@ -118,21 +119,6 @@ def flat(f):
             result.append(n)
     return result
 
-def pretty(f):
-    MAX_COLUMN = len(max(results, key=len))
-    TWO_SPACES = "  "
-    result = ""
-    line = TWO_SPACES
-    def _s(i):
-        return f"{repr(i)},"
-    for item in f:
-        if len(line + _s(item)) >= MAX_COLUMN:
-            result += line
-            result += "\n"
-            line = TWO_SPACES
-        line += _s(item)
-    return f"[{result.strip()}]"
-
 def get_imports(where):
     """
     get imports
@@ -147,18 +133,23 @@ def get_imports(where):
         results = flat(results)
     x = weight_removal(results)
     sort_ed = sorted(x.values(), key=functools.cmp_to_key(cmp))
-    return f"__all__ = {pretty(sorted([y for y in x.keys() if y != '*'], key=len, reverse=True))}\n", "\n".join([*sort_ed])
+    return f"__all__ = {repr(sorted([y for y in x.keys() if y != '*'], key=len, reverse=True))}\n", "\n".join([*sort_ed])
 
 def main():
     """
     main
     """
-    f = open(INIT, "wt")
-    header, data = get_imports(DIR)
-    f.write(header)
-    f.write(data)
-    f.write("\n")
-    f.close()
+     
+    with open(INIT, "wt") as fp:
+        
+        f = io.StringIO()
+        header, data = get_imports(DIR)
+        f.write(header)
+        f.write(data)
+        f.write("\n")
+        result = f.getvalue()
+        result = ast.unparse(ast.parse(result))
+        fp.write(result)
 
 if __name__ == "__main__":
     main()

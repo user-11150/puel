@@ -1,5 +1,5 @@
 function main a;
-  put 5
+  put (1,2)
   put a
 end
 
@@ -9,4 +9,5 @@ call main
 push 1
 put TOP
 
+import "time"
 

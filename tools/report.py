@@ -70,15 +70,14 @@ items = [
             '.js',
             '.css',
             '.py',
-            '.js.LICENSE.txt',
             '.html',
+            ".md"
         )
     ),
     (
         'Documentation',
         (
             '.md',
-            'LICENSE'
         )
     ),
     (

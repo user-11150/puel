@@ -28,7 +28,8 @@ import os
 import sys
 import re
 import platform
-import warnings
+import contextlib
+import io
 
 with open("src/uel/version.py", "rt", encoding="utf8") as f:
     version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
@@ -55,7 +56,8 @@ def get_col():
 class UELParallelBuildExtension(build_ext):
     def initialize_options(self, *args, **kwargs):
         super().initialize_options(*args, **kwargs)
-        self.parallel = False  # 并行编译虽然速度快了，但是错误信息不容易看
+        # self.parallel = False  # 并行编译虽然速度快了，但是错误信息不容易看
+        self.parallel = True # 实在是太慢了
 
 
 def check_environment():
@@ -95,12 +97,8 @@ def get_extensions():
                 sources=["src/uel/ue_web/ueweb.pyx"]
             ),
             Extension(
-                name="uel.modules.map",
-                sources=["src/uel/modules/map.pyx"]
-            ),
-            Extension(
-                name="uel.modules.sequence",
-                sources=["src/uel/modules/sequence.pyx"]
+                name="uel.libary.sequence",
+                sources=["src/uel/libary/sequence/module.pyx"]
             )
         ],
         build_dir=BUILD_DIR,

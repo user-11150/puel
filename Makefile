@@ -27,6 +27,7 @@ clean:
 	rm -rf build
 	rm -rf dist
 	rm -rf .mypy_cache
+	rm -rf site
 	$(python) -m pip uninstall -y uel
 
 report:

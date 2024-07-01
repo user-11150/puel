@@ -3,6 +3,7 @@ from types import ModuleType
 
 from uel.builder.bytecode.bytecodeinfo import BytecodeInfo
 
+from uel.libary.default.patch import default_patch
 
 class UELModuleNewError(Exception):
     pass
@@ -28,12 +29,17 @@ class UEModuleNew:
         self.bytecodes: list[BytecodeInfo] = self.module.bytecodes
 
 
-def pymodule_get(module_name: str, prefix: str) -> UEModuleNew:
-    if prefix == "libary":
+def pymodule_get(module_name: str) -> UEModuleNew:
+    pymodule_name = f"uel.libary.{module_name}.module"
+    patch_module_name = f"uel.libary.{module_name}.patch"
+    module = import_module(pymodule_name)
+    
+    try:
+        patch = import_module(patch_module_name).patch
+        
+    except ImportError:
+        patch = default_patch
 
-        pymodule_name = f"uel.{prefix}.{module_name}"
-        module = import_module(pymodule_name)
-    else:
-        from uel.modules.map import MAP
-        module = MAP[module_name]
+    patch(module)
+
     return UEModuleNew(module)
