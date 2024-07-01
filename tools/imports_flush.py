@@ -148,7 +148,7 @@ def main():
         f.write(data)
         f.write("\n")
         result = f.getvalue()
-        result = ast.unparse(ast.parse(result))
+        result = ast.unparse(ast.parse(result)).replace("\n", ";")
         fp.write(result)
 
 if __name__ == "__main__":
