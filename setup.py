@@ -6,6 +6,8 @@ Let's compile UEL.
 """
 
 # pylint:disable=W0621
+# pylint:disable=W0212
+
 try:
     import Cython as _
 except ImportError:
@@ -21,6 +23,8 @@ from setuptools import Extension
 from setuptools import find_namespace_packages
 
 from setuptools.command.build_ext import build_ext
+from setuptools._distutils import file_util
+from setuptools._distutils.errors import DistutilsFileError
 
 from setuptools.dist import Distribution
 
@@ -30,6 +34,50 @@ import re
 import platform
 import contextlib
 import io
+import python_minifier
+
+
+def copy_file_contents(src, dst, buffer_size=16 * 1024):  # noqa: C901
+    """Copy the file 'src' to 'dst'; both must be filenames.  Any error
+    opening either file, reading from 'src', or writing to 'dst', raises
+    DistutilsFileError.  Data is read/written in chunks of 'buffer_size'
+    bytes (default 16k).  No attempt is made to handle anything apart from
+    regular files.
+    """
+    # Stolen from shutil module in the standard library, but with
+    # custom error-handling added.
+    def _handler(data, file):
+        if file.endswith(".py"):
+            return python_minifier.minify(data.decode()).encode()
+        return data
+    
+    fsrc = None
+    fdst = None
+    try:
+        try:
+            fsrc = open(src, 'rb')
+        except OSError as e:
+            raise DistutilsFileError(f"could not open '{src}': {e.strerror}")
+
+        if os.path.exists(dst):
+            try:
+                os.unlink(dst)
+            except OSError as e:
+                raise DistutilsFileError(f"could not delete '{dst}': {e.strerror}")
+
+        try:
+            fdst = open(dst, 'wb')
+        except OSError as e:
+            raise DistutilsFileError(f"could not create '{dst}': {e.strerror}")
+        
+        src_data = _handler(fsrc.read(), src)
+        fdst.write(src_data)
+    
+    finally:
+        if fdst:
+            fdst.close()
+        if fsrc:
+            fsrc.close()
 
 with open("src/uel/version.py", "rt", encoding="utf8") as f:
     version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
@@ -99,10 +147,6 @@ def get_extensions():
             Extension(
                 name="uel.libary.sequence",
                 sources=["src/uel/libary/sequence/module.pyx"]
-            ),
-            Extension(
-                name="uel.ueargparse",
-                sources=["src/uel/ueargparse.pyx"]
             )
             
         ],
@@ -138,6 +182,13 @@ def get_extensions():
 
     return extensions
 
+def is_minify():
+    if len(sys.argv[1:]) > 1:
+        return True
+    if "dist" in sys.argv[1]:
+        return True
+    return False
+
 
 kwargs = {
     "install_requires": ["objprint"]
@@ -172,5 +223,8 @@ check_environment()
 
 if is_building():
     metadata["ext_modules"] = get_extensions()
+
+if is_minify():
+    file_util._copy_file_contents = copy_file_contents
 
 setup(**metadata)
