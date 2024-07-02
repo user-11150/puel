@@ -147,7 +147,7 @@ def get_extensions():
     extensions.extend(cythonize(
         module_list=[
             Extension(
-                name="uel.libary.sequence",
+                name="uel.libary.sequence.module",
                 sources=["src/uel/libary/sequence/module.pyx"]
             ),
             Extension(
