@@ -18,5 +18,6 @@ jobs:
         run: sh install-requirements.sh docs
       - name: Build documentation
         run:
-          git remote set-url origin https://${secrets.TOKEN}@github.com/user-11150/puel.git
+          git config user.name "user-11150"
+          git remote set-url origin https://${{secrets.TOKEN}}@github.com/user-11150/puel.git
           mkdocs gh-deploy
