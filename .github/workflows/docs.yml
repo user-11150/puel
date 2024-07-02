@@ -16,8 +16,12 @@ jobs:
           python-version: "3.11"
       - name: Install dependency
         run: sh install-requirements.sh docs
+      - name: Set github user
+        run: git config user.name "user-11150"
+      - name: Set github remote
+        run: git remote set-url origin https://${{TOKEN}}@github.com/user-11150/puel.git
+        env:
+          TOKEN: secrets.TOKEN
       - name: Build documentation
         run:
-          git config user.name "user-11150"
-          git remote set-url origin https://${{secrets.TOKEN}}@github.com/user-11150/puel.git
           mkdocs gh-deploy
