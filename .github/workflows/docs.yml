@@ -23,4 +23,4 @@ jobs:
       - name: Install dependency
         run: sh install-requirements.sh docs
       - name: Build documentation
-        run: mkdocs gh-develop
+        run: mkdocs gh-deploy
