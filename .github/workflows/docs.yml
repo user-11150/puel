@@ -17,6 +17,6 @@ jobs:
       - name: Install dependency
         run: sh install-requirements.sh docs
       - name: Build documentation
-        run: mkdocs gh-deploy
-        env:
-          GITHUB_TOKEN: ${secret.TOKEN}
+        run:
+          git remote set-url origin https://${secrets.TOKEN}@github.com/user-11150/puel.git
+          mkdocs gh-deploy
