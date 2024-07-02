@@ -18,3 +18,5 @@ jobs:
         run: sh install-requirements.sh docs
       - name: Build documentation
         run: mkdocs gh-deploy
+        env:
+          GITHUB_TOKEN: ${secret.TOKEN}
