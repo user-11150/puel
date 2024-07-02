@@ -1,11 +1,2 @@
-import "sequence"
-
-a = (3)
-b = (1,2)
-
-push b
-push a
-put a
-put b
-call contains
-put TOP
+put 1 + 1
+put "用时 0ms"
