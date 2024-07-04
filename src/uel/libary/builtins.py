@@ -1,9 +1,8 @@
-from typing import Callable
+from typing import Callable, Any
 import os
 
-from uel.libary.pymodule import UEModuleNew, pymodule_get
-
 __all__ = ["BUILTIN_MODULES"]
+
 
 generate_module_new_func = lambda name: (lambda: pymodule_get(name))
 
@@ -18,6 +17,8 @@ def filter_by_module(names, root):
 
 
 def generate_builtin_modules():
+    global pymodule_get
+    from uel.runner.importlib import UEModuleNew, pymodule_get
     root = os.path.dirname(__file__)
     result = {}
 
@@ -28,7 +29,7 @@ def generate_builtin_modules():
     return result
 
 
-BUILTIN_MODULES: dict[str, Callable[[], UEModuleNew]] = {}
+BUILTIN_MODULES: dict[str, Callable[[], Any]] = {}
 
 builtins = BUILTIN_MODULES
 builtins |= generate_builtin_modules()

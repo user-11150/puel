@@ -10,7 +10,6 @@ from uel.builder.bytecode.asttobytecodecollectioncompiler import \
 from uel.builder.bytecode.bytecodeinfo import BytecodeInfo
 from uel.builder.lexer import Lexer
 from uel.builder.parser import Parser
-from uel.builder.token.tokennode import TokenNode as Token
 from uel.runner.task.abstracttask import AbstractTask
 
 __all__ = ["BuildCode"]
@@ -24,7 +23,7 @@ class BuildCode(AbstractTask):
 
     def run(self, debug: bool = True) -> tuple[list[BytecodeInfo], str]:
         lexer: Lexer = Lexer(self.fn, self.code)
-        tokens: List[Token] = lexer.make_tokens()
+        tokens = lexer.make_tokens()
         if debug:
             pprint(tokens)
         parser: Parser = Parser(tokens)

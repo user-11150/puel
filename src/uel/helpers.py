@@ -7,7 +7,6 @@ from uel.errors.runtime.throw import throw
 from uel.errors.runtime.uelruntimeerror import UELRuntimeError
 from uel.objects import UEObject
 from uel.runner.frame import Frame
-from uel.runner.importlib import module_import
 
 __all__ = ["get_variable_from_frame", "u_module_def"]
 
@@ -29,8 +28,3 @@ def get_variable_from_frame(name: object, frame: Frame) -> UEObject:
                 )  # pragma: no cover
                 raise SystemExit  # pragma: no cover
             current = current.prev_frame
-
-
-def u_module_def(compiler: Any, node: ImportNode) -> None:
-    for bytecode in module_import(node.libname, compiler.filename):
-        compiler.bytecode(bytecode.bytecode_type, bytecode.value)

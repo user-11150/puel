@@ -149,8 +149,14 @@ class UELBytecodeCompiler:
                 self.bytecode(BT_RETURN)
             elif type_ is ImportNode:
                 child = child.tp(ImportNode)
-                from uel.helpers import u_module_def
-                u_module_def(self, child)
+                """
+                def module_def(compiler: t.Any, node: ImportNode) -> None:
+                    for bytecode in module_import(node.libname, compiler.filename):
+                        compiler.bytecode(bytecode.bytecode_type, bytecode.value)
+                """
+                from uel.runner.importlib import module_import
+                for bytecode in module_import(child.libname, self.filename):
+                    self.bytecode(bytecode.bytecode_type, bytecode.value)
             elif type_ is SequenceNode:
                 self.sequence(child)
             else:

@@ -111,7 +111,8 @@ class UELParallelBuildExtension(build_ext):
     def initialize_options(self, *args, **kwargs):
         super().initialize_options(*args, **kwargs)
         # self.parallel = False  # 并行编译虽然速度快了，但是错误信息不容易看
-        self.parallel = True # 实在是太慢了
+        # self.parallel = True # 实在是太慢了
+        self.parallel = False # 配合缓存还是不慢的
 
 
 def check_environment():
@@ -153,8 +154,11 @@ def get_extensions():
             Extension(
                 name="uel.ueargparse",
                 sources=["src/uel/ueargparse.pyx"]
+            ),
+            Extension(
+                name="uel.runner.ueval",
+                sources=["src/uel/runner/ueval.pyx"]
             )
-            
         ],
         build_dir=BUILD_DIR,
         nthreads=os.cpu_count(),

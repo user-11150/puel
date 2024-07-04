@@ -7,7 +7,6 @@ from uel.builder.token.tokenconstants import (
     TT_INT, TT_KEYWORD, TT_KEYWORDS, TT_MINUS, TT_MUL, TT_SEMI, TT_STRING,
     TT_RPAR, TT_LPAR
 )
-from uel.builder.token.tokennode import TokenNode as Token
 from uel.builder.token.tools.identifier import (
     is_identifier_center_char_or_end_char, is_start
 )
@@ -16,6 +15,8 @@ from uel.errors.throwexception import ThrowException
 from uel.errors.toodotserror import TooDotsError
 from uel.errors.unknownsyntaxerror import UnknownSyntaxError
 from uel.pyexceptions.nerver import Nerver
+
+from .token.tokennode import TokenNode as Token
 
 __all__ = ["Lexer"]
 

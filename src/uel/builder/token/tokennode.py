@@ -5,10 +5,6 @@ from uel.builder.position import Position
 __all__ = ["TokenNode"]
 
 
-class ParameterError(Exception):
-    pass
-
-
 class TokenNode:
     def __init__(
         self,
