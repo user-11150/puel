@@ -3,12 +3,6 @@ import sys
 import re
 import time
 
-__version__ = "1.7.4"
-with open("docs/whatsnew.md") as f:
-    text = f.read()
-    
-    print(re.sub(f"{__version__} <small>.+?</small>", lambda m: f"{__version__} <small>{time.strftime('%B %d, %Y %P')}<small>", text))
-exit()
 def main():
     print("imports flush and formatting code")
     
@@ -37,9 +31,14 @@ def main():
     os.system(f"git tag v{__version__}")
     
     # input("Please setup whatsnews' time and download url, then enter the Enter")
+    with open("docs/whatsnew.md") as f:
+        text = f.read()
     
-    
-    exit()
+    with open("docs/whatsnew.md", mode="wt") as f:
+        f.write(re.sub(f"{__version__} <small>.+?</small>", lambda m: f"{__version__} <small>{time.strftime('%B %d, %Y %P')}<small>", text))
+
+    del f
+
     print(f"Make commit for {__version__}")
     
     os.system("git add .;"
