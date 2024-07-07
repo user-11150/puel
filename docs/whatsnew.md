@@ -3,7 +3,7 @@
 
 ## UEL
 
-### v1.7.5 <small>July 07</small> {#1.7.5}
+### v1.7.5 <small>July 07, 2024 am<small> {#1.7.5}
 
 * bugfix
 
