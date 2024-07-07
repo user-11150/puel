@@ -1,7 +1,10 @@
-.PHONY: refrensh lint install clean report test coverage build upload docs-serve docs-build imports_flush
+.PHONY: empty refrensh lint install clean report test coverage build upload docs-serve docs-build imports_flush
 
 SOURCE=./src/uel
 python=python
+
+empty:
+	#
 
 refrensh:
 	make clean
