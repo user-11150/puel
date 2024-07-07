@@ -17,6 +17,7 @@
 * Optimize the stutter caused at the beginning
 * Dev-boot
 * <del>obfuscate</del>
+* Imports flush
 
 ### v1.6.0 <small>June 15, 2024 am</small> {#v1.6.0}
 > [Download](https://github.com/user-11150/puel/releases/tag/v1.6.0)
