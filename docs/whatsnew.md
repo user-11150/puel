@@ -4,6 +4,7 @@
 ## UEL
 
 ### v1.7.0 <small>July 07 am</small> {#v1.7.0}
+> [Download](https://github.com/user-11150/puel/releases/tag/v1.7.0)
 
 * The sequence libary
 * Toggles how the number of parameters is obtained
