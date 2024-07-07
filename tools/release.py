@@ -30,7 +30,7 @@ def main():
     
     input("Please setup whatsnews' time and download url, then enter the Enter")
     
-    print(f"Make commit for {__version__}")
+    print("Make commit for {__version__}")
     
     os.system("git add .;"
               f"git commit -m \"[release] {__version__}\";"
