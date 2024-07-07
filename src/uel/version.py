@@ -1,3 +1,3 @@
 # -*- coding: UTF-8 -*-
 
-__version__ = "1.7.3"  # pragma: no cover
+__version__ = "1.7.4"  # pragma: no cover

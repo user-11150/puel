@@ -3,19 +3,24 @@
 
 ## UEL
 
-### v1.7.3 <small>July 07 am</small> {#1.7.3}
+### v1.7.4 <small>July 07</small> {#1.8.0}
+
+* add the year of 1.7.x whatsnew
+* auto add the time
+
+### v1.7.3 <small>July 07, 2024 am</small> {#1.7.3}
 
 * bugfix
 
-### v1.7.2 <small>July 07 am</small> {#1.7.2}
+### v1.7.2 <small>July 07, 2024 am</small> {#1.7.2}
 
 * bugfix
 
-### v1.7.1 <small>July 07 am</small> {#1.7.1}
+### v1.7.1 <small>July 07, 2024 am</small> {#1.7.1}
 
 * bugfix
 
-### v1.7.0 <small>July 07 am</small> {#v1.7.0}
+### v1.7.0 <small>July 07, 2024 am</small> {#v1.7.0}
 
 * The sequence libary
 * Toggles how the number of parameters is obtained
