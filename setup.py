@@ -132,7 +132,8 @@ def get_extensions():
             include_dirs=INCLUDE,
             language="c",
             extra_compile_args=C_COMPILE_ARGS
-        )
+        ),
+        
     ])
 
     extensions.sort(key=lambda ext: sum(map(os.path.getsize, ext.sources)))
@@ -167,7 +168,7 @@ setup(name = "uel",
     cmdclass = {
         "build_ext": UELParallelBuildExtension,
     },
-    install_requires=["objprint"],
+    install_requires=["objprint", "wcwidth"],
     entry_points = {
         'console_scripts': [
             'uel = uel.cli:main',

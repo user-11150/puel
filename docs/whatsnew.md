@@ -3,6 +3,15 @@
 
 ## UEL
 
+### v1.9.0 <small>After 1.8.0</small> {#1.9.0}
+
+* Internationalization(i18n) docs
+
+### v1.8.0 <small>August</small> {#1.8.0}
+
+* Optimizer(Faster than 1.7.5 with 10%)
+* dynamic debug mode
+
 ### v1.7.5 <small>July 07, 2024 am<small> {#1.7.5}
 
 * bugfix

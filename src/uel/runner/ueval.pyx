@@ -70,17 +70,12 @@ class Ueval:
                 if self.stopd:
                     break
                 try:
-                    try:
-                        b = self.frame.bytecodes[self.frame.idx]
-                    except IndexError:
-                        pass
-                    else:
-                        self._eval(b)
-                except Exception as e:
-                    print(
-                        f"Error on {self.frame.filename}, bytecode: {self.frame.idx} {self.frame.bytecodes}"
-                    )
-                    raise e
+                    b = self.frame.bytecodes[self.frame.idx]
+                except IndexError:
+                    pass
+                else:
+                    self._eval(b)
+                
             if self.frame.prev_frame is None:
                 break
             self.frame = self.frame.prev_frame
