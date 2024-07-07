@@ -39,6 +39,8 @@ def import_translate(string):
         except:
             return [f"from {name} import *"]
     if match := re.fullmatch(r"from (.+?) import (.+)", string=string):
+        if match.group(1).startswith("."):
+            return []
         return [*from_imports()]
     elif match := re.fullmatch(r"import ([^\s]+)\s*$", string):
         return [*imports(match), string]

@@ -155,7 +155,9 @@ class UELBytecodeCompiler:
                         compiler.bytecode(bytecode.bytecode_type, bytecode.value)
                 """
                 from uel.runner.importlib import module_import
-                for bytecode in module_import(child.libname, self.filename):
+                for bytecode in module_import(
+                    child.libname, self.filename
+                ):
                     self.bytecode(bytecode.bytecode_type, bytecode.value)
             elif type_ is SequenceNode:
                 self.sequence(child)

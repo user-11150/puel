@@ -14,9 +14,11 @@ from types import ModuleType
 from uel.builder.bytecode.bytecodeinfo import BytecodeInfo
 from uel.libary.default.patch import default_patch
 
+__all__ = [
+    "_read_string_from_file", "module_import", "path_abs", "UEModuleNew",
+    "pymodule_get"
+]
 
-__all__ = ["_read_string_from_file", "module_import", "path_abs",
-           "UEModuleNew", "pymodule_get"]
 
 class UELModuleNewError(Exception):
     pass
@@ -24,6 +26,7 @@ class UELModuleNewError(Exception):
 
 class UELImportError(Exception):
     pass
+
 
 class UEModuleNew:
     def __init__(self, pymodule: ModuleType) -> None:
@@ -55,6 +58,7 @@ def pymodule_get(module_name: str) -> UEModuleNew:
     patch(module)
 
     return UEModuleNew(module)
+
 
 def _read_string_from_file(
     pathname: str, encoding: str | None = None

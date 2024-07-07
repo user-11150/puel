@@ -3,6 +3,10 @@
 
 ## UEL
 
+### v1.7.1 <small>July 07 am</small> {#1.7.1}
+> [Download](https://github.com/user-11150/puel/releases/tag/v1.7.1)
+* bugfix
+
 ### v1.7.0 <small>July 07 am</small> {#v1.7.0}
 > [Download](https://github.com/user-11150/puel/releases/tag/v1.7.0)
 
