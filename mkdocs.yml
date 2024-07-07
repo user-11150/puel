@@ -1,5 +1,8 @@
 site_name: uel
 
+repo_name: user-11150/puel
+repo_url: https://github.com/user-11150/puel
+
 markdown_extensions:
   - attr_list
   - pymdownx.emoji:
@@ -31,32 +34,40 @@ markdown_extensions:
   - pymdownx.details
 
 nav:
-  - README: "README.md"
-  - Tutorial: "tutorial.md"
+  - Home: "index.md"
+  - Guide: "guide.md"
   - Glossary: "glossary.md"
+  - "What's new": "whatsnew.md"
 
 theme:
   name: "material"
+  custom_dir: docs/custom_dir
   palette:
     - scheme: 'default'
       media: '(prefers-color-scheme: light)'
-      primary: white
+      primary: blue
       toggle:
         icon: "material/white-balance-sunny"
         name: "Switch to dark mode"
     - scheme: 'slate'
       media: '(prefers-color-scheme: dark)'
-      primary: black
+      primary: blue
       toggle:
         icon: 'material/moon-waxing-crescent'
         name: 'Switch to light mode'
 
-extra:
-  generator: false
-
-copyright: Copyright &copy 2024 UEL user-11150
+copyright: All rights
 
 plugins:
   - search
   - minify:
       minify_html: true
+
+extra:
+  analytics:
+    provider: google
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/user-11150/puel
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/uel

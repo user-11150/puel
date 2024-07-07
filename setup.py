@@ -38,7 +38,6 @@ import contextlib
 import io
 import python_minifier
 
-
 def copy_file_contents(src, dst, buffer_size=16 * 1024):  # noqa: C901
     """Copy the file 'src' to 'dst'; both must be filenames.  Any error
     opening either file, reading from 'src', or writing to 'dst', raises
@@ -207,8 +206,17 @@ kwargs = {
 }
 
 
-metadata = dict(
-    name = "uel",
+kwargs = dict()
+
+check_environment()
+
+if is_building():
+    kwargs["ext_modules"] = get_extensions()
+
+if is_minify():
+    file_util._copy_file_contents = copy_file_contents
+
+setup(name = "uel",
     version = version,
     author = "XingHao. Li<3584434540@qq.com>",
     packages = find_namespace_packages("src"),
@@ -227,14 +235,6 @@ metadata = dict(
             'uel = uel.cli:main',
         ]
     },
-)
-
-check_environment()
-
-if is_building():
-    metadata["ext_modules"] = get_extensions()
-
-if is_minify():
-    file_util._copy_file_contents = copy_file_contents
-
-setup(**metadata)
+    description="A programming language",
+    keywords=["language", "uel", "puel", "programming"],
+    **kwargs)
