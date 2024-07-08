@@ -21,7 +21,7 @@ jobs:
       - name: Set github remote
         run: git remote set-url origin https://${TOKEN}@github.com/user-11150/puel.git
         env:
-          TOKEN: secrets.TOKEN
+          TOKEN: ${{secrets.TOKEN}}
       - name: Build documentation
         run:
           mkdocs gh-deploy
