@@ -16,12 +16,24 @@ jobs:
           python-version: "3.11"
       - name: Install dependency
         run: sh install-requirements.sh docs
-      - name: Set github user
-        run: git config user.name "user-11150"
-      - name: Set github remote
-        run: git remote set-url origin https://${TOKEN}@github.com/user-11150/puel.git
-        env:
-          TOKEN: ${{secrets.TOKEN}}
       - name: Build documentation
-        run:
-          mkdocs gh-deploy
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN }}
+        run: |
+          mkdocs build --clean
+          mkdocs --version
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+
+      - name: Save build cache
+        uses: actions/cache/save@v4
+        with:
+          key: mkdocs-material-${{ hashfiles('.cache/**') }}
+          path: .cache
+
