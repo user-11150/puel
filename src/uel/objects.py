@@ -27,7 +27,6 @@ __all__ = [
 TRUE = "true"
 FALSE = "false"
 
-
 class UEObject:
 
     _create: Any
@@ -102,15 +101,16 @@ class UEFunctionObject(UECallableObject):
                     f"but there are {args} arguments."
                 )
             )
+        variables = {
+                self.args[x]: parse(args[x], frame) for x in range(len(args))
+            }
         frame = Frame(
             stack=Stack(),
             idx=0,
             bytecodes=self.bytecodes,
             prev_frame=frame,
             filename=frame.filename,
-            variables=dict(
-                zip(self.args, (parse(x, frame) for x in args))
-            )
+            variables=variables
         )
         ueval.frame = frame
 

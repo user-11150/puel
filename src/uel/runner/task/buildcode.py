@@ -41,5 +41,5 @@ class BuildCode(AbstractTask):
         with compiler.with_ast(ast, self.fn) as fp:
             bytecode_optimizer(fp[0])
             if debug:
-                pprint(fp[0])
+                pprint(fp[0], indent=4)
             return fp

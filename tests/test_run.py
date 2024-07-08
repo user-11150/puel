@@ -34,7 +34,7 @@ call a
 """, str(1))
 
     def test_calculator(self):
-        self.do_uel_test("""put 1 + 2 * 2""", str(6))
+        self.do_uel_test("""put 1 + 2 * 2""", str(5))
         self.do_uel_test("""a = 2\nb=3\nput a + b""", str(5))
 
     def test_import2(self):

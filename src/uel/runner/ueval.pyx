@@ -9,9 +9,10 @@ from typing import (List, Optional, Any, Union)
 from uel.utils.get_stack_top import get_stack_top
 
 from uel.builder.bytecode.bytecodeinfo import (
-    BT_ADD, BT_CALL, BT_DIV, BT_IS, BT_JUMP, BT_LOAD_CONST,
+    BT_ADD, BT_CALL, BT_DIV, BT_IS, BT_JUMP, BT_LOAD_CONST, BT_GQUEUE_TOP_AS_STACK_TOP,
     BT_MAKE_SEQUENCE, BT_MINUS, BT_MUL, BT_POP, BT_POP_JUMP_IF_FALSE,
-    BT_PUT, BT_QPUT, BT_QTOP, BT_RETURN, BT_SEQUENCE_APPEND, BT_STORE_NAME
+    BT_PUT, BT_QPUT, BT_QTOP, BT_RETURN, BT_SEQUENCE_APPEND, BT_STORE_NAME,
+    BT_STACK_TOP_AS_GQUEUE_TOP
 )
 from uel.builder.bytecode.bytecodeinfo import BytecodeInfo
 from uel.errors.runtime.throw import throw
@@ -28,7 +29,6 @@ from uel.tools.func.share.runtime_type_check import runtime_type_check
 from inspect import getfullargspec
 
 __all__ = ["Ueval"]
-
 
 class Ueval:
     """
@@ -91,7 +91,7 @@ class Ueval:
     def next(self):
         self.frame.idx += 1
 
-    def _eval(self, bytecode_info: BytecodeInfo) -> None:
+    def _eval(self, bytecode_info):
         if bytecode_info.bytecode_type == BT_LOAD_CONST:
             self.stack_push(bytecode_info.value)
             self.next()
@@ -198,7 +198,18 @@ class Ueval:
             sequ.val.append(item)
             self.stack_push(sequ)
             self.next()
-
+        elif bytecode_info.bytecode_type == BT_STACK_TOP_AS_GQUEUE_TOP:
+            try:
+                self.frame.gqueue.put_nowait(self.stack_top)
+            except:
+                pass
+            self.next()
+        elif bytecode_info.bytecode_type == BT_GQUEUE_TOP_AS_STACK_TOP:
+            try:
+                self.stack_push(self.frame.gqueue.get_nowait())
+            except:
+                pass
+            self.next()
         else:
             prettyd = bytecode_info.pretty_with_bytecode_type(
                 bytecode_info.bytecode_type

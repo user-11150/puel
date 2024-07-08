@@ -19,7 +19,10 @@ def hint(line, col, offset):
         hinted += " " * width
     hinted += "^"
     
-    return line + hinted
+    if not line:
+        return "\n"
+    
+    return "\n" + (" " * offset) + line + hinted + "\n"
 
 class UELBuildtimeException(UELException):
     def __init__(self, error_message: str, pos: Position):
@@ -30,8 +33,7 @@ class UELBuildtimeException(UELException):
 
     def __str__(self) -> str:
         oes: str = super().__str__()
+        line = linecache.getline(self.file, self.line)
         pos_string = f"File {repr(self.file)}, line {self.line},\n"
         return f"""\
-{pos_string}
-  {hint(linecache.getline(self.file, self.line), self.column, 2)}
-{oes}"""
+{pos_string}{hint(line, self.column, 2)}{oes}"""

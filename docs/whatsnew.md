@@ -13,7 +13,11 @@
 * Optimizer(Faster than 1.7.5 with 10%)
 * dynamic debug mode
 * New error's print style
-
+* Simple function call
+* Some new bytecodes
+* Operator priority
+* Use parentheses to change the priority of an operation
+* bugfix
 
 ### v1.7.5 <small>July 07, 2024 am</small> {#1.7.5}
 

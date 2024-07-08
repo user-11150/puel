@@ -24,6 +24,8 @@ TT_REPEAT = "repeat"
 TT_FUNCTION = "function"
 TT_CALL = "call"
 TT_RETURN = "return"
+TT_LSQB = "TT_LSQB"
+TT_RSQB = "TT_RSQB"
 
 TT_VALS = [TT_STRING, TT_INT, TT_FLOAT]
 

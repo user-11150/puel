@@ -1,1 +1,5 @@
-put 1+1-2
+function a art;
+  put art
+end
+
+a(1)

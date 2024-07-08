@@ -24,11 +24,13 @@ from uel.builder.ast.returnnode import ReturnNode
 from uel.builder.ast.sequencenode import SequenceNode
 from uel.builder.ast.singlenode import SingleNode
 from uel.builder.ast.variablenode import VariableNode
+from uel.builder.ast.simplefunctioncall import SimpleFunctionCall
 from uel.builder.token.tokenconstants import (
     TT_ADD, TT_CALL, TT_COMMA, TT_DIV, TT_ELSE, TT_END, TT_EOF, TT_EQUAL,
     TT_FLOAT, TT_FUNCTION, TT_IDENTIFER, TT_IF, TT_IMPORT, TT_INT, TT_IS,
     TT_KEYWORD, TT_KEYWORDS, TT_MINUS, TT_MUL, TT_OP, TT_PUSH, TT_PUT,
-    TT_REPEAT, TT_RETURN, TT_SEMI, TT_STRING, TT_LPAR, TT_RPAR
+    TT_REPEAT, TT_RETURN, TT_SEMI, TT_STRING, TT_LSQB, TT_RSQB, TT_LPAR,
+    TT_RPAR
 )
 from uel.builder.token.tokennode import TokenNode
 from uel.errors.raiseerror import RaiseError
@@ -102,6 +104,8 @@ class Parser:
                 typ = "stack_top"
             if tok.token_val == "true" or tok.token_val == "false":
                 typ = "boolean"
+            if tok.token_type == TT_LSQB:
+                return self.validate_sequence_node(self.current_token)
 
             mapping = {
                 TT_INT: "number",
@@ -113,48 +117,75 @@ class Parser:
             if typ is None:
                 typ = mapping[token_type]
             return Constant(val, typ)
-
-        left_token = self.current_token
-        if left_token.token_type == TT_LPAR:
-            return self.validate_sequence_node(left_token)
-        if left_token is None or left_token.token_type == TT_EOF:
-            if left_token is None:
-                raise Nerver
-            error_object = UELSyntaxError('EOF error', left_token.pos)
-            ThrowException.throw(error_object)
-        op: TokenNode = self.advance()
-        if op is None or op.token_type not in TT_OP and not (
-            op.token_type == TT_KEYWORD and op.token_val == TT_IS
-        ):
-            container = ExpressionNode(None)
-            left_val = wrap_single(left_token)
-            container.val = left_val
-            self.rollback()
-            return container
-
-        self.advance()
-        right_val = self.validate_expr().val
-        left_val = wrap_single(left_token)
-
-        ast_type: Any
-        if op.token_type == TT_ADD:
-            ast_type = AddNode
-        elif op.token_type == TT_MINUS:
-            ast_type = MinusNode
-        elif op.token_type == TT_MUL:
-            ast_type = MultNode
-        elif op.token_type == TT_DIV:
-            ast_type = DivNode
-        elif op.token_type == TT_KEYWORD and op.token_val == TT_IS:
-            ast_type = IsEqual
-        elif op.token_type == TT_EQUAL:
-            ast_type = VariableNode
+        def isvalue(token):
+            if token is None:
+                return False
+            return token.token_type in [TT_INT, TT_FLOAT, TT_STRING, TT_IDENTIFER, TT_LSQB]
+        def isop(token):
+            if token is None:
+                return False
+            return token.token_type in [TT_ADD, TT_MINUS, TT_MUL, TT_DIV, TT_IS, TT_EQUAL]
+        def get_op_constructor(token):
+            return ({
+                TT_ADD: AddNode,
+                TT_MINUS: MinusNode,
+                TT_MUL: MultNode,
+                TT_DIV: DivNode,
+                TT_IS: IsEqual,
+                TT_EQUAL: VariableNode
+            })[token.token_type]
+        def get_priority(constructor):
+            priority = {
+                AddNode: 1,
+                MinusNode: 1,
+                MultNode: 2,
+                DivNode: 2,
+                SimpleFunctionCall: 3
+            }
+            return priority.get(constructor, 1)
+        left = self.current_token
+        if isvalue(left):
+            leftval = wrap_single(left)
+            self.advance()
+        elif left.token_type == TT_LPAR:
+            self.advance()
+            leftval = self.validate_expr()
+            self.advance()
+            if self.current_token.token_type != TT_RPAR:
+                raise UELSyntaxError(f"Bad expr: {self.current_token}", self.current_token.pos)
+            self.advance()
         else:
-            raise ValueError("op.token_type is not support")
-
-        node: AbstractNode = ast_type(left_val, right_val)
-        # print(node)
-        return ExpressionNode(node)
+            raise UELSyntaxError(f"Bad expr: {self.current_token}", self.current_token.pos)
+        while True:
+            op = self.current_token
+            if isop(op):
+                constructor = get_op_constructor(op)
+            elif op is not None and op.token_type == TT_LPAR:
+                args = self.validate_sequence_node(self.current_token, TT_RPAR)
+                leftval = SimpleFunctionCall(leftval, args)
+                self.advance()
+                continue
+            else:
+                self.rollback()
+                return ExpressionNode(leftval)
+            self.advance()
+            right = self.current_token
+            if isvalue(right):
+                if get_priority(type(leftval)) < get_priority(constructor) and type(leftval) not in [Constant, SimpleFunctionCall]:
+                    leftval.right = constructor(leftval.right, wrap_single(right))
+                else:
+                    leftval = constructor(leftval, self.validate_expr())
+                self.advance()
+            elif right.token_type == TT_LPAR:
+                self.advance()
+                right = self.validate_expr()
+                self.advance()
+                if self.current_token.token_type != TT_RPAR:
+                    raise UELSyntaxError(f"Bad expr: {self.current_token}", self.current_token.pos)
+                leftval = constructor(leftval, right)
+                self.advance()
+            else:
+                raise UELSyntaxError("Need a op", self.current_token.pos)
 
     def validate_if(self) -> IfNode:
         last_token = self.current_token
@@ -227,18 +258,18 @@ class Parser:
             )
         return SequenceNode(sequence)
 
-    def validate_sequence_node(self, last_token) -> SequenceNode:
+    def validate_sequence_node(self, last_token, eof=TT_RSQB) -> SequenceNode:
         if self.current_token is None:
             RaiseError(
                 UELSyntaxError,
-                "SyntaxError: sequence need a LPAR, but get a EOF",
+                "SyntaxError: sequence need a LSQB, but get a EOF",
                 last_token.pos
             )
         sequence = []
         self.advance()
         try:
             while True:
-                if self.current_token.token_type == TT_RPAR:
+                if self.current_token.token_type == eof:
                     break
                 sequence.append(self.validate_expr())
                 self.advance()

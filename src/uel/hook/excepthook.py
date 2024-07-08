@@ -6,6 +6,7 @@ default_excepthook = sys.excepthook
 
 def excepthook(exctype, value, traceback):
     if issubclass(exctype, UELBaseException):
+        # traceback.walk_stack(traceback)
         UEErr_SetString(value)
         return
     

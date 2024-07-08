@@ -5,7 +5,7 @@ from uel.builder.position import Position
 from uel.builder.token.tokenconstants import (
     TT_ADD, TT_COMMA, TT_DIV, TT_EOF, TT_EQUAL, TT_FLOAT, TT_IDENTIFER,
     TT_INT, TT_KEYWORD, TT_KEYWORDS, TT_MINUS, TT_MUL, TT_SEMI, TT_STRING,
-    TT_RPAR, TT_LPAR
+    TT_RPAR, TT_LPAR, TT_LSQB, TT_RSQB
 )
 from uel.builder.token.tools.identifier import (
     is_identifier_center_char_or_end_char, is_start
@@ -122,6 +122,13 @@ class Lexer:
                 self.advance()
                 continue
 
+            elif self.current_char == "[":
+                tokens.append(Token(TT_LSQB, pos=self.pos.copy()))
+                self.advance()
+                continue
+            elif self.current_char == "]":
+                tokens.append(Token(TT_RSQB, pos=self.pos.copy()))
+                self.advance()
             else:
                 ThrowException.throw(
                     UnknownSyntaxError('Unknown syntax', self.pos)
