@@ -3,11 +3,28 @@
 
 ## UEL
 
-### v1.7.5 <small>July 07, 2024 am<small> {#1.7.5}
+### v1.9.0 <small>After 1.8.0</small> {#1.9.0}
+
+* Internationalization(i18n) docs
+
+
+### v1.8.0 <small>August</small> {#1.8.0}
+
+* Optimizer(Faster than 1.7.5 with 10%)
+* dynamic debug mode
+* New error's print style
+* Simple function call
+* Some new bytecodes
+* Operator priority
+* Use parentheses to change the priority of an operation
+* bugfix
+
+### v1.7.5 <small>July 07, 2024 am</small> {#1.7.5}
 
 * bugfix
 
-### v1.7.4 <small>July 07, 2024 am<small> {#1.7.4}
+
+### v1.7.4 <small>July 07, 2024 am</small> {#1.7.4}
 
 * add the year of 1.7.x whatsnew
 * auto add the time

@@ -3,8 +3,10 @@ import typing as t
 from uel.builder.bytecode.bytecodeinfo import (
     BT_ADD, BT_CALL, BT_DIV, BT_IS, BT_JUMP, BT_LOAD_CONST,
     BT_MAKE_SEQUENCE, BT_MINUS, BT_MUL, BT_POP, BT_POP_JUMP_IF_FALSE,
-    BT_PUT, BT_QPUT, BT_QTOP, BT_RETURN, BT_SEQUENCE_APPEND, BT_STORE_NAME
+    BT_PUT, BT_QPUT, BT_QTOP, BT_RETURN, BT_SEQUENCE_APPEND, BT_STORE_NAME,
+    BT_STACK_TOP_AS_GQUEUE_TOP, BT_GQUEUE_TOP_AS_STACK_TOP
 )
+from uel.builder.ast.simplefunctioncall import SimpleFunctionCall
 from uel.builder.ast.abstractnode import AbstractNode
 from uel.builder.ast.addnode import AddNode
 from uel.builder.ast.binopnode import BinOpNode
@@ -159,6 +161,8 @@ class UELBytecodeCompiler:
                     child.libname, self.filename
                 ):
                     self.bytecode(bytecode.bytecode_type, bytecode.value)
+            elif type_ is SimpleFunctionCall:
+                self.expr(child)
             elif type_ is SequenceNode:
                 self.sequence(child)
             else:
@@ -181,7 +185,20 @@ class UELBytecodeCompiler:
 
         class NotSupportType(Exception):
             pass
-
+        def _symbol(node: t.Any) -> None:
+            type_node = type(node)
+            if type_node is AddNode:
+                self.add()
+                return
+            elif type_node is MinusNode:
+                self.minus()
+                return
+            elif type_node is MultNode:
+                self.mult()
+            elif type_node is DivNode:
+                self.div()
+            elif type_node is IsEqual:
+                self.equal()
         try:
             if hasattr(node, "val"):
                 val = node.val
@@ -198,15 +215,26 @@ class UELBytecodeCompiler:
                 self.load_const((nod.type, nod.val))
                 counter += 1
                 raise ExitAndReturn
+            elif type(nod) is SimpleFunctionCall:
+                nod: SimpleFunctionCall
+                for child in nod.args.values[::-1]:
+                    self.expr(child)
+                    self.bytecode(BT_STACK_TOP_AS_GQUEUE_TOP)
+                self.expr(nod.func)
+                self.bytecode(BT_CALL)
+                self.bytecode(BT_GQUEUE_TOP_AS_STACK_TOP)
             elif type(nod) in (
                 AddNode, MinusNode, MultNode, DivNode, IsEqual
             ):
-                self.calculator(nod)
+                self.expr(nod.left)
+                self.expr(nod.right)
+                _symbol(nod)
                 raise ExitAndReturn
             elif type(nod) is SequenceNode:
                 self.sequence(nod)
                 counter += 1
-
+            elif type(nod) is ExpressionNode:
+                self.expr(nod)
             else:
                 raise NotSupportType
 
@@ -220,64 +248,6 @@ class UELBytecodeCompiler:
 
     def equal(self) -> None:
         self.bytecode(BT_IS)
-
-    def calculator(
-        self, node: t.Union[Constant, BinOpNode, t.Any]
-    ) -> None:
-        """
-        Four arithmetic
-        """
-        def _symbol(node: t.Any) -> None:
-            type_node = type(node)
-            if type_node is AddNode:
-                self.add()
-                return
-            elif type_node is MinusNode:
-                self.minus()
-                return
-            elif type_node is MultNode:
-                self.mult()
-            elif type_node is DivNode:
-                self.div()
-            elif type_node is IsEqual:
-                self.equal()
-
-        def deep(node: t.Any, root: bool = True) -> t.Any:
-            if runtime_type_check(node, Constant):
-                self.calculator(node)
-                yield
-                return
-            if root:
-                self.calculator(node.left)
-                g = deep(node.right, False)
-                next(g)
-                _symbol(node)
-                yield from g
-            else:
-                self.calculator(node.left)
-                yield
-                g = deep(node.right, False)
-                next(g)
-                _symbol(node)
-                yield from g
-
-        if type(node) is Constant or type(node) is SequenceNode:
-            self.expr(node)
-            return
-        elif type(node) is ExpressionNode and (
-            type(node.val) is Constant or type(node.val) is SequenceNode
-        ):
-            self.expr(node.val)
-            return
-        elif type(node) is BinOpNode and runtime_type_check(
-            node.left, Constant, SequenceNode
-        ) and runtime_type_check(node.right, Constant, SequenceNode):
-            self.calculator(node.left)
-            self.calculator(node.right)
-            _symbol(node)
-        else:
-            for _ in deep(node):
-                pass
 
     def pop(self, each_number: int) -> None:
         """

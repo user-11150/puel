@@ -35,7 +35,7 @@ def main():
         text = f.read()
     
     with open("docs/whatsnew.md", mode="wt") as f:
-        f.write(re.sub(f"{__version__} <small>.+?</small>", lambda m: f"{__version__} <small>{time.strftime('%B %d, %Y %P')}<small>", text))
+        f.write(re.sub(f"{__version__} <small>.+?</small>", lambda m: f"{__version__} <small>{time.strftime('%B %d, %Y %P')}</small>", text))
 
     del f
 

@@ -2,6 +2,8 @@ import sys
 from typing import *
 
 from uel.errors.runtime.uelruntimeerror import UELRuntimeError
+from uel.errors.raiseerror import RaiseError
+
 
 __all__ = ["throw"]
 
@@ -18,6 +20,6 @@ def throw(e: type[UELRuntimeError], string: str) -> None:
 
 def throw(e: Any, string: Any = None):
     if type(e) is type:
-        e = e(string)
-    sys.stderr.write(str(e))
-    raise SystemExit
+        obj = e(string)
+    
+    RaiseError(obj.__class__, obj.error_message)

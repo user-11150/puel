@@ -4,6 +4,8 @@ import sys
 from typing import List
 
 from uel.ueargparse import UEArgParser, UETask
+from uel.hook.initiation import initialization
+
 
 __all__ = ["Main"]
 
@@ -11,6 +13,8 @@ __all__ = ["Main"]
 class Main:
     @staticmethod
     def main(argv: List[str]) -> None:
+        initialization()
+        
         parser = UEArgParser(argv[1:])
         try:
             task = UETask(parser)
@@ -18,6 +22,3 @@ class Main:
         except KeyboardInterrupt:
             print("KeyboardInterrupt")
             os._exit(0)
-        except Exception as e:
-            print("UELRuntimeError(PythonError):", file=sys.stderr)
-            sys.excepthook(type(e), e, e.__traceback__)

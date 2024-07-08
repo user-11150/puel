@@ -25,6 +25,8 @@ BT_RETURN: BT = 14
 BT_POP_JUMP_IF_FALSE = 15
 BT_MAKE_SEQUENCE = 16
 BT_SEQUENCE_APPEND = 17
+BT_GQUEUE_TOP_AS_STACK_TOP = 18
+BT_STACK_TOP_AS_GQUEUE_TOP = 19
 
 __all__ = [
     *filter(lambda x: x.startswith("BT"),
@@ -70,7 +72,9 @@ class BytecodeInfo:
             BT_RETURN: "return",
             BT_POP_JUMP_IF_FALSE: "pop jump if false",
             BT_MAKE_SEQUENCE: "make sequence",
-            BT_SEQUENCE_APPEND: "sequence append"
+            BT_SEQUENCE_APPEND: "sequence append",
+            BT_STACK_TOP_AS_GQUEUE_TOP: "stack top as gqueue top",
+            BT_GQUEUE_TOP_AS_STACK_TOP: "gqueue top as stack top"
         }
         mapping.setdefault("unknown")  # type: ignore
         return mapping[bt].upper().replace(" ", "_"), bt

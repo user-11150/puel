@@ -11,6 +11,8 @@ from uel.builder.bytecode.bytecodeinfo import BytecodeInfo
 from uel.builder.lexer import Lexer
 from uel.builder.parser import Parser
 from uel.runner.task.abstracttask import AbstractTask
+from uel.optimizer import ast_optimizer
+from uel.optimizer import bytecode_optimizer
 
 __all__ = ["BuildCode"]
 
@@ -28,6 +30,7 @@ class BuildCode(AbstractTask):
             pprint(tokens)
         parser: Parser = Parser(tokens)
         ast = parser.parse()
+        ast_optimizer(ast)
         if debug:
             print('\nAST:')
             objprint(ast)
@@ -36,6 +39,7 @@ class BuildCode(AbstractTask):
             print('\nBytecode')
 
         with compiler.with_ast(ast, self.fn) as fp:
+            bytecode_optimizer(fp[0])
             if debug:
-                pprint(fp[0])
+                pprint(fp[0], indent=4)
             return fp

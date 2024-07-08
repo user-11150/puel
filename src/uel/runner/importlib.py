@@ -33,14 +33,11 @@ class UEModuleNew:
         self.module = pymodule
         try:
             if not hasattr(pymodule, 'bytecodes'):
-                raise UELImportError from \
-                    AttributeError(
-                        f"Object {pymodule} not have attribute 'bytecodes'")
+                raise UELImportError
         except Exception as e:
             raise UELModuleNewError("Module object of a non-composite UEModul"
                                     "e specification cannot be converted to a"
-                                    " UELModule") \
-                from e
+                                    " UELModule")
         self.bytecodes: list[BytecodeInfo] = self.module.bytecodes
 
 
