@@ -42,6 +42,8 @@ nav:
 theme:
   name: "material"
   custom_dir: docs/custom_dir
+  logo: assets/images/favicon.svg
+  favicon: assets/images/favicon.svg
   palette:
     - scheme: 'default'
       media: '(prefers-color-scheme: light)'
@@ -55,7 +57,10 @@ theme:
       toggle:
         icon: 'material/moon-waxing-crescent'
         name: 'Switch to light mode'
-
+  features:
+    - navigation.path
+    - navigation.tabs
+    - navigation.sections
 copyright: All rights
 
 plugins:
@@ -64,8 +69,6 @@ plugins:
       minify_html: true
 
 extra:
-  analytics:
-    provider: google
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/user-11150/puel

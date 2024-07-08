@@ -4,7 +4,7 @@
 ## The UEL is a programming language.
 The UEL programming language is interpreted language, and dynamic language. It's very simple.
 
-Okay. let's to leaning from [Guide], and If you are interested in the history of uel, you can see the [history-of-uel].
+Okay. let's to learning from [Guide], and If you are interested in the history of uel, you can see the [history-of-uel].
 
   [Guide]: ./guide.md
   [history-of-uel]: ./history

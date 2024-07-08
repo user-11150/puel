@@ -1,12 +1,8 @@
 # What's new
+
 [TOC]
 
 ## UEL
-
-### v1.9.0 <small>After 1.8.0</small> {#1.9.0}
-
-* Internationalization(i18n) docs
-
 
 ### v1.8.0 <small>August</small> {#1.8.0}
 
@@ -18,6 +14,7 @@
 * Operator priority
 * Use parentheses to change the priority of an operation
 * bugfix
+* Internationalization(i18n) docs
 
 ### v1.7.5 <small>July 07, 2024 am</small> {#1.7.5}
 
