@@ -134,15 +134,6 @@ class Parser:
                 TT_IS: IsEqual,
                 TT_EQUAL: VariableNode
             })[token.token_type]
-        def get_priority(constructor):
-            priority = {
-                AddNode: 1,
-                MinusNode: 1,
-                MultNode: 2,
-                DivNode: 2,
-                SimpleFunctionCall: 3
-            }
-            return priority.get(constructor, 1)
         left = self.current_token
         if isvalue(left):
             leftval = wrap_single(left)
@@ -171,10 +162,7 @@ class Parser:
             self.advance()
             right = self.current_token
             if isvalue(right):
-                if get_priority(type(leftval)) < get_priority(constructor) and type(leftval) not in [Constant, SimpleFunctionCall]:
-                    leftval.right = constructor(leftval.right, wrap_single(right))
-                else:
-                    leftval = constructor(leftval, self.validate_expr())
+                leftval = constructor(leftval, self.validate_expr())
                 self.advance()
             elif right.token_type == TT_LPAR:
                 self.advance()
