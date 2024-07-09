@@ -185,6 +185,7 @@ class UELBytecodeCompiler:
 
         class NotSupportType(Exception):
             pass
+
         def _symbol(node: t.Any) -> None:
             type_node = type(node)
             if type_node is AddNode:
@@ -199,6 +200,7 @@ class UELBytecodeCompiler:
                 self.div()
             elif type_node is IsEqual:
                 self.equal()
+
         try:
             if hasattr(node, "val"):
                 val = node.val

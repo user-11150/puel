@@ -7,9 +7,10 @@ import wcwidth
 
 __all__ = ["UELBuildtimeException"]
 
+
 def hint(line, col, offset):
     hinted = " " * offset
-    
+
     for char in line[0:col]:
         width = wcwidth.wcwidth(char)
         if width < 0:
@@ -18,11 +19,12 @@ def hint(line, col, offset):
             width = 1
         hinted += " " * width
     hinted += "^"
-    
+
     if not line:
         return "\n"
-    
+
     return "\n" + (" " * offset) + line + hinted + "\n"
+
 
 class UELBuildtimeException(UELException):
     def __init__(self, error_message: str, pos: Position):

@@ -1,13 +1,16 @@
 # yapf: disable
-__all__ = ['is_identifier_center_char_or_end_char', 'ASTToByteCodeCollectionCompiler', 'BaseHTTPRequestHandler', 'UELBuildtimeException', 'BT_POP_JUMP_IF_FALSE', 'UELBytecodeCompiler', 'UELMakeObjectError', 'runtime_type_check', 'PushStackValueNode', 'UnknownSyntaxError', 'BT_SEQUENCE_APPEND', 'IS_CAN_MAKE_OBJECT', 'bytecode_optimizer', 'CallFunctionNode', 'BT_MAKE_SEQUENCE', 'UEFunctionObject', 'UELBaseException', 'UELRuntimeError', 'BUILTIN_MODULES', 'ExpressionNode', 'ThrowException', 'UELSyntaxError', 'uel_new_object', '_UERunTaskDesc', 'UENumberObject', 'ContainerNode', 'BT_LOAD_CONST', 'BT_STORE_NAME', 'ascii_letters', 'import_module', 'default_patch', 'ast_optimizer', 'BytecodeInfo', 'AbstractNode', 'FunctionNode', 'SequenceNode', 'VariableNode', 'TT_IDENTIFER', 'TooDotsError', 'UELException', 'FunctionType', 'make_exports', 'AbstractTask', 'UEArgParser', 'TT_FUNCTION', 'TT_KEYWORDS', 'single_call', 'CustomError', '_decompress', 'ImportNode', 'ModuleNode', 'RepeatNode', 'ReturnNode', 'SingleNode', 'TT_KEYWORD', 'RaiseError', 'decompress', 'HTTPServer', 'contextlib', 'ModuleType', 'BinOpNode', 'MinusNode', 'TT_IMPORT', 'TT_REPEAT', 'TT_RETURN', 'TT_STRING', 'TokenNode', 'TypeAlias', 'threading', 'BT_RETURN', '_compress', 'BuildCode', 'LifoQueue', 'ParamSpec', 'Sequence', 'builtins', 'UEObject', 'objprint', 'Constant', 'MultNode', 'TT_COMMA', 'TT_EQUAL', 'TT_FLOAT', 'TT_MINUS', 'overload', 'Optional', 'Position', 'is_start', 'with_out', 'deepcopy', 'BT_MINUS', 'bytecode', 'compress', 'Callable', 'ENCODING', 'Iterator', 'AddNode', 'DivNode', 'IsEqual', 'PutNode', 'TT_CALL', 'TT_ELSE', 'TT_PUSH', 'TT_SEMI', 'TT_LPAR', 'TT_RPAR', 'TypeVar', 'BT_CALL', 'BT_JUMP', 'BT_QPUT', 'BT_QTOP', 'os.path', 'DIRNAME', 'RunCode', 'Generic', 'c_ulong', 'pointer', 'UETask', 'objstr', 'IfNode', 'TT_ADD', 'TT_DIV', 'TT_END', 'TT_EOF', 'TT_INT', 'TT_MUL', 'TT_PUT', 'Nerver', 'DIGITS', 'typing', 'BT_ADD', 'BT_DIV', 'BT_MUL', 'BT_POP', 'BT_PUT', 'lookup', 'stderr', 'pickle', 'atexit', 'pprint', 'Parser', 'throw', 'Empty', 'Tuple', 'Frame', 'Stack', 'Union', 'TT_IF', 'TT_IS', 'TT_OP', 'final', 'BT_IS', '_exit', 'RESET', 'start', 'parse', 'DEBUG', 'runpy', 'Queue', 'Lexer', 'Ueval', 'wraps', 'exit', 'main', 'List', 'argv', 'Main', 'Self', 'math', 'time', 'sys', 'Any', 'RED', 'os', 'BT', 'io', 'IO', 're', 't']
+__all__ = ['is_identifier_center_char_or_end_char', 'ASTToByteCodeCollectionCompiler', 'BT_STACK_TOP_AS_GQUEUE_TOP', 'BT_GQUEUE_TOP_AS_STACK_TOP', 'BaseHTTPRequestHandler', 'UELBuildtimeException', 'BT_POP_JUMP_IF_FALSE', 'UELBytecodeCompiler', 'UELMakeObjectError', 'runtime_type_check', 'PushStackValueNode', 'SimpleFunctionCall', 'UnknownSyntaxError', 'BT_SEQUENCE_APPEND', 'IS_CAN_MAKE_OBJECT', 'bytecode_optimizer', 'CallFunctionNode', 'BT_MAKE_SEQUENCE', 'UEFunctionObject', 'UELBaseException', 'UELRuntimeError', 'UEErr_SetString', 'BUILTIN_MODULES', 'initialization', 'ExpressionNode', 'ThrowException', 'UELSyntaxError', 'uel_new_object', '_UERunTaskDesc', 'UENumberObject', 'ContainerNode', 'BT_LOAD_CONST', 'BT_STORE_NAME', 'ascii_letters', 'ast_optimizer', 'import_module', 'default_patch', 'BytecodeInfo', 'AbstractNode', 'FunctionNode', 'SequenceNode', 'VariableNode', 'TT_IDENTIFER', 'TooDotsError', 'UELException', 'FunctionType', 'make_exports', 'AbstractTask', 'UEArgParser', '__version__', 'TT_FUNCTION', 'TT_KEYWORDS', 'single_call', 'CustomError', '_decompress', 'ImportNode', 'ModuleNode', 'RepeatNode', 'ReturnNode', 'SingleNode', 'TT_KEYWORD', 'RaiseError', 'decompress', 'HTTPServer', 'contextlib', 'excepthook', 'ModuleType', 'BinOpNode', 'MinusNode', 'TT_IMPORT', 'TT_REPEAT', 'TT_RETURN', 'TT_STRING', 'TokenNode', 'TypeAlias', 'threading', 'BT_RETURN', 'linecache', '_compress', 'BuildCode', 'LifoQueue', 'ParamSpec', 'Sequence', 'builtins', 'UEObject', 'objprint', 'Constant', 'MultNode', 'TT_COMMA', 'TT_EQUAL', 'TT_FLOAT', 'TT_MINUS', 'overload', 'Optional', 'Position', 'is_start', 'with_out', 'deepcopy', 'BT_MINUS', 'bytecode', 'compress', 'Callable', 'ENCODING', 'Iterator', 'AddNode', 'DivNode', 'IsEqual', 'PutNode', 'TT_CALL', 'TT_ELSE', 'TT_PUSH', 'TT_SEMI', 'TT_LSQB', 'TT_RSQB', 'TT_LPAR', 'TT_RPAR', 'TypeVar', 'BT_CALL', 'BT_JUMP', 'BT_QPUT', 'BT_QTOP', 'wcwidth', 'os.path', 'DIRNAME', 'RunCode', 'Generic', 'c_ulong', 'pointer', 'UETask', 'objstr', 'IfNode', 'TT_ADD', 'TT_DIV', 'TT_END', 'TT_EOF', 'TT_INT', 'TT_MUL', 'TT_PUT', 'Nerver', 'DIGITS', 'typing', 'BT_ADD', 'BT_DIV', 'BT_MUL', 'BT_POP', 'BT_PUT', 'lookup', 'stderr', 'pickle', 'atexit', 'pprint', 'Parser', 'throw', 'Empty', 'Tuple', 'Frame', 'Stack', 'Union', 'TT_IF', 'TT_IS', 'TT_OP', 'final', 'BT_IS', 'RESET', '_exit', 'start', 'parse', 'DEBUG', 'runpy', 'Queue', 'Lexer', 'Ueval', 'wraps', 'exit', 'main', 'List', 'argv', 'Main', 'Self', 'math', 'time', 'sys', 'Any', 'RED', 'os', 'BT', 'io', 'IO', 're', 't']
 from uel.builder.bytecode.asttobytecodecollectioncompiler import ASTToByteCodeCollectionCompiler
 from uel.builder.token.tools.identifier import is_identifier_center_char_or_end_char
+from uel.builder.bytecode.bytecodeinfo import BT_GQUEUE_TOP_AS_STACK_TOP
+from uel.builder.bytecode.bytecodeinfo import BT_STACK_TOP_AS_GQUEUE_TOP
 from uel.builder.bytecode.uelbytecodecompiler import UELBytecodeCompiler
 from uel.tools.func.share.runtime_type_check import runtime_type_check
 from uel.errors.runtime.uelmakeobjecterror import UELMakeObjectError
 from uel.builder.bytecode.bytecodeinfo import BT_POP_JUMP_IF_FALSE
 from uel.errors.uelbuildtimeexception import UELBuildtimeException
 from uel.builder.ast.pushstackvaluenode import PushStackValueNode
+from uel.builder.ast.simplefunctioncall import SimpleFunctionCall
 from uel.builder.bytecode.bytecodeinfo import BT_SEQUENCE_APPEND
 from uel.builder.bytecode.bytecodeinfo import BT_MAKE_SEQUENCE
 from uel.errors.runtime.uelruntimeerror import UELRuntimeError
@@ -22,6 +25,7 @@ from uel.builder.bytecode import bytecodeinfo as bytecode
 from uel.builder.token.tokenconstants import TT_IDENTIFER
 from uel.builder.token.tokenconstants import TT_FUNCTION
 from uel.builder.token.tokenconstants import TT_KEYWORDS
+from uel.errors.ueerror_setstring import UEErr_SetString
 from uel.errors.uelbaseexception import UELBaseException
 from uel.builder.ast.containernode import ContainerNode
 from uel.builder.bytecode.bytecodeinfo import BT_RETURN
@@ -53,8 +57,10 @@ from uel.builder.bytecode.bytecodeinfo import BT_PUT
 from uel.builder.token.tokenconstants import TT_CALL
 from uel.builder.token.tokenconstants import TT_ELSE
 from uel.builder.token.tokenconstants import TT_LPAR
+from uel.builder.token.tokenconstants import TT_LSQB
 from uel.builder.token.tokenconstants import TT_PUSH
 from uel.builder.token.tokenconstants import TT_RPAR
+from uel.builder.token.tokenconstants import TT_RSQB
 from uel.builder.token.tokenconstants import TT_SEMI
 from uel.errors.throwexception import ThrowException
 from uel.errors.uelsyntaxerror import UELSyntaxError
@@ -90,6 +96,7 @@ from uel.libary.builtins import BUILTIN_MODULES
 from uel.runner.task.buildcode import BuildCode
 from http.server import BaseHTTPRequestHandler
 from uel.bytecodefile.compress import compress
+from uel.hook.initiation import initialization
 from uel.builder.ast.constant import Constant
 from uel.builder.ast.multnode import MultNode
 from uel.errors.raiseerror import RaiseError
@@ -101,6 +108,7 @@ from uel.builder.ast.putnode import PutNode
 from uel.libary.helpers import make_exports
 from uel.runner.task.runcode import RunCode
 from uel.errors.runtime.throw import throw
+from uel.hook.excepthook import excepthook
 from uel.objects import IS_CAN_MAKE_OBJECT
 from uel.pyexceptions.nerver import Nerver
 from uel.builder.ast.ifnode import IfNode
@@ -116,6 +124,7 @@ from uel.builder.parser import Parser
 from importlib import import_module
 from string import digits as DIGITS
 from uel.builder.lexer import Lexer
+from uel.version import __version__
 from http.server import HTTPServer
 from uel.constants import ENCODING
 from uel.runner.frame import Frame
@@ -167,9 +176,11 @@ from sys import exit
 from typing import *
 import typing as t
 import contextlib
+import linecache
 import threading
 import builtins
 import os.path
+import wcwidth
 import atexit
 import pickle
 import typing

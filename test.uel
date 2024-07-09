@@ -1,5 +1,10 @@
-function a art;
-  put art
+function my_test_func;
+    return 3 + 5
 end
 
-a(1)
+put 1 * 2 + 3 / 4 + 8 * 3
+#   2     +  0.75 + (8 * 3)                + 9
+#   2     +  0.75 + 24                     + 9
+#   26 + 0.75 + 9
+#   26.75 + 9
+#   35.75

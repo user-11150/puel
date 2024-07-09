@@ -27,6 +27,7 @@ __all__ = [
 TRUE = "true"
 FALSE = "false"
 
+
 class UEObject:
 
     _create: Any
@@ -102,8 +103,9 @@ class UEFunctionObject(UECallableObject):
                 )
             )
         variables = {
-                self.args[x]: parse(args[x], frame) for x in range(len(args))
-            }
+            self.args[x]: parse(args[x], frame)
+            for x in range(len(args))
+        }
         frame = Frame(
             stack=Stack(),
             idx=0,
