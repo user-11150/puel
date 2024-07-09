@@ -4,6 +4,11 @@
 
 ## UEL
 
+### v1.9.0 <small>It's in develop</small> {#1.9.0}
+
+* Some docs
+
+
 ### v1.8.0 <small>July 09, 2024 am</small> {#1.8.0}
 
 * Optimizer(Faster than 1.7.5 with 10%)
@@ -13,7 +18,6 @@
 * Some new bytecodes
 * Use parentheses to change the priority of an operation
 * bugfix
-* Internationalization(i18n) docs
 
 ### v1.7.5 <small>July 07, 2024 am</small> {#1.7.5}
 
