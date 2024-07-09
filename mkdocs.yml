@@ -32,28 +32,28 @@ markdown_extensions:
   - pymdownx.snippets
   - markdown.extensions.attr_list
   - pymdownx.details
+  - pymdownx.betterem
 
 nav:
   - Home: "index.md"
-  - Guide: "guide.md"
+  - Information of UEL: "information.md"
+  - Tutorial: "tutorial.md"
   - Glossary: "glossary.md"
   - "What's new": "whatsnew.md"
 
 theme:
   name: "material"
   custom_dir: docs/custom_dir
-  logo: assets/images/favicon.svg
-  favicon: assets/images/favicon.svg
   palette:
     - scheme: 'default'
       media: '(prefers-color-scheme: light)'
-      primary: blue
+      # primary: blue
       toggle:
         icon: "material/white-balance-sunny"
         name: "Switch to dark mode"
     - scheme: 'slate'
       media: '(prefers-color-scheme: dark)'
-      primary: blue
+      # primary: blue
       toggle:
         icon: 'material/moon-waxing-crescent'
         name: 'Switch to light mode'
@@ -61,6 +61,7 @@ theme:
     - navigation.path
     - navigation.tabs
     - navigation.sections
+    - toc.follow
 copyright: All rights
 
 plugins:
