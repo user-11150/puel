@@ -20,8 +20,10 @@ from uel.builder.ast.sequencenode import SequenceNode
 from uel.builder.ast.singlenode import SingleNode
 from uel.builder.ast.variablenode import VariableNode
 
+
 def optexpr(ast):
     pass
+
 
 def ast_optimizer(ast):
     if RepeatNode is type(ast):

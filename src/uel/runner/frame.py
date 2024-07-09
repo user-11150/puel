@@ -15,7 +15,7 @@ class Frame:
         prev_frame: t.Optional["Frame"] = None,
         filename: str = "<unknown>",
         variables: t.Optional[dict[str, t.Any]] = None,
-        gqueue = None
+        gqueue=None
     ):
         self.stack: Stack = stack
         self.idx = idx

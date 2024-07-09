@@ -117,23 +117,33 @@ class Parser:
             if typ is None:
                 typ = mapping[token_type]
             return Constant(val, typ)
+
         def isvalue(token):
             if token is None:
                 return False
-            return token.token_type in [TT_INT, TT_FLOAT, TT_STRING, TT_IDENTIFER, TT_LSQB]
+            return token.token_type in [
+                TT_INT, TT_FLOAT, TT_STRING, TT_IDENTIFER, TT_LSQB
+            ]
+
         def isop(token):
             if token is None:
                 return False
-            return token.token_type in [TT_ADD, TT_MINUS, TT_MUL, TT_DIV, TT_IS, TT_EQUAL]
+            return token.token_type in [
+                TT_ADD, TT_MINUS, TT_MUL, TT_DIV, TT_IS, TT_EQUAL
+            ]
+
         def get_op_constructor(token):
-            return ({
-                TT_ADD: AddNode,
-                TT_MINUS: MinusNode,
-                TT_MUL: MultNode,
-                TT_DIV: DivNode,
-                TT_IS: IsEqual,
-                TT_EQUAL: VariableNode
-            })[token.token_type]
+            return (
+                {
+                    TT_ADD: AddNode,
+                    TT_MINUS: MinusNode,
+                    TT_MUL: MultNode,
+                    TT_DIV: DivNode,
+                    TT_IS: IsEqual,
+                    TT_EQUAL: VariableNode
+                }
+            )[token.token_type]
+
         left = self.current_token
         if isvalue(left):
             leftval = wrap_single(left)
@@ -143,16 +153,23 @@ class Parser:
             leftval = self.validate_expr()
             self.advance()
             if self.current_token.token_type != TT_RPAR:
-                raise UELSyntaxError(f"Bad expr: {self.current_token}", self.current_token.pos)
+                raise UELSyntaxError(
+                    f"Bad expr: {self.current_token}",
+                    self.current_token.pos
+                )
             self.advance()
         else:
-            raise UELSyntaxError(f"Bad expr: {self.current_token}", self.current_token.pos)
+            raise UELSyntaxError(
+                f"Bad expr: {self.current_token}", self.current_token.pos
+            )
         while True:
             op = self.current_token
             if isop(op):
                 constructor = get_op_constructor(op)
             elif op is not None and op.token_type == TT_LPAR:
-                args = self.validate_sequence_node(self.current_token, TT_RPAR)
+                args = self.validate_sequence_node(
+                    self.current_token, TT_RPAR
+                )
                 leftval = SimpleFunctionCall(leftval, args)
                 self.advance()
                 continue
@@ -169,7 +186,10 @@ class Parser:
                 right = self.validate_expr()
                 self.advance()
                 if self.current_token.token_type != TT_RPAR:
-                    raise UELSyntaxError(f"Bad expr: {self.current_token}", self.current_token.pos)
+                    raise UELSyntaxError(
+                        f"Bad expr: {self.current_token}",
+                        self.current_token.pos
+                    )
                 leftval = constructor(leftval, right)
                 self.advance()
             else:
@@ -246,7 +266,9 @@ class Parser:
             )
         return SequenceNode(sequence)
 
-    def validate_sequence_node(self, last_token, eof=TT_RSQB) -> SequenceNode:
+    def validate_sequence_node(
+        self, last_token, eof=TT_RSQB
+    ) -> SequenceNode:
         if self.current_token is None:
             RaiseError(
                 UELSyntaxError,

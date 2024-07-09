@@ -4,14 +4,13 @@
 
 ## UEL
 
-### v1.8.0 <small>August</small> {#1.8.0}
+### v1.8.0 <small>July 09, 2024 am</small> {#1.8.0}
 
 * Optimizer(Faster than 1.7.5 with 10%)
 * dynamic debug mode
 * New error's print style
 * Simple function call
 * Some new bytecodes
-* Operator priority
 * Use parentheses to change the priority of an operation
 * bugfix
 * Internationalization(i18n) docs

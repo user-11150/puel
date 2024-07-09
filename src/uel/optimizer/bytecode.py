@@ -1,5 +1,6 @@
 from uel.objects import parse
 
+
 def bytecode_optimizer(bytecodes):
     for bytecode in bytecodes:
         try:
