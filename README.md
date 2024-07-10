@@ -4,6 +4,4 @@
 ## The UEL is a programming language.
 The UEL programming language is interpreted language, and dynamic language. It's very simple.
 
-Let's go to [Docs][docs]
-
-  [docs]: (https://user-11150.github.io/puel)
+Let's go to [docs](https://user-11150.github.io/puel)
