@@ -3,6 +3,7 @@ site_name: uel
 repo_name: user-11150/puel
 repo_url: https://github.com/user-11150/puel
 
+
 markdown_extensions:
   - attr_list
   - pymdownx.emoji:
@@ -29,10 +30,13 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.tabbed:
       alternate_style: true
-  - pymdownx.snippets
   - markdown.extensions.attr_list
   - pymdownx.details
   - pymdownx.betterem
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
 
 nav:
   - Home: "index.md"
@@ -40,6 +44,9 @@ nav:
   - Tutorial: "tutorial.md"
   - Glossary: "glossary.md"
   - "What's new": "whatsnew.md"
+
+hooks:
+  - docs/custom_dir/hook.py
 
 theme:
   name: "material"
@@ -62,6 +69,7 @@ theme:
     - navigation.tabs
     - navigation.sections
     - toc.follow
+    - toc.integrate
 copyright: All rights
 
 plugins:
