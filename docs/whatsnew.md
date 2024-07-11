@@ -4,7 +4,7 @@
 
 ## UEL
 
-### v1.9.0 <small>It's in develop</small> {#1.9.0}
+### v1.9.0 <small>July 11, 2024 pm</small> {#1.9.0}
 
 * Some docs
 
