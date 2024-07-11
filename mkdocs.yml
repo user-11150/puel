@@ -68,8 +68,11 @@ plugins:
   - search
   - minify:
       minify_html: true
-
+extra_css:
+    - ./assets/stylesheets/extra.css
 extra:
+  generator: false
+  
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/user-11150/puel
