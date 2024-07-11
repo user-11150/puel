@@ -1,31 +1,31 @@
-<!-- The index of UEL Documentation -->
+<!-- This is the documentation of UEL -->
 
-# UEL documentation
+# UEL's Documentation
 
-![PyPI - Version](https://img.shields.io/pypi/v/uel)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/uel)
+## Documentation sections
+<div class="grid cards" markdown>
+- __[What's new?](./whatsnew.md)__
 
-## Programming with that simply works.
+    ---
+    The what's new for all versions
 
-1. No pointers
-2. No complex "this"(in javascript, "this" is difficult. for example. "this" in window, "this" in function, "this" in classes' methods, staticmethods And more others)
-3. There is nothing particularly difficult.
-4. Don't care about memory[^1] at all.
+- __[Tutorials](./tutorial.md)__
 
-## Everything you would expect.
+    ---
+    Start here: a tour of UEL's syntaxs and features
 
-* Very simple
-* Easy to expand
-* Functional programming
-* Working in Terminal(with CPython)
-* Open Source
+- __[Glossary](./glossary.md)__
 
-# Tutorials
-Let's to get [Tutorials](tutorial.md)
+    ---
+    Terms explained
 
-## Links
-- [Github](https://github.com/user-11150/puel)
-- [Documentation](https://user-11150.github.io/puel)
-- [PyPI](https://pypi.org/project/uel)
+- __[History and UEL's license](history_and_licenses.md)__
+- __[Official Documentation](https://user-11150.github.io/puel)__
 
- [^1]: Computer Memory
+    ---
+    If you are previewing the document locally, you can view the document remotely.
+</div>
+
+# Links
+* [Github](https://github.com/user-11150/puel)
+* [PyPI](https://pypi.org/project/uel)
