@@ -6,7 +6,7 @@ import time
 def main():
     print("Get version")
     
-    os.system("make refrensh")
+    os.system("make install")
     from uel.version import __version__
     
     os.system("make clean")
