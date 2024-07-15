@@ -30,9 +30,8 @@ jobs:
         run: git remote set-url origin https://${TOKEN}@github.com/user-11150/puel
         env:
           TOKEN: ${{secrets.TOKEN}}
-      - name: Set PyPI token
-        run: echo "[pypi]\nusername=__token__\npassword=${TOKEN}" >> ~/.pypirc
-        env:
-          TOKEN: ${{secrets.PYPI_TOKEN}}}
       - name: Release
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{secrets.PYPI_TOKEN}}
         run: python tools/release.py
