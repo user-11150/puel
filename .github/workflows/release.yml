@@ -28,7 +28,7 @@ jobs:
         env:
           TOKEN: ${{secrets.TOKEN}}
       - name: Set PyPI token
-        run: twine register -u __token__ -p ${TOKEN}
+        run: echo "[pypi]\nusername=__token__\npassword=${TOKEN}" >> ~/.pypirc
         env:
           TOKEN: ${{secrets.PYPI_TOKEN}}}
       - name: Release
