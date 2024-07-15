@@ -43,6 +43,7 @@ nav:
   - Information of UEL: "information.md"
   - Tutorial: "tutorial.md"
   - Glossary: "glossary.md"
+  - We planned features: "plans.md"
   - "What's new": "whatsnew.md"
 
 hooks:

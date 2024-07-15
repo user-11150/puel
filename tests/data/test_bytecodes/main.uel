@@ -1,7 +1,0 @@
-function my_print a;
-    put a
-    put "!"
-end
-
-push "Hello world"
-call my_print

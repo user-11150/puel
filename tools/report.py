@@ -158,7 +158,7 @@ items.insert(0,
 )
 class Report:
     def __init__(self, items):
-        self.start_time = time.mktime(time.strptime('2024-2-24 22:0:0','%Y-%m-%d %H:%M:%S'))
+        self.start_time = time.mktime(time.strptime('2024-7-11 22:0:0','%Y-%m-%d %H:%M:%S'))
         self.dev_days = (time.time()-self.start_time)/60/60/24
         self.items = items
         self.console = Console()

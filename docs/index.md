@@ -34,7 +34,7 @@
 - __Links__
 
     ---
-    * [Github](https://github.com/user-11150/puel)
-    * [PyPI](https://pypi.org/project/uel)
+    * [:fontawesome-brands-github:Github](https://github.com/user-11150/puel)
+    * [:fontawesome-brands-python:PyPI](https://pypi.org/project/uel)
 
 </div>

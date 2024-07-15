@@ -1,14 +1,17 @@
-.PHONY: empty refrensh lint install clean report test coverage build upload docs-serve docs-build imports_flush
+.PHONY: refrensh lint install clean report test coverage build upload docs-serve docs-build release
 
 SOURCE=./src/uel
 python=python
 
-empty:
-	#
-
 refrensh:
 	make clean
 	make install
+	make lint
+	make docs-build
+	make coverage
+
+release:
+	python tools/release.py
 
 build:
 	python -m setup sdist

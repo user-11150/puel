@@ -4,6 +4,10 @@
 
 ## UEL
 
+### v2.0.0 <small>It's in develop</small> {#2.0.0}
+
+* [Rewrite UEL](./plans.md#by-index-1)
+
 ### v1.9.0 <small>July 11, 2024 pm</small> {#1.9.0}
 
 * Some docs

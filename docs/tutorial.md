@@ -5,9 +5,13 @@
 
 - [Information of UEL](./information.md)
     
-- [Getting Started](./getting-started.md)
-    - [Installation](./getting-started.md#installation)
-    - [Running UEL](./getting-started.md#running)
-- [Tutorials](./tutorials.md)
-    - [Basic Syntaxs](./tutorials.md#basic-syntaxs)
+- Getting Started
+    - [Installation](./getting-started/installation.md)
+    - [Running UEL](./getting-started/running.md)
 
+- Tutorials
+
+    !!! warning
+        Because UEL is being rewritten temporarily, there is no tutorial
+
+- High-level Tutorials
