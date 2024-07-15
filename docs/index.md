@@ -1,3 +1,7 @@
+---
+template: ./templates/home.html
+---
+
 <!-- This is the documentation of UEL -->
 
 # UEL's Documentation

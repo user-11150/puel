@@ -1,0 +1,35 @@
+name: release
+
+on:
+  push:
+    path:
+      - "src/uel/version.py"
+
+jobs:
+  release:
+    strategy:
+      matrix:
+        python-version: ['3.11']
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependence
+        run: pip install setuptools Cython twine
+      - name: Set github user
+        run: git config user.name "user-11150"
+      - name: Set github email
+        run: git config user.email 3584434540@qq.com
+      - name: Set github remote
+        run: git remote set-url origin https://${TOKEN}@github.com/user-11150/puel
+        env:
+          TOKEN: ${{secrets.TOKEN}}
+      - name: Set PyPI token
+        run: twine register -u __token__ -p ${TOKEN}
+        env:
+          TOKEN: ${{secrets.PYPI_TOKEN}}}
+      - name: Release
+        run: python tools/release.py

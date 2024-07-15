@@ -45,13 +45,14 @@ nav:
   - Glossary: "glossary.md"
   - We planned features: "plans.md"
   - "What's new": "whatsnew.md"
+  - Contribute: "contribute.md"
 
 hooks:
-  - docs/custom_dir/hook.py
+  - docs/_hooks/hook.py
 
 theme:
   name: "material"
-  custom_dir: docs/custom_dir
+  custom_dir: docs/_custom_dir
   palette:
     - scheme: 'default'
       media: '(prefers-color-scheme: light)'
@@ -71,6 +72,7 @@ theme:
     - navigation.sections
     - toc.follow
     - toc.integrate
+    - navigation.top
 copyright: All rights
 
 plugins:
