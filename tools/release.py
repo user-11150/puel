@@ -2,12 +2,9 @@ import os
 import sys
 import re
 import time
+from uel.version import __version__
 
 def main():
-    print("Get version")
-    
-    os.system("make install")
-    from uel.version import __version__
     
     os.system("make clean")
     
