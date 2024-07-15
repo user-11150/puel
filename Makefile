@@ -6,9 +6,6 @@ python=python
 refrensh:
 	make clean
 	make install
-	make lint
-	make docs-build
-	make coverage
 
 release:
 	python tools/release.py
@@ -52,6 +49,3 @@ docs-serve:
 
 docs-build:
 	mkdocs build
-
-imports_flush:
-	python tools/imports_flush.py src/uel/__init__.py src/
