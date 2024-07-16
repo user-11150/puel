@@ -4,25 +4,8 @@
 
 ## UEL
 
-### v2.0.4 <small>It's in develop</small> {#2.0.4}
-
-* [Rewrite UEL](./plans.md#by-index-1)(5)
-
-### v2.0.3 <small>Unknown</small> {#2.0.3}
-
-* [Rewrite UEL](./plans.md#by-index-1)(4)
-
-### v2.0.2 <small>Unknown</small> {#2.0.3}
-
-* [Rewrite UEL](./plans.md#by-index-1)(3)
-
-### v2.0.1 <small>Unknown</small> {#2.0.1}
-
-* [Rewrite UEL](./plans.md#by-index-1)(2)
-
-### v2.0.0 <small>July 16, 2024 am</small> {#2.0.0}
-
-* [Rewrite UEL](./plans.md#by-index-1)(1)
+!!! warnning
+    Don't use with 2.0.x, It's test releases
 
 ### v1.9.0 <small>July 11, 2024 pm</small> {#1.9.0}
 
