@@ -18,7 +18,7 @@ def main():
     
     print("Create tag on Github")
     
-    os.system(f"git tag v{__version__}")
+    os.system(f"git tag v{__version__};git push origin --tags")
     
     # input("Please setup whatsnews' time and download url, then enter the Enter")
     with open("docs/whatsnew.md") as f:
