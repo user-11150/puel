@@ -20,7 +20,7 @@
 
 * [Rewrite UEL](./plans.md#by-index-1)(2)
 
-### v2.0.0 <small>It's in develop</small> {#2.0.0}
+### v2.0.0 <small>July 16, 2024 am</small> {#2.0.0}
 
 * [Rewrite UEL](./plans.md#by-index-1)(1)
 
