@@ -40,12 +40,11 @@ markdown_extensions:
 
 nav:
   - Home: "index.md"
-  - Information of UEL: "information.md"
+  - Introduction: "introduction.md"
   - Tutorial: "tutorial.md"
   - Glossary: "glossary.md"
   - We planned features: "plans.md"
   - "What's new": "whatsnew.md"
-  - Contribute: "contribute.md"
 
 hooks:
   - docs/_hooks/hook.py

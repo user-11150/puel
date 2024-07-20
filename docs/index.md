@@ -1,10 +1,8 @@
----
-template: ./templates/home.html
----
-
 <!-- This is the documentation of UEL -->
 
 # UEL's Documentation
+
+Welcome, This is documentation of UEL.
 
 ## Documentation sections
 <div class="grid cards" markdown>
@@ -34,6 +32,11 @@ template: ./templates/home.html
 
     ---
     If you are previewing the document locally, you can view the document remotely.
+
+- __[:fontawesome-brands-dev: UEL Developer' s Guide](./dev-guide/index.md)__
+
+    ---
+    UEL guides of developers
 
 - __Links__
 

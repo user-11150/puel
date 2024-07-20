@@ -27,17 +27,17 @@ TT_EOF = "EOF"
 TT_KEYWORD = "KEYWORD"
 TT_IDENTIFIER = "IDENTIFIER"
 
-KEYWORDS = [
-    "put"
-]
+KEYWORDS = ["put"]
+
 
 class UELCode:
     def __init__(
-            self,
-            co_source: t.Any=None,
-            co_filename: t.Optional[str]=None,
-            co_consts: t.Optional[list[str]]=None,
-            co_names: t.Optional[list[str]]=None):
+        self,
+        co_source: t.Any = None,
+        co_filename: t.Optional[str] = None,
+        co_consts: t.Optional[list[str]] = None,
+        co_names: t.Optional[list[str]] = None
+    ):
         self.co_source = co_source
         self.co_filename = co_filename
         self.co_consts = co_consts
@@ -76,7 +76,7 @@ class UELToken:
     def idx_as_line_and_col(source: str, idx: int) -> tuple[int, int]:
         line = 1
         col = 1
-        
+
         for current in UELToken._slice(source, idx):
             col += 1
             if current == "\n":
@@ -84,71 +84,66 @@ class UELToken:
                 line += 1
         return line, col
 
+
 class UELTokenize:
     def __init__(self, source: t.Any) -> None:
         self.source = source
         self.current_idx = 0
-    
+
     @property
     def current_char(self) -> str:
         try:
             return self.source[self.current_idx]
         except IndexError:
             return None
-    
+
     def advance(self) -> str:
         self.current_idx += 1
         return self.current_char
-    
+
     def make_tokens(self) -> list[UELToken]:
         tokens = []
         while True:
             start_position = self.current_idx
             if start_position <= len(self.source):
-                start_line, start_col = UELToken.idx_as_line_and_col(self.source, start_position)
+                start_line, start_col = UELToken.idx_as_line_and_col(
+                    self.source, start_position
+                )
             if self.current_char is None:
                 start_line = None
                 start_col = None
-                
+
                 tokens.append(
                     UELToken(
-                        TT_EOF,
-                        None,
-                        start_line,
-                        start_col,
-                        None,
-                        None
+                        TT_EOF, None, start_line, start_col, None, None
                     )
                 )
                 break
             if self.current_char == " ":
-                self.advance() # Skipped
+                self.advance()  # Skipped
             elif self.current_char == "\n":
                 self.advance()
                 tokens.append(
                     UELToken(
-                        TT_NEWLINE,
-                        "\n",
-                         start_line,
-                         start_col,
-                         *UELToken.idx_as_line_and_col(self.source, self.current_idx)
+                        TT_NEWLINE, "\n", start_line, start_col,
+                        *UELToken.idx_as_line_and_col(
+                            self.source, self.current_idx
+                        )
                     )
                 )
             elif self.is_identifier_start(self.current_char):
                 identifier = self.make_identifier()
                 token_type = TT_KEYWORD if identifier in KEYWORDS else TT_IDENTIFIER
-                end_line, end_col = UELToken.idx_as_line_and_col(self.source, self.current_idx)
+                end_line, end_col = UELToken.idx_as_line_and_col(
+                    self.source, self.current_idx
+                )
                 tokens.append(
                     UELToken(
-                        token_type,
-                        identifier,
-                        start_line,
-                        start_col,
-                        end_line,
-                        end_col
+                        token_type, identifier, start_line, start_col,
+                        end_line, end_col
                     )
                 )
-            
+
         return tokens
 
     @staticmethod
@@ -168,12 +163,13 @@ class UELTokenize:
 
     def make_identifier(self):
         result = ""
-        
+
         while self.is_identifier(self.current_char):
             result += self.current_char
             self.advance()
-        
+
         return result
+
 
 class UELAST:
     pass
@@ -191,6 +187,7 @@ Source = t.Union[str, CompileResult]
 def uel_tokenize(source: str) -> list[UELToken]:
     return UELTokenize(source).make_tokens()
 
+
 def _uel_compile(source, code, flag) -> Source:
     if flag == UEL_TOKENIZE:
         code.co_source = source
@@ -198,13 +195,21 @@ def _uel_compile(source, code, flag) -> Source:
     else:
         warnings.warn("Accept a error flag, exit")
         uel_exit()
-def print_compiled(compiled):
-     if type(compiled) is list:
-         if len(compiled):
-             if type(compiled[0]) is UELToken:
-                 print("\n".join(map(str, compiled)))
 
-def uel_compile(source: Source, code: UELCode, verbose: bool,flags: t.Optional[list[int]] = None) -> t.Any:
+
+def print_compiled(compiled):
+    if type(compiled) is list:
+        if len(compiled):
+            if type(compiled[0]) is UELToken:
+                print("\n".join(map(str, compiled)))
+
+
+def uel_compile(
+    source: Source,
+    code: UELCode,
+    verbose: bool,
+    flags: t.Optional[list[int]] = None
+) -> t.Any:
     if flags is None:
         flags = UEL_SIMPLE_RUN_FLAGS
 

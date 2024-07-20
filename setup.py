@@ -5,8 +5,20 @@
 Let's compile UEL.
 """
 
-# pylint:disable=W0621
-# pylint:disable=W0212
+import sys
+import platform
+
+def python_environment_check():
+    python_implementation = platform.python_implementation()
+    python_version = sys.version_info
+    
+    if python_implementation != "CPython":
+        raise OSError("The UEL needs CPython")
+    
+    if python_version < (3, 9, 0):
+        raise OSError("Python version is too low, The UEL needs upper python 3.9.0")
+
+python_environment_check()
 
 from Cython.Build import cythonize
 
@@ -21,9 +33,7 @@ from setuptools.command.build_ext import build_ext
 from setuptools.dist import Distribution
 
 import os
-import sys
 import re
-import platform
 
 with open("src/uel/version.py", "rt", encoding="utf8") as f:
     version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
@@ -40,9 +50,10 @@ def get_col():
         return 80
 
 
-class UELParallelBuildExtension(build_ext):
+class UELBuildExtension(build_ext):
     def initialize_options(self, *args, **kwargs):
         super().initialize_options(*args, **kwargs)
+        self.parallel = True
 
 
 def is_building():
@@ -59,9 +70,19 @@ def is_building():
 
 def get_extensions():
     extensions = []
+    
+    C_COMPILE_ARGS = ["--std=c11"]
+    CPP_COMPILE_ARGS = ["--std=c++17"]
+    
+    extensions.extend([
+        Extension(
+            "uel.internal.uelcore_internal_exceptions",
+            sources=["src/uel/internal/uelcore_internal_exceptions.c"],
+            extra_compile_args=C_COMPILE_ARGS
+        )
+    ])
 
     return extensions
-
 
 kwargs = dict()
 
@@ -73,7 +94,6 @@ setup(name = "uel",
     author = "XingHao. Li<3584434540@qq.com>",
     packages = find_namespace_packages("src"),
     long_description=long_description,
-    long_desciption_type="text/markdown",
     package_dir = {
         "": "src"
     },
@@ -81,7 +101,7 @@ setup(name = "uel",
         "uel": ["**"]
     },
     cmdclass = {
-        "build_ext": UELParallelBuildExtension,
+        "build_ext": UELBuildExtension,
     },
     install_requires=[],
     entry_points = {
