@@ -45,6 +45,11 @@ nav:
   - Glossary: "glossary.md"
   - We planned features: "plans.md"
   - "What's new": "whatsnew.md"
+  - Developer's Guide: "dev-guide/index.md"
+
+
+not_in_nav: "**/*"
+
 
 hooks:
   - docs/_hooks/hook.py
@@ -65,6 +70,7 @@ theme:
       toggle:
         icon: 'material/moon-waxing-crescent'
         name: 'Switch to light mode'
+  logo: "assets/images/uel.svg"
   features:
     - navigation.path
     - navigation.tabs

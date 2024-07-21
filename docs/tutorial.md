@@ -2,8 +2,6 @@
 
 ??? question "Why have "Tutorial" and "Tutorials", What diff of they?"
     The "tutorial" is topics of "Tutorials", and some extensions
-
-- [Information of UEL](./information.md)
     
 - Getting Started
     - [Installation](./getting-started/installation.md)

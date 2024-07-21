@@ -1,7 +1,8 @@
-# UEL's information
-## UEL's information
-UEL is UEL's developers to develop programming language
+# UEL software
 
-## What about UEL?
-* Strong type
-* Dynamic type
+## Introductions
+The UEL was created on April(According to the commit record, it was in March, but the first release was in April) 2024, It's a programming language
+
+## A story of UEL
+
+--8<-- "docs/misc/story-about-uel.md"

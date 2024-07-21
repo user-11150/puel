@@ -2,7 +2,7 @@
 
 # UEL's Documentation
 
-Welcome, This is documentation of UEL.
+Welcome! This is documentation of UEL.
 
 ## Documentation sections
 <div class="grid cards" markdown>
@@ -21,24 +21,24 @@ Welcome, This is documentation of UEL.
     ---
     Terms explained
 
-- __[:fontawesome-solid-book:Project Information](./information.md)__
+- __[:fontawesome-solid-book:Project Introduction](./introduction.md)__
 
     ---
-    UEL's information
+    UEL's introduction
 
 - __[:material-license:History and UEL's license](history_and_licenses.md)__
 
 - __[:material-access-point-network:Official Documentation](https://user-11150.github.io/puel)__
 
     ---
-    If you are previewing the document locally, you can view the document remotely.
+    If you are previewing the document locally. You can view the document remotely.
 
 - __[:fontawesome-brands-dev: UEL Developer' s Guide](./dev-guide/index.md)__
 
     ---
     UEL guides of developers
 
-- __Links__
+- __Quick Links__
 
     ---
     * [:fontawesome-brands-github:Github](https://github.com/user-11150/puel)

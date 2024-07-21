@@ -4,11 +4,17 @@ This guide is a comprehensive resource for contributing to UEL – for both new
 and experienced contributors. It is maintained by the same community that
 maintains UEL. We welcome your contributions to UEL!
 
+## Quick Links
+
+- [UEL Internals Docs](./internals/index.md)
+- [Contributers](./contributers.md)
+- [Documentation](./docs.md)
+- [Development](./dev.md)
+
 ## Quick Reference
 
 Here are the basic steps needed to get set up and contribute a patch. This
 is meant as a checklist, once you know the basics. For complete instructions
-please see the [setup guide](./setup-guide.md).
 
 1. __[Install dependences](./install_dependences.md)__
 2. __Fork the UEL repository to your GitHub account and get the source using:__
@@ -41,3 +47,7 @@ please see the [setup guide](./setup-guide.md).
         git switch -c "fix-issue-12345"
         ```
     [Detailed information](./git.md#branches)
+    
+6. __Write your contribute__
+7. __[Make a commit](./git.md#commit)__
+8. __[Make a PULL Request](./git.md#pr)__

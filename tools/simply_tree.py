@@ -3,7 +3,6 @@ from git.exc import InvalidGitRepositoryError
 from git import Repo
 from git import Head
 from dataclasses import dataclass
-from objprint import objjson, objprint
 import textwrap
 
 @dataclass
