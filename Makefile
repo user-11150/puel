@@ -20,6 +20,7 @@ upload:
 	twine upload dist/*
 
 lint:
+	pylint src/
 	mypy
 
 format:

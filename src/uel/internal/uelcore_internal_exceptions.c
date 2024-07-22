@@ -2,20 +2,24 @@
 
 #include <Python.h>
 
-PyObject*
-throw(PyObject* self, PyObject* args)
+PyObject *throw(PyObject * self, PyObject *args)
 {
-    const char* message; 
-    if(!PyArg_ParseTuple(args, "s", &message)){
-        perror("error statement");
+    
+    const char *message;
+    if (!PyArg_ParseTuple(args, "s", &message))
+    {
         return NULL;
-        }
-    printf("[UEL Internal Error]%s", message);
+    }
+    printf("[UEL Internal Error]: %s\n", message);
+
+    exit(1);
+    
+    return NULL;
 }
 
 static PyMethodDef
     uelcore_internal_exceptionsmethods[] = {
-        {"throw", (PyCFunction) throw, METH_FASTCALL},
+        {"throw", (PyCFunction) throw, METH_VARARGS},
         {NULL, NULL, 0, NULL}};
 
 static struct PyModuleDef

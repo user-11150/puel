@@ -8,7 +8,7 @@ Let's compile UEL.
 import sys
 import platform
 
-def python_environment_check():
+def environment_check():
     python_implementation = platform.python_implementation()
     python_version = sys.version_info
     
@@ -18,7 +18,15 @@ def python_environment_check():
     if python_version < (3, 9, 0):
         raise OSError("Python version is too low, The UEL needs upper python 3.9.0")
 
-python_environment_check()
+def build_requires_check():
+    try:
+        import Cython as _
+        import setuptools as _
+    except ImportError as e:
+        raise OSError("You are not install Cython or setuptools, abort build") from e
+
+environment_check()
+build_requires_check()
 
 from Cython.Build import cythonize
 
@@ -103,7 +111,7 @@ setup(name = "uel",
     cmdclass = {
         "build_ext": UELBuildExtension,
     },
-    install_requires=[],
+    install_requires=["objprint"],
     entry_points = {
         'console_scripts': [
             'uel = uel.cli:uel_main',
