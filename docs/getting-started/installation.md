@@ -1,11 +1,6 @@
 # Installation UEL
-## Install from PyPI
-```
-pip install Cython setuptools
-pip install uel
-```
-## Install from source
-```
-pip install Cython setuptools
-make install
-```
+
+Follow these steps to install
+
+1. Install Python [Python Version Requirements](../python-require.md)
+2. 

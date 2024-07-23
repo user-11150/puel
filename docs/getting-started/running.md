@@ -1,6 +1,6 @@
-# A simple way to run uel 
+# A simple way to run UEL
 
-After the install, Let's to run uel
+After the install, Let's to run UEL
 
 ```
 uel run <filename>

@@ -1,8 +1,10 @@
 ## Tutorials
 
+<!--
 ??? question "Why have "Tutorial" and "Tutorials", What diff of they?"
     The "tutorial" is topics of "Tutorials", and some extensions
-    
+-->
+
 - Getting Started
     - [Installation](./getting-started/installation.md)
     - [Running UEL](./getting-started/running.md)
