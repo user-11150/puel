@@ -1,4 +1,4 @@
-from uel.cli import uel_main
+from uel.main import console_main as main
 
 if __name__ == "__main__":
-    uel_main()
+    main()

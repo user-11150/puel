@@ -1,9 +1,9 @@
-.PHONY: refrensh lint install clean report test coverage build upload docs-serve docs-build release
+.PHONY: refresh lint install clean report test coverage build upload docs-serve docs-build release
 
 SOURCE=./src/uel
 python=python
 
-refrensh:
+refresh:
 	make clean
 	make install
 
@@ -20,7 +20,7 @@ upload:
 	twine upload dist/*
 
 lint:
-	pylint src/
+	flake8 src/ --count --statistics --max-line-length=150
 	mypy
 
 format:
@@ -33,7 +33,6 @@ install:
 clean:
 	rm -rf build
 	rm -rf dist
-	rm -rf .mypy_cache
 	rm -rf site
 	$(python) -m pip uninstall -y uel
 

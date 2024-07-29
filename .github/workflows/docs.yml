@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependency
-        run: sh install-requirements.sh docs
+        run: pip install -r requirements/requirements-docs.txt
       - name: Build documentation
         env:
           GH_TOKEN: ${{ secrets.TOKEN }}

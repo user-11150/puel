@@ -1,47 +1,26 @@
 import typing as t
-import warnings
-from uel.tools import uel_exit
-from pprint import pprint
 from string import ascii_letters
-from uel.exceptions import uel_set_error_string
-from uel.exceptions import UELSyntaxError
+# from uel.exceptions import uel_set_error_string
+# from uel.exceptions import UELSyntaxError
+from uel.constants import (
+    TT_EOF, TT_IDENTIFIER, TT_KEYWORD, TT_KEYWORDS, TT_NEWLINE,
+)
+from dataclasses import dataclass
+from uel.internal.uelcore_internal_exceptions import throw
 
 numbers = "".join(map(str, range(10)))
 
-# Flags
-UEL_TOKENIZE = 0
-UEL_AST = 1
-UEL_OPTIMIZED_AST = 2
-UEL_BYTECODE = 3
-UEL_RUNUE = 6
 
-# Combination flags
-UEL_SIMPLE_RUN_FLAGS = [
-    UEL_TOKENIZE, UEL_AST, UEL_OPTIMIZED_AST, UEL_BYTECODE, UEL_RUNUE
-]
-
-# Token types
-TT_NEWLINE = "NEWLINE"
-TT_EOF = "EOF"
-
-TT_KEYWORD = "KEYWORD"
-TT_IDENTIFIER = "IDENTIFIER"
-
-KEYWORDS = ["put"]
-
-
+@dataclass
 class UELCode:
-    def __init__(
-        self,
-        co_source: t.Any = None,
-        co_filename: t.Optional[str] = None,
-        co_consts: t.Optional[list[str]] = None,
-        co_names: t.Optional[list[str]] = None
-    ):
-        self.co_source = co_source
-        self.co_filename = co_filename
-        self.co_consts = co_consts
-        self.co_names = co_names
+    co_name = None
+    co_source = None
+    co_tokens = None
+    co_ast = None
+    co_bytecodes = None
+    co_names = None
+    co_consts = None
+    co_stacksize = None
 
 
 class UELToken:
@@ -62,25 +41,39 @@ class UELToken:
         self.end_col = end_col
 
     def __repr__(self) -> str:
-        return f"UELToken(token_type={self.token_type}, token_value={repr(self.token_value)}, start_line={self.start_line}, start_col={self.start_col}, end_line={self.end_line}, end_col={self.end_col})"
+        pos = f"start_col={self.start_col}, end_line={self.end_line}, end_col={self.end_col}"
+        return f"UELToken(token_type={self.token_type}, token_value={repr(self.token_value)}, start_line={self.start_line}, {pos})"
 
     def __str__(self) -> str:
         return f"{self.token_type} {repr(self.token_value)} {(self.start_line, self.start_col)} -> {(self.end_line, self.end_col)}"
 
     @staticmethod
     def _slice(source, idx):
-        if len(source) <= idx:
-            uel_set_error_string()
+
+        result = ""
+
+        for current_index, current_char in enumerate(source):
+            result += current_char
+            if current_index == idx:
+                break
+
+        print(repr(result))
+        return result
 
     @staticmethod
-    def idx_as_line_and_col(source: str, idx: int) -> tuple[int, int]:
+    def idx_as_line_and_col(
+        source: str, idx: int
+    ) -> tuple[t.Union[int, None], t.Union[int, None]]:
         line = 1
-        col = 1
+        col = 0
+
+        if len(source) <= idx:
+            return None, None
 
         for current in UELToken._slice(source, idx):
             col += 1
             if current == "\n":
-                col = 1
+                col = 0
                 line += 1
         return line, col
 
@@ -101,28 +94,24 @@ class UELTokenize:
         self.current_idx += 1
         return self.current_char
 
+    def rollback(self) -> str:
+        self.current_idx -= 1
+        return self.current_char
+
     def make_tokens(self) -> list[UELToken]:
         tokens = []
-        while True:
+        while self.current_char is not None:
+
             start_position = self.current_idx
             if start_position <= len(self.source):
                 start_line, start_col = UELToken.idx_as_line_and_col(
                     self.source, start_position
                 )
-            if self.current_char is None:
-                start_line = None
-                start_col = None
-
-                tokens.append(
-                    UELToken(
-                        TT_EOF, None, start_line, start_col, None, None
-                    )
-                )
-                break
             if self.current_char == " ":
                 self.advance()  # Skipped
             elif self.current_char == "\n":
                 self.advance()
+
                 tokens.append(
                     UELToken(
                         TT_NEWLINE, "\n", start_line, start_col,
@@ -133,7 +122,7 @@ class UELTokenize:
                 )
             elif self.is_identifier_start(self.current_char):
                 identifier = self.make_identifier()
-                token_type = TT_KEYWORD if identifier in KEYWORDS else TT_IDENTIFIER
+                token_type = TT_KEYWORD if identifier in TT_KEYWORDS else TT_IDENTIFIER
                 end_line, end_col = UELToken.idx_as_line_and_col(
                     self.source, self.current_idx
                 )
@@ -143,6 +132,9 @@ class UELTokenize:
                         end_line, end_col
                     )
                 )
+                self.advance()
+
+        tokens.append(UELToken(TT_EOF, None, None, None, None, None))
 
         return tokens
 
@@ -164,10 +156,14 @@ class UELTokenize:
     def make_identifier(self):
         result = ""
 
-        while self.is_identifier(self.current_char):
-            result += self.current_char
-            self.advance()
+        while True:
+            if self.is_identifier(self.current_char):
+                result += self.current_char
+                self.advance()
+            else:
+                break
 
+        self.rollback()
         return result
 
 
@@ -184,36 +180,8 @@ CompileResult = t.Union[list[UELToken], UELAST, list[UELBytecode]]
 Source = t.Union[str, CompileResult]
 
 
-def uel_tokenize(source: str) -> list[UELToken]:
+def uel_generate_tokens(source: str) -> list[UELToken]:
     return UELTokenize(source).make_tokens()
 
-
-def _uel_compile(source, code, flag) -> Source:
-    if flag == UEL_TOKENIZE:
-        code.co_source = source
-        return uel_tokenize(source)
-    else:
-        warnings.warn("Accept a error flag, exit")
-        uel_exit()
-
-
-def print_compiled(compiled):
-    if type(compiled) is list:
-        if len(compiled):
-            if type(compiled[0]) is UELToken:
-                print("\n".join(map(str, compiled)))
-
-
-def uel_compile(
-    source: Source,
-    code: UELCode,
-    verbose: bool,
-    flags: t.Optional[list[int]] = None
-) -> t.Any:
-    if flags is None:
-        flags = UEL_SIMPLE_RUN_FLAGS
-
-    for flag in flags:
-        source = _uel_compile(source, code, flag)
-        if verbose:
-            print_compiled(source)
+def uel_tokenize(code: UELCode):
+    code.co_tokens = uel_generate_tokens(code.co_source)

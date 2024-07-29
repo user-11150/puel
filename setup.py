@@ -87,6 +87,11 @@ def get_extensions():
             "uel.internal.uelcore_internal_exceptions",
             sources=["src/uel/internal/uelcore_internal_exceptions.c"],
             extra_compile_args=C_COMPILE_ARGS
+        ),
+        Extension(
+            "uel.io._io",
+            sources=["src/uel/io/_io.cpp"],
+            extra_compile_args=CPP_COMPILE_ARGS
         )
     ])
 
@@ -114,7 +119,7 @@ setup(name = "uel",
     install_requires=["objprint"],
     entry_points = {
         'console_scripts': [
-            'uel = uel.cli:uel_main',
+            'uel = uel.main:console_main',
         ]
     },
     description="A programming language",
