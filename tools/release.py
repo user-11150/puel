@@ -14,7 +14,7 @@ def main():
     
     print(f"Upload to PyPI for {__version__}")
     
-    os.system("twine upload dist/**")
+    os.system("twine upload dist/** --verbose")
     
     print("Create tag on Github")
     
