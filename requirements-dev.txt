@@ -5,4 +5,4 @@ mkdocs
 mkdocs-material
 mypy
 yapf
-pylint
+flake8
