@@ -1,32 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""
-Let's compile UEL.
-"""
+from pkg_resources import require
 
-import sys
-import platform
-
-def environment_check():
-    python_implementation = platform.python_implementation()
-    python_version = sys.version_info
-    
-    if python_implementation != "CPython":
-        raise OSError("The UEL needs CPython")
-    
-    if python_version < (3, 9, 0):
-        raise OSError("Python version is too low, The UEL needs upper python 3.9.0")
-
-def build_requires_check():
-    try:
-        import Cython as _
-        import setuptools as _
-    except ImportError as e:
-        raise OSError("You are not install Cython or setuptools, abort build") from e
-
-environment_check()
-build_requires_check()
+require("setuptools")
+require("Cython")
 
 from Cython.Build import cythonize
 
@@ -38,10 +16,8 @@ from setuptools import find_namespace_packages
 
 from setuptools.command.build_ext import build_ext
 
-from setuptools.dist import Distribution
-
-import os
 import re
+import sys
 
 with open("src/uel/version.py", "rt", encoding="utf8") as f:
     version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
@@ -49,14 +25,6 @@ with open("README.md", "rt", encoding="utf8") as f:
     long_description = f.read()
 
 THREADS = cpu_count() or 1
-
-
-def get_col():
-    try:
-        return os.get_terminal_size().columns
-    except OSError:
-        return 80
-
 
 class UELBuildExtension(build_ext):
     def initialize_options(self, *args, **kwargs):
@@ -86,12 +54,14 @@ def get_extensions():
         Extension(
             "uel.internal.uelcore_internal_exceptions",
             sources=["src/uel/internal/uelcore_internal_exceptions.c"],
+            language="c",
             extra_compile_args=C_COMPILE_ARGS
         ),
         Extension(
-            "uel.io._io",
-            sources=["src/uel/io/_io.cpp"],
-            extra_compile_args=CPP_COMPILE_ARGS
+            "uel.uelio._io",
+            sources=["src/uel/uelio/_io.c"],
+            language="c",
+            extra_compile_args=C_COMPILE_ARGS
         )
     ])
 
@@ -99,24 +69,31 @@ def get_extensions():
 
 kwargs = dict()
 
+
 if is_building():
     kwargs["ext_modules"] = get_extensions()
-
+def t(m):
+    try:
+        return __import__(m)
+    except:
+        return False
 setup(name = "uel",
     version = version,
-    author = "XingHao. Li<3584434540@qq.com>",
+    author="uel",
+    author_email="3584434540@qq.com",
     packages = find_namespace_packages("src"),
     long_description=long_description,
     package_dir = {
         "": "src"
     },
-    package_data = {
-        "uel": ["**"]
-    },
+    url="https://user-11150.github.io/puel",
     cmdclass = {
         "build_ext": UELBuildExtension,
     },
-    install_requires=["objprint"],
+    package_data={
+        "uel": ["**"]
+    },
+    install_requires=["executing"],
     entry_points = {
         'console_scripts': [
             'uel = uel.main:console_main',

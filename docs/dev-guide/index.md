@@ -26,7 +26,7 @@ is meant as a checklist, once you know the basics. For complete instructions
     1. Install requirements
         ```shell
         python -m pip install setuptools Cython
-        python -m pip install -r requirements/requirements-dev.txt
+        python -m pip install -r requirements-dev.txt
         ```
     2. Install by "make"
         ```shell

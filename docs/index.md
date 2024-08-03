@@ -1,8 +1,8 @@
 <!-- This is the documentation of UEL -->
 
-# UEL's Documentation
+<h1 align=center>UEL's Documentation</h1>
 
-Welcome! This is documentation of UEL.
+<p align=center>Welcome! This is documentation of UEL.</p>
 
 ## Documentation sections
 <div class="grid cards" markdown>

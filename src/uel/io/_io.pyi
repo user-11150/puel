@@ -1,1 +1,0 @@
-def fopen(filename) -> bytes:

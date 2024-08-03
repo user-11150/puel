@@ -3,7 +3,6 @@ twine
 GitPython
 mkdocs
 mkdocs-material
-mkdocs-minify-plugin
 mypy
 yapf
-flake8
+pylint

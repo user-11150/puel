@@ -8,8 +8,8 @@ __UEL does not support all versions, implementations of Python__
     
     Because now UEL including some CPython only extensions
     
-2. __Version must be upper 3.9__
+2. __Version must be upper 3.10__
     
     !!! tip
-        Currently, CPython implementations lower 3.9(no all) is can to running
+        Currently, CPython implementations lower 3.10(no all) is can to running
         UEL, but it is unstable.

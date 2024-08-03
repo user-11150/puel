@@ -1,9 +1,10 @@
-# ----------------------------------------------------------------------------
-FILE_ENCODING = "UTF-8"
+from uel.builder.tokenize import Token
 
-# ----------------------------------------------------------------------------
-TT_NEWLINE = "NEWLINE"
-TT_EOF = "EOF"
-TT_KEYWORD = "KEYWORD"
-TT_IDENTIFIER = "IDENTIFIER"
-TT_KEYWORDS = ["put"]
+
+class File:
+    FILE_ENCODING = "UTF-8"
+
+
+class Color:
+    RED = "\033[31m"
+    RESET = "\033[0m"

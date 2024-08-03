@@ -46,6 +46,7 @@ nav:
   - We planned features: "plans.md"
   - "What's new": "whatsnew.md"
   - Developer's Guide: "dev-guide/index.md"
+  - History and License: "history_and_licenses.md"
 
 
 not_in_nav: "**/*"
@@ -82,8 +83,6 @@ copyright: All rights
 
 plugins:
   - search
-  - minify:
-      minify_html: true
 extra_css:
     - ./assets/stylesheets/extra.css
 extra:

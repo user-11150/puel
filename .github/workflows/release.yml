@@ -22,8 +22,10 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Install build dependence
+        run: pip install setuptools Cython
       - name: Install dependence
-        run: pip install setuptools Cython twine wheel
+        run: pip install -r requirements-dev.txt
       - name: Install
         run: make install
       - name: Set github user

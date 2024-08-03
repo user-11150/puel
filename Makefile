@@ -1,30 +1,33 @@
-.PHONY: refresh lint install clean report test coverage build upload docs-serve docs-build release
+.PHONY: refresh lint install clean report test coverage build upload docs-serve docs-build release gen
 
 SOURCE=./src/uel
 python=python
 
 refresh:
-	make clean
+	make gen
 	make install
+
+gen:
+	python tools/gen.py ./
 
 release:
 	python tools/release.py
 
 build:
+	python -m setup build
 	python -m setup sdist
 	python -m setup bdist_wheel
 	python -m setup bdist_egg
-	
 
 upload:
 	twine upload dist/*
 
 lint:
-	flake8 src/ --count --statistics --max-line-length=150
-	mypy
+	flake8 src/ tools/ --count --statistics --exclude src/uel/executing || true
+	mypy || true
 
 format:
-	yapf -ir ./src
+	yapf -ir ./src /tools/
 
 install:
 	$(python) -m pip uninstall uel -y

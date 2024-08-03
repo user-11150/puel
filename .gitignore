@@ -1,20 +1,27 @@
-.obsidian
-.trash
-
+# Distribution / packaging
 build
 dist
-
-__pycache__
-*.pyc
-*.pyd
-*.pyo
-*.so
-*.o
-
-
 *.egg
 *.egg-info
-.*cache*/
+.whl
+
+# # Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[co]
+
+# C extensions
+*.so
+*.pyd
+
+# Virtualenv
 *venv*/
 
+# Coverage
 .coverage
+/htmlcov
+
+# mkdocs documentation
+/site
+
+# Test
+test.uel

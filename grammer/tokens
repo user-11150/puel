@@ -1,0 +1,9 @@
+IDENTIFIER
+STRING
+LPAR                    '('
+RPAR                    ')'
+PLUS                    '+'
+MINUS                   '-'
+STAR                    '*'
+SLASH                   '/'
+NEWLINE "\n"

@@ -1,6 +1,6 @@
 from typing import TypeAlias
 
-from uel.constants import FILE_ENCODING as ENCODING
+from uel.constants import File
 from uel.executor import UELExecutor
 from uel.internal.uelcore_internal_exceptions import throw
 
@@ -20,16 +20,15 @@ dispatch.dict = {"": lambda context: None}
 
 @dispatch
 def run(context):
-    
+
     encoding = context.encoding
     filename = context.filename
-    
-    
+
     if context.b:
         UELExecutor().run_binary(filename)
         return
-    
-    UELExecutor().run_source_file(filename, encoding)
+
+    UELExecutor(context.verbose).run_source_file(filename, encoding)
 
 
 def make_argparser() -> argparse.ArgumentParser:
@@ -41,8 +40,10 @@ def make_argparser() -> argparse.ArgumentParser:
 
     run.add_argument("filename", help="filename")
     run.add_argument("-b", help="Run UEL-Binary file", action="store_true")
-    
-    run.add_argument("--encoding", help="Set encoding", default=ENCODING)
+
+    run.add_argument(
+        "--encoding", help="Set encoding", default=File.FILE_ENCODING
+    )
 
     commands = {"run": run}
 
