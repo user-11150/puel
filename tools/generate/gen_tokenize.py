@@ -1,9 +1,12 @@
-from generate import task, python, encode
+from generate import task, python
 import textwrap
 import copy
 import os
 import ast
 import linecache
+
+SCRIPT_NAME = "tools/generate/gen_tokenize.py"
+FROM = "grammer/tokens"
 
 class GenerateTokenizer:
     
@@ -267,8 +270,7 @@ class GenerateTokenizer:
         return ast.unparse(ast.parse(self.result))
 
 @task("src/uel/builder/tokenize.py")
-@encode
-@python
+@python(SCRIPT_NAME, FROM)
 def generate_tokenizer(dirname):
     result = GenerateTokenizer(dirname).generate()
     
