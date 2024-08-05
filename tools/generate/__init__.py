@@ -26,7 +26,7 @@ def run(fn):
         return inner
     return wrapper
 
-python = run(lambda s, f: f"# -*- coding: utf-8 -*-\n# Generate in {time.strftime('%x')}\n" + s)
+python = run(lambda s, f: f"# -*- coding: utf-8 -*-\n# Generate in {time.strftime('%x')} in {__file__}\n" + s)
 encode = run(lambda s, f: s.encode("utf-8"))
 
 
