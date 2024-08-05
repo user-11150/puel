@@ -3,7 +3,7 @@ build
 dist
 *.egg
 *.egg-info
-.whl
+*.whl
 
 # # Byte-compiled / optimized / DLL files
 __pycache__/

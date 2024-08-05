@@ -9,13 +9,17 @@ import sys
 
 Status: TypeAlias = int
 
+class DispatchLoader:
+    def __init__(self):
+        self.dispatch = {}
+    
+    def __call__(self, fn):
+        self.dispatch[fn.__name__] = fn
+        return fn
 
-def dispatch(fn):
-    dispatch.dict[fn.__name__] = fn
-    return fn
+dispatch = DispatchLoader()
 
-
-dispatch.dict = {"": lambda context: None}
+dispatch.dispatch = {"": lambda context: None}
 
 
 @dispatch
@@ -60,7 +64,7 @@ def main(args: list[str]) -> Status:
 
     context = parser.parse_args(args[1:])
 
-    dispatch.dict[context.subcommands or ""](context)
+    dispatch.dispatch[context.subcommands or ""](context)
 
     return 0
 

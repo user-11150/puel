@@ -1,12 +1,27 @@
 <!--The plans of UEL-->
 # All plan of UEL(after 2.0.0)
 
-## Rewrite UEL {#1}
-### Informations
-!!! note "Dates of about the plan"
-    - This plan is in progress now
-    - This plan planned on July 11.
-    - This plan to started dev on July 12
-    - This plan finished on :fontawesome-solid-question:
+## Table of contents
+[TOC]
+
+## Plan Styles
+
+Add to [plans](#plans)
+
+```markdown
+### <title> (<progress>) {#<number>}
+
+<information>
+```
+
+|Name|Description|Type|
+|:--:|:---------:|----|
+|title|/|string|
+|progress|The general case proceeds sequentially. If it's "unstable", May fall back to "in progress" at any time, or to "stable" after "unstable" 15 days|Choice of "planed", "in progress", "unstable", "stable"|
+|number|Plan Number, After "planed" is readonly for any people|number|
+
+## Plans {#plans}
+
+### Rewrite UEL (in progress) {#1}
 
 Rewrite UEL.

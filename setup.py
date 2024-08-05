@@ -1,10 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from pkg_resources import require
+try:
+    from pkg_resources import require
+except ImportError:
+    raise ImportWarning("You need run \"python -m pip install setuptools\"") from None
 
-require("setuptools")
-require("Cython")
+require("setuptools", "Cython")
 
 from Cython.Build import cythonize
 

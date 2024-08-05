@@ -35,12 +35,12 @@ class UELExecutor:
 
         return code
 
-    def run_binary(self, filename) -> None:
+    def run_binary(self, filename: str) -> None:
         self._run(
             uel_uel_binary_as_uel_code(self._get_file_content(filename))
         )
 
-    def run_source_file(self, filename, encoding) -> None:
+    def run_source_file(self, filename: str, encoding: str) -> None:
         self._run(
             self._build(filename, self._get_source(filename, encoding))
         )

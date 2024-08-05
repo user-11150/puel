@@ -40,13 +40,15 @@ markdown_extensions:
 
 nav:
   - Home: "index.md"
-  - Introduction: "introduction.md"
+  - Introduction:
+    - What's UEL and Project Introduction: "introduction/introduction.md"
+    - History and licenses: "history_and_licenses.md"
+    - What our user says?: "introduction/our_user_says.md"
   - Tutorial: "tutorial.md"
   - Glossary: "glossary.md"
   - We planned features: "plans.md"
   - "What's new": "whatsnew.md"
   - Developer's Guide: "dev-guide/index.md"
-  - History and License: "history_and_licenses.md"
 
 
 not_in_nav: "**/*"
@@ -79,15 +81,22 @@ theme:
     - toc.follow
     - toc.integrate
     - navigation.top
-copyright: All rights
 
 plugins:
   - search
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      cache_safe: true
+
 extra_css:
     - ./assets/stylesheets/extra.css
+extra_javascript:
+    - ./assets/javascripts/extra.js
+
+
 extra:
-  generator: false
-  
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/user-11150/puel

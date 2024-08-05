@@ -20,8 +20,10 @@ class UELSyntaxError(UELError):
 class UELIOError(UELError):
     tp_name = "IOError"
 
+
 def _getline(source, target_lineno):
-    return source.splitlines()[target_lineno-1]
+    return source.splitlines()[target_lineno - 1]
+
 
 def uel_set_error(
     exception: UELError,

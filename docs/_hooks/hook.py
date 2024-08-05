@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from mkdocs.structure.pages import Page
 from mkdocs.structure.files import Files
 from mkdocs.config.defaults import MkDocsConfig
@@ -51,8 +53,9 @@ class Readtime:
 
 
 def readtime(html):
-    readtime_element_styles = "float: right"
-    return f"<small style='{readtime_element_styles}'>{Readtime(75).readtime(html)} min read</small>"
+    readtime_element_styles = "float: right;background-color: #777777; color: #121212"
+    minutes = Readtime(75).readtime(html)
+    return f"<small style='{readtime_element_styles}' class='readtime'>{minutes} minutes read<br/></small>"
 
 def on_page_content(html, *, page, config, files):
     return f"{readtime(html)}\n\n{html}"

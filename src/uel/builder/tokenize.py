@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Generate in 08/03/24 by tools/generate/__init__.py
+# Generate in 08/05/24
 from uel.internal.uelcore_internal_exceptions import throw
 from uel.exceptions import UELSyntaxError, uel_set_error_string
 from uel.builder.codeobject import UELCode
@@ -11,11 +11,11 @@ TT_IDENTIFIER = 'TT_IDENTIFIER'
 TT_STRING = 'TT_STRING'
 TT_LPAR = 'TT_LPAR'
 TT_RPAR = 'TT_RPAR'
-TT_PLUS = 'TT_PLUS'
 TT_MINUS = 'TT_MINUS'
 TT_STAR = 'TT_STAR'
 TT_SLASH = 'TT_SLASH'
 TT_NEWLINE = 'TT_NEWLINE'
+TT_EQEQUAL = 'TT_EQEQUAL'
 TT_KEYWORDS = []
 TT_KEYWORD = 'TT_KEYWORD'
 TT_EOF = 'TT_EOF'
@@ -25,11 +25,11 @@ class Token:
     TT_STRING = 'TT_STRING'
     TT_LPAR = 'TT_LPAR'
     TT_RPAR = 'TT_RPAR'
-    TT_PLUS = 'TT_PLUS'
     TT_MINUS = 'TT_MINUS'
     TT_STAR = 'TT_STAR'
     TT_SLASH = 'TT_SLASH'
     TT_NEWLINE = 'TT_NEWLINE'
+    TT_EQEQUAL = 'TT_EQEQUAL'
     TT_KEYWORDS = []
     TT_KEYWORD = 'TT_KEYWORD'
     TT_EOF = 'TT_EOF'
@@ -79,9 +79,6 @@ class UELTokenize:
             elif self.current_char == ')':
                 self.advance()
                 tokens.append(UELToken(TT_RPAR, ')', start_line, start_col, *UELToken.idx_as_line_and_col(self.source, self.current_idx)))
-            elif self.current_char == '+':
-                self.advance()
-                tokens.append(UELToken(TT_PLUS, '+', start_line, start_col, *UELToken.idx_as_line_and_col(self.source, self.current_idx)))
             elif self.current_char == '-':
                 self.advance()
                 tokens.append(UELToken(TT_MINUS, '-', start_line, start_col, *UELToken.idx_as_line_and_col(self.source, self.current_idx)))
@@ -94,6 +91,9 @@ class UELTokenize:
             elif self.current_char == '\n':
                 self.advance()
                 tokens.append(UELToken(TT_NEWLINE, '\n', start_line, start_col, *UELToken.idx_as_line_and_col(self.source, self.current_idx)))
+            elif self.current_char == '=':
+                self.advance()
+                tokens.append(UELToken(TT_EQEQUAL, '=', start_line, start_col, *UELToken.idx_as_line_and_col(self.source, self.current_idx)))
             elif self.is_identifier_start(self.current_char):
                 identifier = self.make_identifier()
                 token_type = TT_KEYWORD if identifier in TT_KEYWORDS else TT_IDENTIFIER
