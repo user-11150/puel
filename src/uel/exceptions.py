@@ -1,8 +1,7 @@
 from uel.objects import UELObject
-from uel.typing import Position, Optional
+from uel.typing import Position, Optional, Never
 from uel.tools import uel_exit
 from uel.internal.uelcore_internal_exceptions import throw
-import linecache
 import sys
 
 
@@ -29,11 +28,11 @@ def uel_set_error(
     exception: UELError,
     source: Optional[str] = None,
     start: Optional[Position] = None,
-    end=None
-):
+    end: Optional[Position] = None
+) -> Never:
     """
     Using "uel_set_error"
-    
+
       1. No positions
           uel_set_error(<exc>[, <source>])
       2. Only start
@@ -49,9 +48,7 @@ def uel_set_error(
         string += ":"
         string += exception.message
 
-    if source is not None and any(
-        map(lambda x: x is not None, [source, end])
-    ) and not (start is None and end is not None):
+    if source is not None and start is not None:
         trace = _getline(source, start[0])
         if end is None and start is not None:
             end = start
@@ -59,7 +56,7 @@ def uel_set_error(
             throw(uel_set_error.__doc__)
         if start is not None and end is not None:
             if start[0] == end[0] and end[1] > start[1]:
-                trace = f"{trace}\n{' '*(start[1]-1)}{'~'*len(trace[start[1]:end[1]+1])}"
+                trace = f"{trace}\n{' '*(start[1]-1)}{'^'*len(trace[start[1]:end[1]+1])}"
             else:
                 trace = f"{trace}\n{' '*(start[1]-1)}^"
         if not trace.isspace():
@@ -70,5 +67,7 @@ def uel_set_error(
     uel_exit()
 
 
-def uel_set_error_string(exception, message, *args, **kwargs):
+def uel_set_error_string(
+    exception, message, *args, **kwargs
+) -> Never:
     uel_set_error(exception(message), *args, **kwargs)

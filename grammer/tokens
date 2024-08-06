@@ -1,9 +1,11 @@
 IDENTIFIER
 STRING
+NUMBER
 LPAR                    '('
 RPAR                    ')'
+PLUS                    '+'
 MINUS                   '-'
 STAR                    '*'
 SLASH                   '/'
-NEWLINE                 '\n'
 EQEQUAL                 '='
+SEMI                    ";"

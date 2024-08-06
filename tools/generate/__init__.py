@@ -1,11 +1,9 @@
 import importlib
 import os
-import multiprocessing
 import functools
 import time
 import re
 import ast
-import tokenize
 
 _tasks = []
 
@@ -16,13 +14,13 @@ class task:
     def __call__(self, fn):
         @functools.wraps(fn)
         def inner(dirname):
-            print(f"Generate {self.output}", end="")
+            print(f"Generate {self.output}")
+            
             with open(os.path.join(dirname, self.output), "wb") as fp:
                 res = fn(dirname)
                 if type(res) is str:
                     res = res.encode("utf-8")
                 fp.write(res)
-            print()
         _tasks.append(inner)
 
 def run(fn):
@@ -33,11 +31,13 @@ def run(fn):
         return inner
     return wrapper
 
-def python(by, from_=None):
+def python(by, from_, description=""):
     def decorator(f):
         def inner(*args, **kwargs):
             result = "# -*- coding: utf-8 -*-\n"
             result += auto_generate(by, from_)
+            if description:
+                result += f"\"\"\"{description}\"\"\"\n"
             result += f(*args, **kwargs)
             return result
         return inner
@@ -55,4 +55,5 @@ def main(dirname):
     for name in filter(lambda s: s.startswith("gen") and s.endswith(".py"), os.listdir(os.path.dirname(__file__))):
         importlib.import_module("generate." + name.split(".")[0])
     
-    [*map(lambda f: f(dirname), _tasks)]
+    for task in _tasks:
+        task(dirname)

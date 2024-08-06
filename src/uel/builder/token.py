@@ -1,36 +1,38 @@
-import typing as t
+from uel.builder.position import Position
 
 
 class UELToken:
     def __init__(
-        self,
-        token_type: str,  # Token's Type
-        token_value: str,  # token value
-        start_line: int,  # Token's start line
-        start_col: int,  # Token's start col
-        end_line: int,  # Token's end line
-        end_col: int  # Token's end col
+        self, token_type: str, token_value: str,
+        start: Position, end: Position
     ):
         self.token_type = token_type
         self.token_value = token_value
-        self.start_line = start_line
-        self.start_col = start_col
-        self.end_line = end_line
-        self.end_col = end_col
+        self.start = start
+        self.end = end
 
     def __repr__(self) -> str:
-        pos = f"start_col={self.start_col}, end_line={self.end_line}, end_col={self.end_col}"
-        return f"UELToken(token_type={self.token_type}, token_value={repr(self.token_value)}, start_line={self.start_line}, {pos})"
+        return "UELToken(" \
+               f"token_type={self.token_type}, " \
+               f"token_value={repr(self.token_value)}, " \
+               f"start={self.start}, " \
+               f"end={self.end}" \
+               ")"
+
+    def __str__(self):
+        return f"{self.token_type} " \
+               f"{repr(self.token_value)} " \
+               f"{self.start}-{self.end})"
 
     @staticmethod
-    def idx_as_line_and_col(
+    def idx_as_position(
         source: str, idx: int
-    ) -> tuple[t.Union[int, None], t.Union[int, None]]:
+    ) -> Position | None:
         line = 1
         col = 1
 
         if len(source) <= idx:
-            return None, None
+            return None
 
         for i in range(idx):
             if source[i] == "\n":
@@ -38,4 +40,4 @@ class UELToken:
                 col = 1
             else:
                 col += 1
-        return line, col
+        return Position(line, col)

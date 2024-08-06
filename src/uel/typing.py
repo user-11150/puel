@@ -1,3 +1,3 @@
-from typing import *
+from typing import *  # noqa
 
-Position: TypeAlias = tuple[int, int]
+Position: TypeAlias = tuple[int, int]  # noqa

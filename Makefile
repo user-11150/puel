@@ -3,9 +3,13 @@
 SOURCE=./src/uel
 python=python
 
+CODE_DIRECTORYS=./src /tools/
+
 refresh:
 	make gen
+	make format
 	make install
+	make lint
 
 gen:
 	python tools/gen.py ./
@@ -14,20 +18,17 @@ release:
 	python tools/release.py
 
 build:
-	python -m setup build
 	python -m setup sdist
-	python -m setup bdist_wheel
-	python -m setup bdist_egg
 
 upload:
 	twine upload dist/*
 
 lint:
-	flake8 src/ tools/ --count --statistics --exclude src/uel/executing || true
+	flake8 src/ || true
 	mypy || true
 
 format:
-	yapf -ir ./src /tools/
+	yapf -ir $(CODE_DIRECTORYS)
 
 install:
 	$(python) -m pip uninstall uel -y

@@ -1,1 +1,1 @@
-from uel.uelio.uelio import *
+from uel.uelio.uelio import *  # noqa

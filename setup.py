@@ -53,18 +53,7 @@ def get_extensions():
     CPP_COMPILE_ARGS = ["--std=c++17"]
     
     extensions.extend([
-        Extension(
-            "uel.internal.uelcore_internal_exceptions",
-            sources=["src/uel/internal/uelcore_internal_exceptions.c"],
-            language="c",
-            extra_compile_args=C_COMPILE_ARGS
-        ),
-        Extension(
-            "uel.uelio._io",
-            sources=["src/uel/uelio/_io.c"],
-            language="c",
-            extra_compile_args=C_COMPILE_ARGS
-        )
+        
     ])
 
     return extensions
