@@ -20,6 +20,7 @@ from setuptools.command.build_ext import build_ext
 
 import re
 import sys
+import platform
 
 with open("src/uel/version.py", "rt", encoding="utf8") as f:
     version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
@@ -51,6 +52,7 @@ def get_extensions():
     
     C_COMPILE_ARGS = ["--std=c11"]
     CPP_COMPILE_ARGS = ["--std=c++17"]
+    
     
     extensions.extend([
         

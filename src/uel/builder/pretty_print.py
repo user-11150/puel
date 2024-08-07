@@ -11,8 +11,9 @@ from uel.builder.ast import AST, dump
 
 
 def print_tokens(tokens: list[UELToken]) -> None:
-    print("\n".join(map(str, tokens)))
+    for token in tokens:
+        print(token)
 
 
 def print_ast(ast: AST) -> None:
-    print(dump(ast, indent="    "))
+    print(dump(ast, indent="  "))

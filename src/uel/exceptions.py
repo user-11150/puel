@@ -67,7 +67,5 @@ def uel_set_error(
     uel_exit()
 
 
-def uel_set_error_string(
-    exception, message, *args, **kwargs
-) -> Never:
+def uel_set_error_string(exception, message, *args, **kwargs) -> Never:
     uel_set_error(exception(message), *args, **kwargs)

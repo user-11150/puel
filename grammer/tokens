@@ -1,11 +1,13 @@
 IDENTIFIER
 STRING
 NUMBER
+ASSIGN                  ':='
+EQEQUAL                 '=='
 LPAR                    '('
 RPAR                    ')'
 PLUS                    '+'
 MINUS                   '-'
 STAR                    '*'
 SLASH                   '/'
-EQEQUAL                 '='
+EQUAL                   '='
 SEMI                    ";"

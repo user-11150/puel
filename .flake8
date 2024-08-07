@@ -2,8 +2,7 @@
 [flake8]
 count: true
 statistics: true
-max-line-length: 63
+max-line-length: 100
 exclude:
     src/uel/builder/tokenize.py,
-    src/uel/builder/ast.py,
-    src/uel/builder/precedence.py
+    src/uel/builder/ast.py

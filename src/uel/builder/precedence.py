@@ -11,8 +11,12 @@ PREFIX = 5
 CALL = 6
 INDEX = 7
 
+
 class Precedence:
-    def __getattr__(self, name):return 0
+    def __getattr__(self, name):
+        return 0
+
+    TT_ASSIGN: int = EQUALS
     TT_IDENTIFIER: int = LOWEST
     TT_STRING: int = LOWEST
     TT_NUMBER: int = LOWEST

@@ -14,9 +14,7 @@ class UELExecutor:
         raise NotImplementedError
 
     def _get_source(self, filename: str, encoding: str) -> str:
-        with uelio.file_open(
-            filename, "rt", encoding=encoding
-        ) as f:
+        with uelio.file_open(filename, "rt", encoding=encoding) as f:
             return f.read()
 
     def _get_file_content(self, filename: str) -> bytes:
@@ -40,22 +38,15 @@ class UELExecutor:
         if self.verbose:
             assert code.co_ast is not None
             print_ast(code.co_ast)
-        exit()
 
         return code
 
     def run_binary(self, filename: str) -> None:
         self._run(
-            uel_uel_binary_as_uel_code(
-                self._get_file_content(filename)
-            )
+            uel_uel_binary_as_uel_code(self._get_file_content(filename))
         )
 
-    def run_source_file(
-        self, filename: str, encoding: str
-    ) -> None:
+    def run_source_file(self, filename: str, encoding: str) -> None:
         self._run(
-            self._build(
-                filename, self._get_source(filename, encoding)
-            )
+            self._build(filename, self._get_source(filename, encoding))
         )

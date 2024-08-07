@@ -3,8 +3,8 @@ from uel.builder.position import Position
 
 class UELToken:
     def __init__(
-        self, token_type: str, token_value: str,
-        start: Position, end: Position
+        self, token_type: str, token_value: str, start: Position,
+        end: Position
     ):
         self.token_type = token_type
         self.token_value = token_value
@@ -25,9 +25,7 @@ class UELToken:
                f"{self.start}-{self.end})"
 
     @staticmethod
-    def idx_as_position(
-        source: str, idx: int
-    ) -> Position | None:
+    def idx_as_position(source: str, idx: int) -> Position | None:
         line = 1
         col = 1
 

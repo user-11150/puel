@@ -3,18 +3,63 @@
 """
 AST nodes
 """
-from typing import Protocol, runtime_checkable
+from typing import Protocol, runtime_checkable, Any
 
 @runtime_checkable
 class BaseAST(Protocol):
     kind: str
     _fields: list[str]
+    start: Any
+    end: Any
 
 class AST:
     kind = 'AST'
     _fields: list[str] = []
+    start: Any
+    end: Any
 
-class BinOp(AST):
+class Module(AST):
+    kind = 'Module'
+    _fields: list[str] = ['body', 'start', 'end']
+
+    def __init__(self, body, start, end):
+        self.body = body
+        self.start = start
+        self.end = end
+
+class Statement(AST):
+    kind = 'Statement'
+    _fields = []
+
+class Expression(AST):
+    kind = 'Expression'
+    _fields = []
+
+class Literal(Expression):
+    kind = 'Literal'
+    _fields = []
+
+class Assign(Statement):
+    kind = 'Assign'
+    _fields: list[str] = ['left', 'right', 'start', 'end']
+
+    def __init__(self, left, right, start, end):
+        self.left = left
+        self.right = right
+        self.start = start
+        self.end = end
+
+class UnaryOp(Expression):
+    kind = 'UnaryOp'
+    _fields: list[str] = ['value', 'op', 'start', 'end']
+
+    def __init__(self, value, op, start, end):
+        self.value = value
+        self.op = op
+        self.start = start
+        self.end = end
+
+class BinOp(Expression):
     kind = 'BinOp'
     _fields: list[str] = ['left', 'op', 'right', 'start', 'end']
 
@@ -25,34 +70,7 @@ class BinOp(AST):
         self.start = start
         self.end = end
 
-class Expression(AST):
-    kind = 'Expression'
-    _fields: list[str] = ['value', 'start', 'end']
-
-    def __init__(self, value, start, end):
-        self.value = value
-        self.start = start
-        self.end = end
-
-class Name(AST):
-    kind = 'Name'
-    _fields: list[str] = ['name', 'start', 'end']
-
-    def __init__(self, name, start, end):
-        self.name = name
-        self.start = start
-        self.end = end
-
-class NumberLiteral(AST):
-    kind = 'NumberLiteral'
-    _fields: list[str] = ['value', 'start', 'end']
-
-    def __init__(self, value, start, end):
-        self.value = value
-        self.start = start
-        self.end = end
-
-class StringLiteral(AST):
+class StringLiteral(Literal):
     kind = 'StringLiteral'
     _fields: list[str] = ['value', 'start', 'end']
 
@@ -61,22 +79,21 @@ class StringLiteral(AST):
         self.start = start
         self.end = end
 
-class UnaryOp(AST):
-    kind = 'UnaryOp'
-    _fields: list[str] = ['value', 'op', 'start', 'end']
+class NumberLiteral(Literal):
+    kind = 'NumberLiteral'
+    _fields: list[str] = ['value', 'start', 'end']
 
-    def __init__(self, value, op, start, end):
+    def __init__(self, value, start, end):
         self.value = value
-        self.op = op
         self.start = start
         self.end = end
 
-class Module(AST):
-    kind = 'Module'
-    _fields: list[str] = ['body', 'start', 'end']
+class Name(Expression):
+    kind = 'Name'
+    _fields: list[str] = ['name', 'start', 'end']
 
-    def __init__(self, body, start, end):
-        self.body = body
+    def __init__(self, name, start, end):
+        self.name = name
         self.start = start
         self.end = end
 

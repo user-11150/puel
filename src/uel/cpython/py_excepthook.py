@@ -8,9 +8,7 @@ import executing
 __all__ = ["install"]
 
 
-def excepthook(
-    exc_type, value, trace: types.TracebackType | None
-):
+def excepthook(exc_type, value, trace: types.TracebackType | None):
     def getastnode(tb):
         return executing.Source.executing(tb).node
 
@@ -21,9 +19,7 @@ def excepthook(
     def add_trace(trace: types.TracebackType, lines):
         try:
             cofilename = trace.tb_frame.f_code.co_filename
-            path = os.path.relpath(
-                cofilename, os.path.dirname(__file__)
-            )
+            path = os.path.relpath(cofilename, os.path.dirname(__file__))
             if path.startswith("."):
                 path = cofilename
         except Exception:  # pylint: disable=W0718
@@ -36,9 +32,7 @@ def excepthook(
         else:
             extra = trace.tb_frame.f_code.co_name
 
-        lines.insert(
-            0, f"In \"{path}\", {trace.tb_lineno}: {extra}"
-        )
+        lines.insert(0, f"In \"{path}\", {trace.tb_lineno}: {extra}")
         if trace.tb_next is not None:
             add_trace(trace.tb_next, lines)
 
@@ -55,13 +49,9 @@ def excepthook(
             prefix = "  "
             if idx > 10:
                 overflow = len(trace_lines) - idx + 1
-                sys.stderr.write(
-                    f"{prefix}... {overflow} more\n"
-                )
+                sys.stderr.write(f"{prefix}... {overflow} more\n")
                 break
-            sys.stderr.write(
-                textwrap.indent(str(line), prefix)
-            )
+            sys.stderr.write(textwrap.indent(str(line), prefix))
             sys.stderr.write("\n")
 
     sys.stderr.flush()

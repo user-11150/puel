@@ -97,18 +97,18 @@ class GenerateTokenizer:
                 return tokens
         
             @staticmethod
-            def is_identifier_start(char):
-                if char in ascii_letters:
+            def is_identifier_start(char_):
+                if char_ in ascii_letters:
                     return True
-                if '\u4e00' <= char <= '\u9fff':
+                if '\u4e00' <= char_ <= '\u9fff':
                     return True
-                if char in ["_", "$"]:
+                if char_ in ["_", "$"]:
                     return True
                 return False
         
             @classmethod
-            def is_identifier(cls, char):
-                return cls.is_identifier_start(char) or char in numbers
+            def is_identifier(cls, char_):
+                return cls.is_identifier_start(char_) or char_ in numbers
         
             def make_identifier(self):
                 result = ""
@@ -249,7 +249,9 @@ class GenerateTokenizer:
         keywords = [
             
         ]
-        extras = "TT_EOF = 'TT_EOF'"
+        extras = f"TT_KEYWORDS = {repr(keywords)};" \
+                 "TT_KEYWORD = 'TT_KEYWORD';" \
+                 "TT_EOF = 'TT_EOF'"
         tmp += f"\n{extras}"
         
         self.result += tmp
@@ -278,7 +280,7 @@ class GenerateTokenizer:
         
         self.add_interface()
         
-        return ast.unparse(ast.parse(self.result))
+        return self.result
 
 @task("src/uel/builder/tokenize.py")
 @python(SCRIPT_NAME, FROM, DESCRIPTION)

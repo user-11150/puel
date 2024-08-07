@@ -1,7 +1,10 @@
-Module: body;
-BinOp: left, op, right;
-StringLiteral: value;
-NumberLiteral: value;
-Name: name;
-Expression: value;
-UnaryOp: value, op;
+Module[AST]: body;
+Statement[AST]: ...;
+Expression[AST]: ...;
+Literal[Expression]: ...;
+Assign[Statement]: left, right;
+UnaryOp[Expression]: value, op;
+BinOp[Expression]: left, op, right;
+StringLiteral[Literal]: value;
+NumberLiteral[Literal]: value;
+Name[Expression]: name;

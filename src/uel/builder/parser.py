@@ -1,9 +1,31 @@
 from uel.builder.codeobject import UELCode
 from uel.builder.token import UELToken
 from uel.constants import Token as TokenConstants
-from uel.builder.ast import *  # noqa
-from uel.builder.precedence import Precedence, PREFIX
-from uel.exceptions import uel_set_error_string, UELSyntaxError
+from uel.builder.precedence import (Precedence, PREFIX, LOWEST)
+from uel.exceptions import (uel_set_error_string, UELSyntaxError)
+from uel.builder.ast import (
+    AST, BinOp, UnaryOp, Module, NumberLiteral, Name, StringLiteral,
+    Assign, Literal
+)
+
+from uel.builder.node_visitor import NodeVisitor
+
+
+class NodeValidateAndTransformer(NodeVisitor):
+    def __init__(self, source):
+        self.source = source
+
+    def visit_Assign(self, node: Assign):
+        self.generic_visit(node)
+        if isinstance(node.left, Literal):
+            uel_set_error_string(
+                UELSyntaxError, "Cannot assign to literal here.",
+                self.source, node.start, node.end
+            )
+
+
+def uel_ast_validate(source, ast):
+    NodeValidateAndTransformer(source).visit(ast)
 
 
 class Parser:
@@ -27,34 +49,31 @@ class Parser:
         )
 
         self.register_prefix_expression(
-            TokenConstants.TT_LPAR,
-            self.parse_grouped_expression
+            TokenConstants.TT_LPAR, self.parse_grouped_expression
         )
         self.register_prefix_expression(
-            TokenConstants.TT_MINUS,
-            self.parse_prefix_expression
+            TokenConstants.TT_MINUS, self.parse_prefix_expression
         )
         self.register_prefix_expression(
-            TokenConstants.TT_PLUS,
-            self.parse_prefix_expression
+            TokenConstants.TT_PLUS, self.parse_prefix_expression
         )
         self.register_infix_expression(
-            TokenConstants.TT_EQEQUAL,
-            self.parse_infix_expression
+            TokenConstants.TT_EQEQUAL, self.parse_infix_expression
         )
         self.register_infix_expression(
             TokenConstants.TT_PLUS, self.parse_infix_expression
         )
         self.register_infix_expression(
-            TokenConstants.TT_MINUS,
-            self.parse_infix_expression
+            TokenConstants.TT_MINUS, self.parse_infix_expression
         )
         self.register_infix_expression(
             TokenConstants.TT_STAR, self.parse_infix_expression
         )
         self.register_infix_expression(
-            TokenConstants.TT_SLASH,
-            self.parse_infix_expression
+            TokenConstants.TT_SLASH, self.parse_infix_expression
+        )
+        self.register_infix_expression(
+            TokenConstants.TT_ASSIGN, self.parse_assignment
         )
 
     def register(self, dictionary, key, value):
@@ -106,33 +125,35 @@ class Parser:
 
         start = self.token.start
 
-        while self.token is not None and self.token.token_type != TokenConstants.TT_EOF:
+        while (
+            self.token is not None and
+            self.token.token_type != TokenConstants.TT_EOF
+        ):
             statements.append(self.parse_statement())
             self.advance()
 
         end = self.last_token.end
 
-        return Module(statements, start, end)
+        node = Module(statements, start, end)
+        NodeValidateAndTransformer(self.source).visit(node)
+        return node
 
     def parse_statement(self) -> AST:
         return self.parse_expression()
 
     def parse_number(self):
         return NumberLiteral(
-            self.token.token_value, self.token.start,
-            self.token.end
+            self.token.token_value, self.token.start, self.token.end
         )
 
     def parse_name(self):
         return Name(
-            self.token.token_value, self.token.start,
-            self.token.end
+            self.token.token_value, self.token.start, self.token.end
         )
 
     def parse_string(self):
         return StringLiteral(
-            self.token.token_value, self.token.start,
-            self.token.end
+            self.token.token_value, self.token.start, self.token.end
         )
 
     def parse_expression(self, precedence=0) -> AST:
@@ -142,15 +163,13 @@ class Parser:
         except KeyError:
             uel_set_error_string(
                 UELSyntaxError,
-                f"Invalid token type: {token.token_type}",
-                self.source, self.token.start, self.token.end
+                f"Invalid token type: {token.token_type}", self.source,
+                self.token.start, self.token.end
             )
         while self.next_token.token_type not in [
             TokenConstants.TT_SEMI, TokenConstants.TT_EOF
         ] and precedence < get_precedence(self.next_token):
-            infix = self.infix_expression.get(
-                self.next_token.token_type
-            )
+            infix = self.infix_expression.get(self.next_token.token_type)
             if infix is None:
                 # print("What the fuck", self.next_token.token_type)
                 return node
@@ -186,6 +205,13 @@ class Parser:
             end=end
         )
 
+    def parse_assignment(self, leftexp):
+        start = leftexp.start
+        self.advance()
+        rightexp = self.parse_expression(LOWEST)
+        end = rightexp.end
+        return Assign(leftexp, rightexp, start, end)
+
 
 def get_precedence(token: UELToken) -> int:
     return getattr(Precedence(), token.token_type)
@@ -196,6 +222,4 @@ def uel_generate_ast(source, tokens):
 
 
 def uel_ast_parser(code: UELCode) -> None:
-    code.co_ast = uel_generate_ast(
-        code.co_source, code.co_tokens
-    )
+    code.co_ast = uel_generate_ast(code.co_source, code.co_tokens)

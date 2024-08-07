@@ -14,7 +14,7 @@ def gen_flake8(dirname):
     [flake8]
     count: true
     statistics: true
-    max-line-length: 63
+    max-line-length: 100
     """
     )
     result += "exclude:\n"

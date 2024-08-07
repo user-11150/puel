@@ -36,8 +36,7 @@ def run(context: argparse.Namespace) -> None:
         UELExecutor().run_binary(filename)
         return
 
-    UELExecutor(context.verbose
-               ).run_source_file(filename, encoding)
+    UELExecutor(context.verbose).run_source_file(filename, encoding)
 
 
 def make_argparser() -> argparse.ArgumentParser:
@@ -53,18 +52,14 @@ def make_argparser() -> argparse.ArgumentParser:
     )
 
     run.add_argument(
-        "--encoding",
-        help="Set encoding",
-        default=File.FILE_ENCODING
+        "--encoding", help="Set encoding", default=File.FILE_ENCODING
     )
 
     commands = {"run": run}
 
     for command in commands.values():
         command.add_argument(
-            "--verbose",
-            help="Show debug infos",
-            action="store_true"
+            "--verbose", help="Show debug infos", action="store_true"
         )
 
     return parser

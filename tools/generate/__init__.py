@@ -14,7 +14,7 @@ class task:
     def __call__(self, fn):
         @functools.wraps(fn)
         def inner(dirname):
-            print(f"Generate {self.output}")
+            print(f"Auto-generated {self.output}")
             
             with open(os.path.join(dirname, self.output), "wb") as fp:
                 res = fn(dirname)

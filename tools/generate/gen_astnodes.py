@@ -11,7 +11,7 @@ AST nodes
 """
 
 class GenerateASTNodes:
-    declare = re.compile("(\w+?):\s*(.*)")
+    declare = re.compile(r"(.+?)\[(.+?)\]:\s*(.*)")
     
     def __init__(self, asdl):
         self.asdl = asdl
@@ -24,62 +24,68 @@ class GenerateASTNodes:
         if not tmp:
             return
         
-        kind, body = tmp.pop()
+        kind, extends, body = tmp.pop()
         
-        class_ += f"class {kind}(AST):\n"
+        class_ += f"class {kind}({extends}):\n"
         
-        fields = []
-        attributes = []
+        class_ += textwrap.indent(f"kind = {repr(kind)}\n", "    ")
         
-        arguments = [*map(str.strip, body.split(","))] + ["start", "end"]
+        if body.strip() == "...":
+            class_ += textwrap.indent("_fields=[]\n", "    ")
+        else:
+            fields = []
+            attributes = []
         
-        for argument in arguments:
-            if argument.isspace() or not argument:
-                continue
-            if not argument.startswith("_"):
-                attributes.append(argument)
-                fields.append(argument)
-            else:
-                attributes.append(argument)
-        
-        tmp = textwrap.dedent(
-        f"""
-        kind = {repr(kind)}
-        _fields: list[str] = {repr(fields)}
-        """)
-        
-        tmp += textwrap.dedent(
+            arguments = [*map(str.strip, body.split(","))] + ["start", "end"]
+            
+            for argument in arguments:
+                if argument.isspace() or not argument:
+                    continue
+                if not argument.startswith("_"):
+                    attributes.append(argument)
+                    fields.append(argument)
+                else:
+                    attributes.append(argument)
+            
+            tmp = textwrap.dedent(
             f"""
-            def __init__(self, {",".join(attributes)}):
-                {";".join(map(lambda s: f"self.{s} = {s}", attributes))}
-            """
-            )
-        
-        class_ += textwrap.indent(tmp, "    ")
-        
+            _fields: list[str] = {repr(fields)}
+            """)
+            
+            tmp += textwrap.dedent(
+                f"""
+                def __init__(self, {",".join(attributes)}):
+                    {";".join(map(lambda s: f"self.{s} = {s}", attributes))}
+                """
+                )
+            
+            class_ += textwrap.indent(tmp, "    ")
+            
         self.result += class_
     
     def generate(self):
         
         self.result += textwrap.dedent(
             r"""
-            from typing import Protocol, runtime_checkable
+            from typing import Protocol, runtime_checkable, Any
             
             @runtime_checkable
             class BaseAST(Protocol):
                 kind: str
                 _fields: list[str]
-                
+                start: Any
+                end: Any
             
             class AST:
 
                 kind = 'AST'
                 _fields: list[str] = []
+                start: Any
+                end: Any
             
             """
         )
         declarations = self.asdl.split(";")
-        declarations.sort()
         
         for declaration in declarations:
             self.add_node_class(declaration)
