@@ -20,6 +20,10 @@ TT_ASSIGN = 'TT_ASSIGN'
 TT_EQEQUAL = 'TT_EQEQUAL'
 TT_LPAR = 'TT_LPAR'
 TT_RPAR = 'TT_RPAR'
+TT_LSQB = 'TT_LSQB'
+TT_RSQB = 'TT_RSQB'
+TT_LBRACE = 'TT_LBRACE'
+TT_RBRACE = 'TT_RBRACE'
 TT_PLUS = 'TT_PLUS'
 TT_MINUS = 'TT_MINUS'
 TT_STAR = 'TT_STAR'
@@ -35,6 +39,10 @@ class Token:
     TT_EQEQUAL = 'TT_EQEQUAL'
     TT_LPAR = 'TT_LPAR'
     TT_RPAR = 'TT_RPAR'
+    TT_LSQB = 'TT_LSQB'
+    TT_RSQB = 'TT_RSQB'
+    TT_LBRACE = 'TT_LBRACE'
+    TT_RBRACE = 'TT_RBRACE'
     TT_PLUS = 'TT_PLUS'
     TT_MINUS = 'TT_MINUS'
     TT_STAR = 'TT_STAR'
@@ -122,6 +130,42 @@ class UELTokenize:
                 tokens.append(
                     UELToken(
                         TT_RPAR, ')', start_position, self.current_position
+                    )
+                )
+
+            elif self.current_char == '[':
+                self.advance()
+
+                tokens.append(
+                    UELToken(
+                        TT_LSQB, '[', start_position, self.current_position
+                    )
+                )
+
+            elif self.current_char == ']':
+                self.advance()
+
+                tokens.append(
+                    UELToken(
+                        TT_RSQB, ']', start_position, self.current_position
+                    )
+                )
+
+            elif self.current_char == '{':
+                self.advance()
+
+                tokens.append(
+                    UELToken(
+                        TT_LBRACE, '{', start_position, self.current_position
+                    )
+                )
+
+            elif self.current_char == '}':
+                self.advance()
+
+                tokens.append(
+                    UELToken(
+                        TT_RBRACE, '}', start_position, self.current_position
                     )
                 )
 
@@ -220,7 +264,7 @@ class UELTokenize:
             elif self.current_char in '0123456789':
 
                 result = ""
-                while self.current_char in '0123456789.':
+                while self.current_char is not None and self.current_char in '0123456789.':
                     if "." in result and self.current_char == ".":
                         uel_set_error_string(UELSyntaxError, "Too many dots", self.source, self.current_position)
                     result += self.current_char

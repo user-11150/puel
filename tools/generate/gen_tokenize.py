@@ -196,7 +196,7 @@ class GenerateTokenizer:
             "TT_NUMBER": (f"self.current_char in {repr(numbers)}", textwrap.dedent(
                 fr"""
                 result = ""
-                while self.current_char in {repr(numbers + ".")}:
+                while self.current_char is not None and self.current_char in {repr(numbers + ".")}:
                     if "." in result and self.current_char == ".":
                         uel_set_error_string(UELSyntaxError, "Too many dots", self.source, self.current_position)
                     result += self.current_char

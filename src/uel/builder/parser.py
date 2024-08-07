@@ -5,7 +5,7 @@ from uel.builder.precedence import (Precedence, PREFIX, LOWEST)
 from uel.exceptions import (uel_set_error_string, UELSyntaxError)
 from uel.builder.ast import (
     AST, BinOp, UnaryOp, Module, NumberLiteral, Name, StringLiteral,
-    Assign, Literal
+    Assign, Literal, Block
 )
 
 from uel.builder.node_visitor import NodeVisitor
@@ -57,6 +57,10 @@ class Parser:
         self.register_prefix_expression(
             TokenConstants.TT_PLUS, self.parse_prefix_expression
         )
+        self.register_prefix_expression(
+            TokenConstants.TT_LBRACE, self.parse_block_expression
+        )
+
         self.register_infix_expression(
             TokenConstants.TT_EQEQUAL, self.parse_infix_expression
         )
@@ -121,22 +125,27 @@ class Parser:
         return self.parse_module()
 
     def parse_module(self) -> AST:
-        statements = []
-
         start = self.token.start
 
-        while (
-            self.token is not None and
-            self.token.token_type != TokenConstants.TT_EOF
-        ):
-            statements.append(self.parse_statement())
-            self.advance()
+        block = self.parse_statements()
 
         end = self.last_token.end
 
-        node = Module(statements, start, end)
+        node = Module(block, start, end)
         NodeValidateAndTransformer(self.source).visit(node)
         return node
+
+    def parse_statements(self) -> AST:
+        start = self.token.start
+        statements = []
+        while self.current_token is not None and self.current_token.token_type != TokenConstants.TT_EOF:
+            try:
+                statements.append(self.parse_statement())
+                self.advance()
+            except RuntimeError:
+                break
+        end = self.last_token.end
+        return Block(statements, start, end)
 
     def parse_statement(self) -> AST:
         return self.parse_expression()
@@ -160,12 +169,8 @@ class Parser:
         token = self.token
         try:
             node = self.prefix_expression[token.token_type]()
-        except KeyError:
-            uel_set_error_string(
-                UELSyntaxError,
-                f"Invalid token type: {token.token_type}", self.source,
-                self.token.start, self.token.end
-            )
+        except KeyError as e:
+            raise RuntimeError from None
         while self.next_token.token_type not in [
             TokenConstants.TT_SEMI, TokenConstants.TT_EOF
         ] and precedence < get_precedence(self.next_token):
@@ -178,6 +183,16 @@ class Parser:
             node = infix(node)
         return node
 
+    def parse_block_expression(self):
+        self.advance()
+        statements = self.parse_statements()
+        if self.token.token_type != TokenConstants.TT_RBRACE:
+            uel_set_error_string(
+                UELSyntaxError, "Expected \")\"", self.source,
+                self.current_token.start, self.current_token.end
+            )
+        return statements
+
     def parse_prefix_expression(self):
         op = self.current_token
         self.advance()
@@ -189,6 +204,11 @@ class Parser:
         res = self.parse_expression()
         if self.next_token.token_type == TokenConstants.TT_RPAR:
             self.advance()
+        else:
+            uel_set_error_string(
+                UELSyntaxError, "Expected \")\"", self.source,
+                self.current_token.start, self.current_token.end
+            )
         return res
 
     def parse_infix_expression(self, leftexp: AST):

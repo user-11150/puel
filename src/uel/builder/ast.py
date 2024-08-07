@@ -39,6 +39,15 @@ class Literal(Expression):
     kind = 'Literal'
     _fields = []
 
+class Block(Statement):
+    kind = 'Block'
+    _fields: list[str] = ['statements', 'start', 'end']
+
+    def __init__(self, statements, start, end):
+        self.statements = statements
+        self.start = start
+        self.end = end
+
 class Assign(Statement):
     kind = 'Assign'
     _fields: list[str] = ['left', 'right', 'start', 'end']
