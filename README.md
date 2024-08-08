@@ -1,3 +1,3 @@
-PyPI: https://pypi.org/project/uel
+UEL is a programming language.
 
-Documentation: https://user-11150.github.io/puel
+See more: https://user-11150.github.io/puel

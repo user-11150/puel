@@ -59,6 +59,9 @@ __Examples__
 ## Commit some code(or docs, config, ...) {#commit}
 ### Make a commit
 
+!!! tip
+    Don't commit directly in "master" branch. unless development ".github/workflow"
+
 ```bash
 git commit -m "<some-introductions>"
 ```

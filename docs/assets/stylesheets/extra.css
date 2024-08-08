@@ -16,3 +16,7 @@
     transition: .5s;
     box-shadow: 1px 1px 1px #787878
 }
+@font-face {
+  font-family: "text";
+  src: url("../fonts/text.ttf") format('truetype')
+}

@@ -21,3 +21,21 @@ Do realize, though, there are always exceptions to every rule.
     Github Actions, ISSUE TEMPLATE, ...
     
 - `grammar`
+
+    Some auto-generate scripts need this directory
+
+- `docs`
+
+    Including UEL's docs
+
+- `src`
+
+    uel source codes
+
+- `tests`
+
+    Tests
+
+- `tools`
+
+    Tools

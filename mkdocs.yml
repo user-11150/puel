@@ -54,24 +54,24 @@ nav:
 not_in_nav: "**/*"
 
 
-hooks:
-  - docs/_hooks/hook.py
-
 theme:
   name: "material"
   custom_dir: docs/_custom_dir
+  font:
+      text: text
+      code: text
   palette:
     - scheme: 'default'
       media: '(prefers-color-scheme: light)'
-      # primary: blue
+      primary: light blue
       toggle:
-        icon: "material/white-balance-sunny"
+        icon: material/brightness-7
         name: "Switch to dark mode"
     - scheme: 'slate'
       media: '(prefers-color-scheme: dark)'
-      # primary: blue
+      primary: light blue
       toggle:
-        icon: 'material/moon-waxing-crescent'
+        icon: material/brightness-4
         name: 'Switch to light mode'
   logo: "assets/images/uel.svg"
   features:
@@ -92,8 +92,6 @@ plugins:
 
 extra_css:
     - ./assets/stylesheets/extra.css
-extra_javascript:
-    - ./assets/javascripts/extra.js
 
 
 extra:

@@ -5,23 +5,17 @@
 
 ## What's UEL?
 
-UEL is a **popular**  programming language.
+UEL is a easy to learn, powerful programming language. It has efficient
+high-level data structures and a simple but effective approach to object
+-oriented programming. UEL’s elegant syntax and dynamic typing, together
+with its interpreted nature, make it an ideal language for scripting and
+rapid application development in many areas on most platforms.
 
-It has many interesting characteristics:
+UEL's is freely available and Open Source in Github.
 
-* **Easy to learn**:
-    1. UEL have most tutorials
-    2. Itself is very simply
-* **Installation is simple**:
-    
-    * If you are a `C/C++` expert, You will install `Clang`, `GCC`, `vim`, `VSCode`,
-        `Dev C++`, `VS`, ...
-    * If you are a `Python` expert, You will install `CPython`, `Jython`, `PyPy`,
-        `PyCharm`, `VSCode`, `Git`, ...
-    
-    That's very complexity. but if you just a UEL expert. You will just install
-    `CPython`, `Vim` and `uel`, And the vim is optional, because `shell` is built-in
-    in all device, `shell` including `echo` and ">>" operator.
+This tutorial introduces the reader informally to the basic concepts and features of the UEL language and system. It helps to have a UEL interpreter handy for hands-on experience, but all examples are self-contained, so the tutorial can be read off-line as well.
+
+For a description of this documentation, see [Documentation Description](../documentation/description.md)
 
 ## Quick Links
-- [Our user says](./our_user_says)
+- [Our user says](./our_user_says.md)

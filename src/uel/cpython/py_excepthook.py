@@ -22,7 +22,7 @@ def excepthook(exc_type, value, trace: types.TracebackType | None):
             path = os.path.relpath(cofilename, os.path.dirname(__file__))
             if path.startswith("."):
                 path = cofilename
-        except Exception:  # pylint: disable=W0718
+        except Exception:
             path = cofilename
 
         astnode = getastnode(trace)
