@@ -1,4 +1,4 @@
-from uel.objects import UELObject
+from uel.objects.object import UELObject
 from uel.typing import Position, Optional, Never
 from uel.tools import uel_exit
 from uel.internal.uelcore_internal_exceptions import throw

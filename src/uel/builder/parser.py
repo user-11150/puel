@@ -77,6 +77,9 @@ class Parser:
             TokenConstants.TT_SLASH, self.parse_infix_expression
         )
         self.register_infix_expression(
+            TokenConstants.TT_ATTR, self.parse_infix_expression
+        )
+        self.register_infix_expression(
             TokenConstants.TT_ASSIGN, self.parse_assignment
         )
 
@@ -138,12 +141,9 @@ class Parser:
     def parse_statements(self) -> AST:
         start = self.token.start
         statements = []
-        while self.current_token is not None and self.current_token.token_type != TokenConstants.TT_EOF:
-            try:
-                statements.append(self.parse_statement())
-                self.advance()
-            except RuntimeError:
-                break
+        while self.current_token is not None and self.current_token.token_type != TokenConstants.TT_EOF and self.current_token.token_type != TokenConstants.TT_RBRACE:
+            statements.append(self.parse_statement())
+            self.advance()
         end = self.last_token.end
         return Block(statements, start, end)
 
@@ -170,8 +170,11 @@ class Parser:
         try:
             node = self.prefix_expression[token.token_type]()
         except KeyError as e:
-            raise RuntimeError from None
-        while self.next_token.token_type not in [
+            uel_set_error_string(
+                UELSyntaxError, "Invalid Prefix Token", self.source,
+                self.token.start, self.token.end
+            )
+        while self.next_token is not None and self.next_token.token_type not in [
             TokenConstants.TT_SEMI, TokenConstants.TT_EOF
         ] and precedence < get_precedence(self.next_token):
             infix = self.infix_expression.get(self.next_token.token_type)
@@ -186,11 +189,12 @@ class Parser:
     def parse_block_expression(self):
         self.advance()
         statements = self.parse_statements()
-        if self.token.token_type != TokenConstants.TT_RBRACE:
+        if self.next_token is not None and self.token.token_type != TokenConstants.TT_RBRACE:
             uel_set_error_string(
                 UELSyntaxError, "Expected \")\"", self.source,
                 self.current_token.start, self.current_token.end
             )
+        self.advance()
         return statements
 
     def parse_prefix_expression(self):
@@ -237,9 +241,5 @@ def get_precedence(token: UELToken) -> int:
     return getattr(Precedence(), token.token_type)
 
 
-def uel_generate_ast(source, tokens):
+def uel_ast_parser(source, tokens):
     return Parser(source, tokens).parse()
-
-
-def uel_ast_parser(code: UELCode) -> None:
-    code.co_ast = uel_generate_ast(code.co_source, code.co_tokens)

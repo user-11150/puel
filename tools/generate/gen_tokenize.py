@@ -247,7 +247,7 @@ class GenerateTokenizer:
     def add_token_types(self):
         tmp = "\n".join(map(lambda x: f"{x} = {repr(x)}", self.tokens.keys()))
         keywords = [
-            
+            "import"
         ]
         extras = f"TT_KEYWORDS = {repr(keywords)};" \
                  "TT_KEYWORD = 'TT_KEYWORD';" \
@@ -262,11 +262,7 @@ class GenerateTokenizer:
         """
         def uel_generate_tokens(source: str) -> list[UELToken]:
             return UELTokenize(source).make_tokens()
-        def uel_tokenize(code: UELCode):
-            assert code.co_source is not None
-            code.co_tokens = uel_generate_tokens(code.co_source)
-        """
-        )
+        """)
     
     
     

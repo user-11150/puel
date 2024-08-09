@@ -30,7 +30,8 @@ TT_STAR = 'TT_STAR'
 TT_SLASH = 'TT_SLASH'
 TT_EQUAL = 'TT_EQUAL'
 TT_SEMI = 'TT_SEMI'
-TT_KEYWORDS = [];TT_KEYWORD = 'TT_KEYWORD';TT_EOF = 'TT_EOF'
+TT_ATTR = 'TT_ATTR'
+TT_KEYWORDS = ['import'];TT_KEYWORD = 'TT_KEYWORD';TT_EOF = 'TT_EOF'
 class Token:
     TT_IDENTIFIER = 'TT_IDENTIFIER'
     TT_STRING = 'TT_STRING'
@@ -49,7 +50,8 @@ class Token:
     TT_SLASH = 'TT_SLASH'
     TT_EQUAL = 'TT_EQUAL'
     TT_SEMI = 'TT_SEMI'
-    TT_KEYWORDS = [];TT_KEYWORD = 'TT_KEYWORD';TT_EOF = 'TT_EOF'
+    TT_ATTR = 'TT_ATTR'
+    TT_KEYWORDS = ['import'];TT_KEYWORD = 'TT_KEYWORD';TT_EOF = 'TT_EOF'
 class UELTokenize:
     def __init__(self, source: t.Any) -> None:
         self.source = source
@@ -112,6 +114,16 @@ class UELTokenize:
                 tokens.append(
                     UELToken(
                         TT_EQEQUAL, '==', start_position, self.current_position
+                    )
+                )
+
+            elif self.current_char == '-' and self.peek(1) == '>':
+                self.advance()
+                self.advance()
+
+                tokens.append(
+                    UELToken(
+                        TT_ATTR, '->', start_position, self.current_position
                     )
                 )
 
@@ -316,6 +328,3 @@ class UELTokenize:
 
 def uel_generate_tokens(source: str) -> list[UELToken]:
     return UELTokenize(source).make_tokens()
-def uel_tokenize(code: UELCode):
-    assert code.co_source is not None
-    code.co_tokens = uel_generate_tokens(code.co_source)

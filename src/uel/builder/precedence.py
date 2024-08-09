@@ -10,6 +10,7 @@ PRODUCT = 4
 PREFIX = 5
 CALL = 6
 INDEX = 7
+MAX = 8
 
 
 class Precedence:
@@ -27,3 +28,4 @@ class Precedence:
     TT_MINUS: int = SUM
     TT_STAR: int = PRODUCT
     TT_SLASH: int = PRODUCT
+    TT_ATTR: int = INDEX

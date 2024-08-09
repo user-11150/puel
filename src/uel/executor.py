@@ -1,9 +1,10 @@
 from uel import uelio
 
-from uel.builder import uel_tokenize, UELCode
-from uel.builder.pretty_print import print_tokens, print_ast
+from uel.builder import uel_generate_tokens, UELCode
+from uel.builder.pretty_print import print_tokens, print_ast, print_code
 from uel.binary import uel_uel_binary_as_uel_code
 from uel.builder.parser import uel_ast_parser
+from uel.builder.compiler import uel_compiler
 
 
 class UELExecutor:
@@ -22,22 +23,19 @@ class UELExecutor:
             return f.read()
 
     def _build(self, fn: str, source: str) -> UELCode:
-        code = UELCode()
-
-        code.co_filename = fn
-        code.co_source = source
-
-        uel_tokenize(code)
+        tokens = uel_generate_tokens(source)
 
         if self.verbose:
-            assert code.co_tokens is not None
-            print_tokens(code.co_tokens)
+            print_tokens(tokens)
 
-        uel_ast_parser(code)
+        ast = uel_ast_parser(source, tokens)
 
         if self.verbose:
-            assert code.co_ast is not None
-            print_ast(code.co_ast)
+            print_ast(ast)
+
+        code = uel_compiler(fn, source, ast)
+
+        print_code(code)
 
         return code
 

@@ -1,6 +1,6 @@
 class Position:
     def __init__(self, line, column):
-        self.line = line
+        self.line = self.lineno = line
         self.column = column
 
     def __str__(self):

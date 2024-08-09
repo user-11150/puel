@@ -1,2 +1,2 @@
-from uel.builder.codeobject import *  # noqa
-from uel.builder.tokenize import *  # noqa
+from uel.builder.codeobject import *
+from uel.builder.tokenize import *
