@@ -16,8 +16,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: [37, 38, 39, 310, 311]
+        os: [ubuntu-latest, windows-latest]
+        python-version: [310, 311]
         manylinux-image: [manylinux2014, manylinux_2_24]
         arch: [auto]
         include:
@@ -42,9 +42,6 @@ jobs:
             arch: aarch64
             python-version: 311
         exclude:
-          # manyliunx image is not a valid variation on MacOS and Windows
-          - os: macos-latest
-            manylinux-image: manylinux2014
           - os: windows-latest
             manylinux-image: manylinux2014
 
