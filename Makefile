@@ -18,8 +18,7 @@ release:
 	python tools/release.py
 
 build:
-	python -m setup sdist
-	python -m setup bdist_wheel
+	python -m setup build
 
 upload:
 	twine upload dist/*
