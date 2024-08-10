@@ -1,13 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-try:
-    from pkg_resources import require
-except ImportError:
-    raise ImportWarning("You need run \"python -m pip install setuptools\"") from None
-
-require("setuptools", "Cython")
-
 from Cython.Build import cythonize
 
 from os import cpu_count
