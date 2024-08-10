@@ -1,5 +1,3 @@
-Cython
-setuptools
 wheel
 twine
 GitPython
