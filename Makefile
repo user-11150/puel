@@ -18,7 +18,7 @@ release:
 	python tools/release.py
 
 build:
-	python -m setup build
+	python -m build
 
 upload:
 	twine upload dist/*
@@ -31,8 +31,7 @@ format:
 	yapf -ir $(CODE_DIRECTORYS)
 
 install:
-	$(python) -m pip uninstall uel -y
-	$(python) -m setup install
+	$(python) -m pip install .
 
 clean:
 	rm -rf build
