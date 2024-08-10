@@ -55,7 +55,10 @@ def get_extensions():
     
     
     extensions.extend([
-        
+        Extension(
+            "uel.internal.uelcore_internal_exceptions",
+            sources=["src/uel/internal/uelcore_internal_exceptions.c"]
+        )
     ])
 
     return extensions

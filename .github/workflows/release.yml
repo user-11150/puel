@@ -78,8 +78,8 @@ jobs:
         if: matrix.os != 'windows-latest' 
         continue-on-error: true
         env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{secrets.PYPI_TOKEN}}
         run: |
           twine upload wheelhouse/*.whl
 
@@ -87,8 +87,8 @@ jobs:
         if: matrix.os == 'windows-latest' 
         continue-on-error: true
         env:
-          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{secrets.PYPI_TOKEN}}
         run: |
           twine upload (Get-ChildItem wheelhouse/*.whl)
 
