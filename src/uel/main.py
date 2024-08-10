@@ -1,8 +1,7 @@
-from typing import TypeAlias
+from typing import TypeAlias, Callable
 
 from uel.constants import File
 from uel.executor import UELExecutor
-from uel.internal.uelcore_internal_exceptions import throw
 
 import argparse
 import sys
@@ -10,16 +9,25 @@ import sys
 Status: TypeAlias = int
 
 
-def dispatch(fn):
-    dispatch.dict[fn.__name__] = fn
-    return fn
+class DispatchLoader:
+    def __init__(self) -> None:
+        self.dispatch: dict[str, Callable[[argparse.Namespace],
+                                          None]] = {}
+
+    def __call__(
+        self, fn: Callable[[argparse.Namespace], None]
+    ) -> Callable[[argparse.Namespace], None]:
+        self.dispatch[fn.__name__] = fn
+        return fn
 
 
-dispatch.dict = {"": lambda context: None}
+dispatch = DispatchLoader()
+
+dispatch.dispatch = {"": lambda context: None}
 
 
 @dispatch
-def run(context):
+def run(context: argparse.Namespace) -> None:
 
     encoding = context.encoding
     filename = context.filename
@@ -39,7 +47,9 @@ def make_argparser() -> argparse.ArgumentParser:
     run = subcommands.add_parser("run", help="Running UEL")
 
     run.add_argument("filename", help="filename")
-    run.add_argument("-b", help="Run UEL-Binary file", action="store_true")
+    run.add_argument(
+        "-b", help="Run UEL-Binary file", action="store_true"
+    )
 
     run.add_argument(
         "--encoding", help="Set encoding", default=File.FILE_ENCODING
@@ -60,10 +70,10 @@ def main(args: list[str]) -> Status:
 
     context = parser.parse_args(args[1:])
 
-    dispatch.dict[context.subcommands or ""](context)
+    dispatch.dispatch[context.subcommands or ""](context)
 
     return 0
 
 
-def console_main():
+def console_main() -> None:
     raise SystemExit(main(sys.argv))

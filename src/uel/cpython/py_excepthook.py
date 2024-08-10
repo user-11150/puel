@@ -1,24 +1,18 @@
 import sys
 import types
-import linecache
 import os
-import io
 import textwrap
 import ast
-import tokenize
-import inspect
-import contextlib
-import collections
 import executing
 
 __all__ = ["install"]
 
 
-def excepthook(exc_type, value, trace: types.TracebackType):
+def excepthook(exc_type, value, trace: types.TracebackType | None):
     def getastnode(tb):
         return executing.Source.executing(tb).node
 
-    trace_lines = []
+    trace_lines: list[str] = []
 
     sys.stderr.write("Untracked error:\n")
 
@@ -28,7 +22,7 @@ def excepthook(exc_type, value, trace: types.TracebackType):
             path = os.path.relpath(cofilename, os.path.dirname(__file__))
             if path.startswith("."):
                 path = cofilename
-        except Exception:  # pylint: disable=W0718
+        except Exception:
             path = cofilename
 
         astnode = getastnode(trace)
@@ -48,16 +42,17 @@ def excepthook(exc_type, value, trace: types.TracebackType):
         sys.stderr.write(":")
         sys.stderr.write(value)
     sys.stderr.write("\n")
-    add_trace(trace, trace_lines)
+    if trace is not None:
+        add_trace(trace, trace_lines)
 
-    for idx, line in enumerate(trace_lines, start=1):
-        prefix = "  "
-        if idx > 10:
-            overflow = len(trace_lines) - idx + 1
-            sys.stderr.write(f"{prefix}... {overflow} more\n")
-            break
-        sys.stderr.write(textwrap.indent(str(line), prefix))
-        sys.stderr.write("\n")
+        for idx, line in enumerate(trace_lines, start=1):
+            prefix = "  "
+            if idx > 10:
+                overflow = len(trace_lines) - idx + 1
+                sys.stderr.write(f"{prefix}... {overflow} more\n")
+                break
+            sys.stderr.write(textwrap.indent(str(line), prefix))
+            sys.stderr.write("\n")
 
     sys.stderr.flush()
 

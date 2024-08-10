@@ -1,2 +1,5 @@
-def uel_exit():
+from typing import Never
+
+
+def uel_exit() -> Never:
     raise SystemExit

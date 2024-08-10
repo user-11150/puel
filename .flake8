@@ -1,0 +1,9 @@
+
+[flake8]
+count: true
+statistics: true
+max-line-length: 120
+exclude:
+    src/uel/builder/tokenize.py,
+    src/uel/builder/ast.py,
+    src/uel/opcodes.py

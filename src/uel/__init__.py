@@ -4,7 +4,7 @@ import sys
 
 from platform import python_implementation
 
-__all__ = []
+__all__: list[str] = []
 
 implementation = python_implementation()
 

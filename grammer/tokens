@@ -1,9 +1,18 @@
 IDENTIFIER
 STRING
+NUMBER
+ASSIGN                  ':='
+EQEQUAL                 '=='
 LPAR                    '('
 RPAR                    ')'
+LSQB                    '['
+RSQB                    ']'
+LBRACE                  '{'
+RBRACE                  '}'
 PLUS                    '+'
 MINUS                   '-'
 STAR                    '*'
 SLASH                   '/'
-NEWLINE "\n"
+EQUAL                   '='
+SEMI                    ";"
+ATTR                    "->"

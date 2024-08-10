@@ -5,3 +5,5 @@ include LICENSE
 include mkdocs.yml
 
 recursive-include docs *
+recursive-include grammer *
+recursive-include tools *

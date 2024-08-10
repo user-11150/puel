@@ -6,3 +6,4 @@ mkdocs-material
 mypy
 yapf
 flake8
+mkdocs-minify-plugin

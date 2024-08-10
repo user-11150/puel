@@ -40,36 +40,38 @@ markdown_extensions:
 
 nav:
   - Home: "index.md"
-  - Introduction: "introduction.md"
+  - Introduction:
+    - What's UEL and Project Introduction: "introduction/introduction.md"
+    - History and licenses: "history_and_licenses.md"
+    - What our user says?: "introduction/our_user_says.md"
   - Tutorial: "tutorial.md"
   - Glossary: "glossary.md"
   - We planned features: "plans.md"
   - "What's new": "whatsnew.md"
   - Developer's Guide: "dev-guide/index.md"
-  - History and License: "history_and_licenses.md"
 
 
 not_in_nav: "**/*"
 
 
-hooks:
-  - docs/_hooks/hook.py
-
 theme:
   name: "material"
   custom_dir: docs/_custom_dir
+  font:
+      text: text
+      code: text
   palette:
     - scheme: 'default'
       media: '(prefers-color-scheme: light)'
-      # primary: blue
+      primary: light blue
       toggle:
-        icon: "material/white-balance-sunny"
+        icon: material/brightness-7
         name: "Switch to dark mode"
     - scheme: 'slate'
       media: '(prefers-color-scheme: dark)'
-      # primary: blue
+      primary: light blue
       toggle:
-        icon: 'material/moon-waxing-crescent'
+        icon: material/brightness-4
         name: 'Switch to light mode'
   logo: "assets/images/uel.svg"
   features:
@@ -79,15 +81,20 @@ theme:
     - toc.follow
     - toc.integrate
     - navigation.top
-copyright: All rights
 
 plugins:
   - search
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      cache_safe: true
+
 extra_css:
     - ./assets/stylesheets/extra.css
+
+
 extra:
-  generator: false
-  
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/user-11150/puel

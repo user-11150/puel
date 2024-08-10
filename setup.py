@@ -1,10 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from pkg_resources import require
+try:
+    from pkg_resources import require
+except ImportError:
+    raise ImportWarning("You need run \"python -m pip install setuptools\"") from None
 
-require("setuptools")
-require("Cython")
+require("setuptools", "Cython")
 
 from Cython.Build import cythonize
 
@@ -18,6 +20,7 @@ from setuptools.command.build_ext import build_ext
 
 import re
 import sys
+import platform
 
 with open("src/uel/version.py", "rt", encoding="utf8") as f:
     version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
@@ -50,19 +53,9 @@ def get_extensions():
     C_COMPILE_ARGS = ["--std=c11"]
     CPP_COMPILE_ARGS = ["--std=c++17"]
     
+    
     extensions.extend([
-        Extension(
-            "uel.internal.uelcore_internal_exceptions",
-            sources=["src/uel/internal/uelcore_internal_exceptions.c"],
-            language="c",
-            extra_compile_args=C_COMPILE_ARGS
-        ),
-        Extension(
-            "uel.uelio._io",
-            sources=["src/uel/uelio/_io.c"],
-            language="c",
-            extra_compile_args=C_COMPILE_ARGS
-        )
+        
     ])
 
     return extensions

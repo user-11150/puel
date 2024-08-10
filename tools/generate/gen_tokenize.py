@@ -1,9 +1,15 @@
-from generate import task, python, encode
+from generate import task, python
 import textwrap
 import copy
 import os
 import ast
 import linecache
+
+SCRIPT_NAME = "tools/generate/gen_tokenize.py"
+FROM = "grammer/tokens"
+DESCRIPTION = """
+UEL's tokenizer
+"""
 
 class GenerateTokenizer:
     
@@ -30,6 +36,7 @@ class GenerateTokenizer:
         from uel.exceptions import UELSyntaxError, uel_set_error_string
         from uel.builder.codeobject import UELCode
         from uel.builder.token import UELToken
+        from uel.builder.position import Position
         import typing as t
         """
         )
@@ -69,43 +76,46 @@ class GenerateTokenizer:
                 self.current_idx -= 1
                 return self.current_char
         
-            def idx_as_line_and_col(self, idx):
-                return UELToken.idx_as_line_and_col(self.source, idx)
+            def idx_as_position(self, idx):
+                return UELToken.idx_as_position(self.source, idx)
+        
+            @property
+            def current_position(self):
+                return self.idx_as_position(self.current_idx)
         
             def make_tokens(self) -> list[UELToken]:
                 tokens = []
                 while self.current_char is not None:
         
-                    start_position = self.current_idx
-                    if start_position <= len(self.source):
-                        start_line, start_col = UELToken.idx_as_line_and_col(
-                            self.source, start_position
-                        )
+                    start_position = self.current_position
         
         %s
-                tokens.append(UELToken(Token.TT_EOF, None, None, None, None, None))
+                    if self.current_char is None:
+                        break
+                tokens.append(UELToken(Token.TT_EOF, None, None, None))
         
                 return tokens
         
             @staticmethod
-            def is_identifier_start(char):
-                if char in ascii_letters:
+            def is_identifier_start(char_):
+                if char_ in ascii_letters:
                     return True
-                if '\u4e00' <= char <= '\u9fff':
+                if '\u4e00' <= char_ <= '\u9fff':
                     return True
-                if char in ["_", "$"]:
+                if char_ in ["_", "$"]:
                     return True
-        
                 return False
         
             @classmethod
-            def is_identifier(cls, char):
-                return cls.is_identifier_start(char) or char in numbers
+            def is_identifier(cls, char_):
+                return cls.is_identifier_start(char_) or char_ in numbers
         
             def make_identifier(self):
                 result = ""
         
                 while True:
+                    if self.current_char is None:
+                        break
                     if self.is_identifier(self.current_char):
                         result += self.current_char
                         self.advance()
@@ -131,10 +141,7 @@ class GenerateTokenizer:
                 f"""
                 tokens.append(
                     UELToken(
-                        {key}, {repr(txt)}, start_line, start_col,
-                        *UELToken.idx_as_line_and_col(
-                            self.source, self.current_idx
-                        )
+                        {key}, {repr(txt)}, start_position, self.current_position
                     )
                 )
                 """
@@ -143,19 +150,16 @@ class GenerateTokenizer:
             yield key, (cond, body)
  
     def generate_cases(self):
+        numbers = "".join(map(str, range(10)))
         special_cases = {
             "TT_IDENTIFIER": ("self.is_identifier_start(self.current_char)",
             textwrap.dedent(
                 """
                 identifier = self.make_identifier()
                 token_type = TT_KEYWORD if identifier in TT_KEYWORDS else TT_IDENTIFIER
-                end_line, end_col = UELToken.idx_as_line_and_col(
-                    self.source, self.current_idx
-                )
                 tokens.append(
                     UELToken(
-                        token_type, identifier, start_line, start_col,
-                        end_line, end_col
+                        token_type, identifier, start_position, self.current_position
                     )
                 )
                 self.advance()
@@ -173,35 +177,46 @@ class GenerateTokenizer:
                             res += start
                         
                         else:
-                            uel_set_error_string(UELSyntaxError, "Anomalous backlash in string", self.source, self.idx_as_line_and_col(self.current_idx))
+                            uel_set_error_string(UELSyntaxError, "Anomalous backlash in string", self.source, self.current_position)
                         continue
                     if self.current_char == start:
                         self.advance()
                         break
                     if self.current_char is None:
-                        uel_set_error_string(UELSyntaxError, "unterminated string literal", self.source,self.idx_as_line_and_col(start_position))
+                        uel_set_error_string(UELSyntaxError, "unterminated string literal", self.source, self.current_position)
                     res += self.current_char
-                end_line, end_col = UELToken.idx_as_line_and_col(
-                    self.source, self.current_idx
-                )
                 tokens.append(
                     UELToken(
-                        TT_STRING, res, start_line, start_col,
-                        end_line, end_col
+                        TT_STRING, res, start_position, self.current_position
                     )
                 )
                 self.advance()
                 """
-            )
-            )
+            )),
+            "TT_NUMBER": (f"self.current_char in {repr(numbers)}", textwrap.dedent(
+                fr"""
+                result = ""
+                while self.current_char is not None and self.current_char in {repr(numbers + ".")}:
+                    if "." in result and self.current_char == ".":
+                        uel_set_error_string(UELSyntaxError, "Too many dots", self.source, self.current_position)
+                    result += self.current_char
+                    self.advance()
+                tokens.append(
+                    UELToken(
+                        TT_NUMBER, result, start_position, self.current_position
+                    )
+                )
+                """
+            ))
+        
         }
         result = textwrap.dedent(
             """
-            if self.current_char == " ":
+            if self.current_char == " " or self.current_char == "\\n":
                 self.advance()
                 continue
             elif self.current_char == "#":
-                while self.advance() != "\\n":
+                while self.advance() not in [None, "\\n"]:
                     pass
             
             """
@@ -225,18 +240,18 @@ class GenerateTokenizer:
         result += textwrap.dedent(
             """
             else:
-                uel_set_error_string(UELSyntaxError, "Invalid character", self.source, self.idx_as_line_and_col(start_position))
+                uel_set_error_string(UELSyntaxError, "Invalid character", self.source, self.current_position)
             """)
         return result
     
     def add_token_types(self):
         tmp = "\n".join(map(lambda x: f"{x} = {repr(x)}", self.tokens.keys()))
         keywords = [
-            
+            "import"
         ]
-        extras = f"TT_KEYWORDS = {repr(keywords)}\n" \
-                  "TT_KEYWORD = 'TT_KEYWORD'\n" \
-                  "TT_EOF = 'TT_EOF'"
+        extras = f"TT_KEYWORDS = {repr(keywords)};" \
+                 "TT_KEYWORD = 'TT_KEYWORD';" \
+                 "TT_EOF = 'TT_EOF'"
         tmp += f"\n{extras}"
         
         self.result += tmp
@@ -247,10 +262,7 @@ class GenerateTokenizer:
         """
         def uel_generate_tokens(source: str) -> list[UELToken]:
             return UELTokenize(source).make_tokens()
-        def uel_tokenize(code: UELCode):
-            code.co_tokens = uel_generate_tokens(code.co_source)
-        """
-        )
+        """)
     
     
     
@@ -264,12 +276,11 @@ class GenerateTokenizer:
         
         self.add_interface()
         
-        return ast.unparse(ast.parse(self.result))
+        return self.result
 
 @task("src/uel/builder/tokenize.py")
-@encode
-@python
+@python(SCRIPT_NAME, FROM, DESCRIPTION)
 def generate_tokenizer(dirname):
-    result = GenerateTokenizer(dirname).generate()
-    
+    result = ""
+    result += GenerateTokenizer(dirname).generate()
     return result

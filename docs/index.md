@@ -1,47 +1,46 @@
-<!-- This is the documentation of UEL -->
-
+---
+template: home.html
+---
 <h1 align=center>UEL's Documentation</h1>
 
 <p align=center>Welcome! This is documentation of UEL.</p>
 
-## Documentation sections
-<div class="grid cards" markdown>
-- __[:material-new-box:What's new?](./whatsnew.md)__
 
-    ---
+<a href="https://pypi.org/project/uel">
+  <div style="display: flex; justify-content: center">
+    <img class="myimg" alt="Loading Fail" src="https://img.shields.io/pypi/v/uel">
+    <img class="myimg" alt="Loading Fail" src="https://img.shields.io/pypi/dm/uel">
+  </div>
+</a>
+
+<h1>Documentation sections</h1>
+
+<div class="grid cards" markdown>
+
+- [What's new?](./whatsnew.md)
+
     The what's new for all versions
 
-- __[:material-lightbulb-on: Tutorials](./tutorial.md)__
+- [Tutorials](./tutorial.md)
 
-    ---
     Start here: a tour of UEL's syntaxs and features
 
-- __[:fontawesome-solid-g: Glossary](./glossary.md)__
+- [Glossary](./glossary.md)
 
-    ---
     Terms explained
 
-- __[:fontawesome-solid-book:Project Introduction](./introduction.md)__
+- [Project Introduction](./introduction/introduction.md)
 
-    ---
     UEL's introduction
 
-- __[:material-license:History and UEL's license](history_and_licenses.md)__
+- [UEL Developer' s Guide](./dev-guide/index.md)
 
-- __[:material-access-point-network:Official Documentation](https://user-11150.github.io/puel)__
-
-    ---
-    If you are previewing the document locally. You can view the document remotely.
-
-- __[:fontawesome-brands-dev: UEL Developer' s Guide](./dev-guide/index.md)__
-
-    ---
     UEL guides of developers
 
 - __Quick Links__
 
-    ---
-    * [:fontawesome-brands-github:Github](https://github.com/user-11150/puel)
-    * [:fontawesome-brands-python:PyPI](https://pypi.org/project/uel)
-
+    * [Github](https://github.com/user-11150/puel)
+    * [PyPI](https://pypi.org/project/uel)
+    * [Official Documentation](https://user-11150.github.io/puel)
+    * [History and UEL's license](history_and_licenses.md)
 </div>
