@@ -27,7 +27,7 @@ jobs:
       - name: Install dependence
         run: pip install -r requirements-dev.txt
       - name: Build
-        run: make biild
+        run: make build
       - name: Release
         env:
           TWINE_USERNAME: __token__
