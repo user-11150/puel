@@ -19,8 +19,7 @@ release:
 
 build:
 	python -m setup sdist
-	python -m setup bdist_wheel bdist_egg
-	
+	python -m setup bdist_wheel
 
 upload:
 	twine upload dist/*
