@@ -10,7 +10,7 @@ permissions:
   pages: write
 
 jobs:
-    deploy-wheels:
+  deploy-wheels:
     name: Deploy wheels on ${{ matrix.os }} for ${{ matrix.arch }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -91,26 +91,25 @@ jobs:
         run: |
           twine upload (Get-ChildItem wheelhouse/*.whl)
 
-    deploy-tar:
-      strategy:
-        matrix:
-          python-version: ['3.11']
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-        - name: Set up Python
-          uses: actions/setup-python@v4
-          with:
-            python-version: ${{ matrix.python-version }}
-        - name: Install build dependence
-          run: pip install setuptools Cython
-        - name: Install dependence
-          run: pip install -r requirements-dev.txt
-        - name: Install
-          run: python setup.py sdist
-        - name: Release
-          env:
-            TWINE_USERNAME: __token__
-            TWINE_PASSWORD: ${{secrets.PYPI_TOKEN}}
-          run: twine upload dist/**
-  
+  deploy-tar:
+    strategy:
+      matrix:
+        python-version: ['3.11']
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install build dependence
+        run: pip install setuptools Cython
+      - name: Install dependence
+        run: pip install -r requirements-dev.txt
+      - name: Install
+        run: python setup.py sdist
+      - name: Release
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{secrets.PYPI_TOKEN}}
+        run: twine upload dist/**
