@@ -5,7 +5,7 @@ from uel.builder.precedence import (Precedence, PREFIX, LOWEST)
 from uel.exceptions import (uel_set_error_string, UELSyntaxError)
 from uel.builder.ast import (
     AST, BinOp, UnaryOp, Module, NumberLiteral, Name, StringLiteral,
-    Assign, Literal, Block
+    Assign, Literal, Block, IncludeFile, ImportName
 )
 
 from uel.builder.node_visitor import NodeVisitor
@@ -148,6 +148,26 @@ class Parser:
         return Block(statements, start, end)
 
     def parse_statement(self) -> AST:
+        if self.current_token.token_type == TokenConstants.TT_KEYWORD:
+            if self.current_token.token_value == "import":
+                self.advance()
+                if self.current_token.token_type == TokenConstants.TT_STRING:
+                    return IncludeFile(
+                        self.current_token.token_value,
+                        self.last_token.start, self.current_token.end
+                    )
+                elif self.current_token.token_type == TokenConstants.TT_IDENTIFIER:
+                    return ImportName(
+                        self.current_token.token_value,
+                        self.last_token.start, self.current_token.end
+                    )
+                else:
+                    uel_set_error_string(
+                        UELSyntaxError,
+                        "Expected a string literal or identifier.",
+                        self.source, self.token.start
+                    )
+
         return self.parse_expression()
 
     def parse_number(self):

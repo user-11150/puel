@@ -9,3 +9,5 @@ BinOp[Expression]: left, op, right;
 StringLiteral[Literal]: value;
 NumberLiteral[Literal]: value;
 Name[Expression]: name;
+IncludeFile[Statement]: filename;
+ImportName[Statement]: name

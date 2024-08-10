@@ -5,6 +5,7 @@ from uel.builder.pretty_print import print_tokens, print_ast, print_code
 from uel.binary import uel_uel_binary_as_uel_code
 from uel.builder.parser import uel_ast_parser
 from uel.builder.compiler import uel_compiler
+from uel.builder.ast import AST
 
 
 class UELExecutor:
@@ -23,6 +24,15 @@ class UELExecutor:
             return f.read()
 
     def _build(self, fn: str, source: str) -> UELCode:
+        ast = self._build_ast_only(source)
+
+        code = uel_compiler(fn, source, ast)
+
+        print_code(code)
+
+        return code
+
+    def _build_ast_only(self, source) -> AST:
         tokens = uel_generate_tokens(source)
 
         if self.verbose:
@@ -32,12 +42,7 @@ class UELExecutor:
 
         if self.verbose:
             print_ast(ast)
-
-        code = uel_compiler(fn, source, ast)
-
-        print_code(code)
-
-        return code
+        return ast
 
     def run_binary(self, filename: str) -> None:
         self._run(

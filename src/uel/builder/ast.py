@@ -106,6 +106,24 @@ class Name(Expression):
         self.start = start
         self.end = end
 
+class IncludeFile(Statement):
+    kind = 'IncludeFile'
+    _fields: list[str] = ['filename', 'start', 'end']
+
+    def __init__(self, filename, start, end):
+        self.filename = filename
+        self.start = start
+        self.end = end
+
+class ImportName(Statement):
+    kind = 'ImportName'
+    _fields: list[str] = ['name', 'start', 'end']
+
+    def __init__(self, name, start, end):
+        self.name = name
+        self.start = start
+        self.end = end
+
 def dump(node: BaseAST, indent=None):
 
     def _format(node, level=0):

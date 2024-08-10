@@ -48,19 +48,24 @@ def uel_set_error(
         string += ":"
         string += exception.message
 
-    if source is not None and start is not None:
-        trace = _getline(source, start[0])
-        if end is None and start is not None:
-            end = start
-        if start is None and end is not None:
-            throw(uel_set_error.__doc__)
-        if start is not None and end is not None:
-            if start[0] == end[0] and end[1] > start[1]:
-                trace = f"{trace}\n{' '*(start[1]-1)}{'^'*len(trace[start[1]:end[1]+1])}"
-            else:
-                trace = f"{trace}\n{' '*(start[1]-1)}^"
-        if not trace.isspace():
-            string = f"{trace}\n{string}"
+    try:
+        if source is not None and start is not None:
+
+            trace = _getline(source, start[0])
+
+            if end is None and start is not None:
+                end = start
+            if start is None and end is not None:
+                throw(uel_set_error.__doc__)
+            if start is not None and end is not None:
+                if start[0] == end[0] and end[1] > start[1]:
+                    trace = f"{trace}\n{' '*(start[1]-1)}{'^'*len(trace[start[1]:end[1]+1])}"
+                else:
+                    trace = f"{trace}\n{' '*(start[1]-1)}^"
+            if not trace.isspace():
+                string = f"{trace}\n{string}"
+    except:
+        pass
     sys.stderr.write(string)
     sys.stderr.write("\n")
     sys.stderr.flush()
