@@ -60,7 +60,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requiremens-dev.txt
+          pip install -r requirements-dev.txt
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel -U
@@ -103,7 +103,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requiremens-dev.txt
+          pip install -r requirements-dev.txt
       - name: Build source tar
         run: |
           python setup.py sdist
