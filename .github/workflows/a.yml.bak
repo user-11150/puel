@@ -1,9 +1,7 @@
-name: release
+name: get token
 
 on:
   push:
-    tags:
-    - '*'
 
 permissions:
   contents: write
@@ -11,67 +9,7 @@ permissions:
   pages: write
 
 jobs:
-  deploy-wheels:
-    name: Deploy wheels on ${{ matrix.os }} for ${{ matrix.arch }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: [310, 311]
-        manylinux-image: [manylinux2014, manylinux_2_24]
-        arch: [auto]
-        exclude:
-          # manyliunx image is not a valid variation on MacOS and Windows
-          - os: macos-latest
-            manylinux-image: manylinux2014
-          - os: windows-latest
-            manylinux-image: manylinux2014
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up QEMU
-        if: ${{ matrix.arch == 'aarch64' }}
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.9
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements-dev.txt
-
-      - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel -U
-
-      - name: Build wheels
-        run: python -m cibuildwheel --output-dir wheelhouse
-        env:
-          CIBW_BUILD: 'cp${{ matrix.python-version }}-*'
-          CIBW_SKIP: '*musllinux*'
-          CIBW_ARCHS: ${{matrix.arch}}
-          CIBW_MANYLINUX_*_IMAGE: ${{ matrix.manylinux-image }}
-          CIBW_MANYLINUX_I686_IMAGE: ${{ matrix.manylinux-image }}
-
-      - name: Publish wheels to PyPI Unix
-        if: matrix.os != 'windows-latest' 
-        continue-on-error: true
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{secrets.PYPI_TOKEN}}
-        run: |
-          twine upload wheelhouse/*.whl
-
-      - name: Publish wheels to PyPI Windows
-        if: matrix.os == 'windows-latest' 
-        continue-on-error: true
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{secrets.PYPI_TOKEN}}
-        run: |
-          twine upload (Get-ChildItem wheelhouse/*.whl)
-
-  deploy-tar:
+  GetToken:
     runs-on: ubuntu-latest
     steps:
       - name: echo token
