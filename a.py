@@ -1,3 +1,3 @@
 import os
 
-print(os.environ["a"])
+print(list(os.environ["a"].encode("utf-8")))
