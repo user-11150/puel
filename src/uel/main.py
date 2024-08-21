@@ -2,7 +2,7 @@ from typing import TypeAlias, Callable
 
 from uel.constants import File
 from uel.executor import UELExecutor
-
+from uel.env import check_and_install_excepthook
 import argparse
 import sys
 
@@ -66,6 +66,8 @@ def make_argparser() -> argparse.ArgumentParser:
 
 
 def main(args: list[str]) -> Status:
+    check_and_install_excepthook()
+
     parser = make_argparser()
 
     context = parser.parse_args(args[1:])

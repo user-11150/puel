@@ -11,11 +11,13 @@ throw(PyObject* self, PyObject* args)
         return NULL;
         }
     printf("[UEL Internal Error]%s", message);
+    exit(-1);
+    Py_RETURN_NONE;
 }
 
 static PyMethodDef
     uelcore_internal_exceptionsmethods[] = {
-        {"throw", (PyCFunction) throw, METH_FASTCALL},
+        {"throw", (PyCFunction) throw, METH_VARARGS},
         {NULL, NULL, 0, NULL}};
 
 static struct PyModuleDef

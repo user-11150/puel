@@ -7,6 +7,9 @@ class UELString(UELObject):
     def __init__(self, value):
         self.value = value
 
+    def tp_str(self):
+        return self
+
 
 def uel_string_as_python_str(string):
     return string.value

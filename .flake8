@@ -3,6 +3,7 @@
 count: true
 statistics: true
 max-line-length: 120
+ignore: F401, F405
 exclude:
     src/uel/builder/tokenize.py,
     src/uel/builder/ast.py,

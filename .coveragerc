@@ -1,6 +1,3 @@
 [run]
 source=uel
-omit=
-  *__*__.py
-  */omit/*
 branch=True

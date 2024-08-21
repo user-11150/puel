@@ -7,4 +7,3 @@ from typing import Optional, Any
 class UELCode:
     co_instructions: list[Instruction]
     co_consts: list[Any]
-    co_stacksize: int

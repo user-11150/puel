@@ -6,6 +6,7 @@ from uel.binary import uel_uel_binary_as_uel_code
 from uel.builder.parser import uel_ast_parser
 from uel.builder.compiler import uel_compiler
 from uel.builder.ast import AST
+from uel.virtual_machine.uel_eval import UELEval
 
 
 class UELExecutor:
@@ -13,7 +14,7 @@ class UELExecutor:
         self.verbose = verbose
 
     def _run(self, code: UELCode) -> None:
-        raise NotImplementedError
+        UELEval(code).run_until_complete()
 
     def _get_source(self, filename: str, encoding: str) -> str:
         with uelio.file_open(filename, "rt", encoding=encoding) as f:
@@ -27,8 +28,8 @@ class UELExecutor:
         ast = self._build_ast_only(source)
 
         code = uel_compiler(fn, source, ast)
-
-        print_code(code)
+        if self.verbose:
+            print_code(code)
 
         return code
 

@@ -6,20 +6,19 @@ from uel.opcodes import *
 from uel.instruction import Instruction
 from uel.constants import File
 from os.path import dirname, join
+from uel.objects.none import uel_none
 
 
 class Compiler:
     """
     Compile AST into bytecode
     """
-    def __init__(self, filename, source, ast):
-        self.filename = filename
-        self.source = source
+    def __init__(self, filename, ast):
         self.ast = ast
+        self.filename = filename
 
         self.co_consts: list[object] = []
         self.co_instructions = []
-        self.stacksize = 0
 
     def const(self, value):
         if value in self.co_consts:
@@ -38,8 +37,7 @@ class Compiler:
         self.addop(LOAD_CONST, self.const(const))
 
     def _compile_block(self, ast: Block):
-        code = Compiler(self.filename, self.source,
-                        ast.statements).compile()
+        code = Compiler(self.filename, ast.statements).compile()
         self.addop(LOAD_CONST, self.const(code))
         self.addop(EXEC_CODE, None)
 
@@ -49,6 +47,14 @@ class Compiler:
         elif node.kind == "Name":
             index = self.const(node.name)
             self.addop(LOAD_NAME, index)
+        elif node.kind == "FunctionCall":
+            node: FunctionCall
+            for child in node.arguments:
+                self._compile_expr(child)
+            self.addop(LOAD_CONST, self.const(len(node.arguments)))
+
+            self._compile_expr(node.function)
+            self.addop(CALL, None)
         elif node.kind == 'BinOp':
             operator_to_opcode = {
                 "+": ADD,
@@ -99,25 +105,38 @@ class Compiler:
                 )
             )
         elif isinstance(ast, ImportName):
-            self.addop(IMPORT_NAME, ast.name)
-            self.addop(STORE_NAME, self.const)
+            self.addop(IMPORT_NAME, self.const(ast.name))
+            self.addop(STORE_NAME, self.const(ast.name))
+        elif isinstance(ast, FunctionDef):
+            f = self.const(ast.name)
+            args = self.const(ast.arguments)
+            body = self.const(
+                Compiler(self.filename, ast.body).compile()
+            )
+            self.addop(LOAD_CONST, args)
+            self.addop(LOAD_CONST, body)
+            self.addop(MAKE_FUNCTION, None)
+            self.addop(STORE_NAME, f)
         elif isinstance(ast, list):
             for ast_ in ast:
                 self._compile(ast_)
         else:
             self._compile_expr(ast)
+            self.addop(POP_TOP, None)
 
     def compile(self):
         self._compile(self.ast)
+        none = self.const(uel_none)
+        self.addop(LOAD_CONST, none)
+        self.addop(RETURN_VALUE, None)
 
         return UELCode(
             co_consts=self.co_consts,
             co_instructions=self.co_instructions,
-            co_stacksize=self.stacksize,
         )
 
 
-def uel_compiler(filename, source, ast) -> UELCode:
-    compiler = Compiler(filename, source, ast)
+def uel_compiler(filename, _, ast) -> UELCode:
+    compiler = Compiler(filename, ast)
 
     return compiler.compile()

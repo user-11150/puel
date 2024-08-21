@@ -5,7 +5,8 @@ from uel.builder.precedence import (Precedence, PREFIX, LOWEST)
 from uel.exceptions import (uel_set_error_string, UELSyntaxError)
 from uel.builder.ast import (
     AST, BinOp, UnaryOp, Module, NumberLiteral, Name, StringLiteral,
-    Assign, Literal, Block, IncludeFile, ImportName
+    Assign, Literal, Block, IncludeFile, ImportName, FunctionDef,
+    FunctionCall
 )
 
 from uel.builder.node_visitor import NodeVisitor
@@ -81,6 +82,9 @@ class Parser:
         )
         self.register_infix_expression(
             TokenConstants.TT_ASSIGN, self.parse_assignment
+        )
+        self.register_infix_expression(
+            TokenConstants.TT_LPAR, self.parse_call_expression
         )
 
     def register(self, dictionary, key, value):
@@ -167,13 +171,60 @@ class Parser:
                         "Expected a string literal or identifier.",
                         self.source, self.token.start
                     )
+            elif self.current_token.token_value == "function":
+                past_token = self.current_token
+                self.advance()
+                function_name = self.token.token_value
+                self.advance()
+                arguments = self.parse_arguments()
+                self.advance()
+                body = self.parse_block_expression()
+                return FunctionDef(
+                    function_name, arguments, body, past_token.start,
+                    self.token.end
+                )
 
+            else:
+                uel_set_error_string(
+                    UELSyntaxError, "Invalid keyword", self.source,
+                    self.token.start, self.token.end
+                )
         return self.parse_expression()
 
     def parse_number(self):
         return NumberLiteral(
             self.token.token_value, self.token.start, self.token.end
         )
+
+    def parse_arguments(self):
+        if self.current_token.token_type != TokenConstants.TT_LPAR:
+            uel_set_error_string(
+                UELSyntaxError, "Invalid Syntax", self.source,
+                self.token.start
+            )
+        self.advance()
+        results = []
+
+        while self.current_token is not None and self.current_token.token_type != TokenConstants.TT_RPAR:
+            if self.current_token.token_type == TokenConstants.TT_IDENTIFIER:
+                results.append(self.current_token.token_value)
+                self.advance()
+            else:
+                uel_set_error_string(
+                    UELSyntaxError, "Invalid Syntax", self.source,
+                    self.token.start
+                )
+            if self.current_token.token_type == TokenConstants.TT_COMMA:
+                self.advance()
+            elif self.current_token.token_type == TokenConstants.TT_RPAR:
+                break
+            else:
+                uel_set_error_string(
+                    UELSyntaxError, "Invalid Syntax", self.source,
+                    self.token.start
+                )
+
+        return results
 
     def parse_name(self):
         return Name(
@@ -191,8 +242,9 @@ class Parser:
             node = self.prefix_expression[token.token_type]()
         except KeyError as e:
             uel_set_error_string(
-                UELSyntaxError, "Invalid Prefix Token", self.source,
-                self.token.start, self.token.end
+                UELSyntaxError,
+                f"Invalid Prefix Token: {self.current_token}",
+                self.source, self.token.start, self.token.end
             )
         while self.next_token is not None and self.next_token.token_type not in [
             TokenConstants.TT_SEMI, TokenConstants.TT_EOF
@@ -206,6 +258,38 @@ class Parser:
             node = infix(node)
         return node
 
+    def parse_expression_list(self):
+        if self.current_token.token_type != TokenConstants.TT_LPAR:
+            uel_set_error_string(
+                UELSyntaxError, "Invalid Syntax", self.source,
+                self.token.start
+            )
+        self.advance()
+        results = []
+
+        while self.current_token is not None and self.current_token.token_type != TokenConstants.TT_RPAR:
+            results.append(self.parse_expression())
+            self.advance()
+            if self.current_token.token_type == TokenConstants.TT_COMMA:
+                self.advance()
+            elif self.current_token.token_type == TokenConstants.TT_RPAR:
+                break
+            else:
+                uel_set_error_string(
+                    UELSyntaxError, "Invalid Syntax", self.source,
+                    self.token.start
+                )
+
+        return results
+
+    def parse_call_expression(self, function):
+        start = function.start
+        arguments = self.parse_expression_list()
+        end = self.current_token.end
+        return FunctionCall(
+            function=function, arguments=arguments, start=start, end=end
+        )
+
     def parse_block_expression(self):
         self.advance()
         statements = self.parse_statements()
@@ -214,7 +298,6 @@ class Parser:
                 UELSyntaxError, "Expected \")\"", self.source,
                 self.current_token.start, self.current_token.end
             )
-        self.advance()
         return statements
 
     def parse_prefix_expression(self):

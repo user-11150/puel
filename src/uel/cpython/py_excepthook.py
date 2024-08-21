@@ -5,10 +5,15 @@ import textwrap
 import ast
 import executing
 
+from uel.tools.exiting import uel_exit
+
 __all__ = ["install"]
 
 
 def excepthook(exc_type, value, trace: types.TracebackType | None):
+    if issubclass(exc_type, KeyboardInterrupt):
+        uel_exit()
+
     def getastnode(tb):
         return executing.Source.executing(tb).node
 
