@@ -27,7 +27,6 @@ class UELBuildExtension(build_ext):
         super().initialize_options(*args, **kwargs)
         self.parallel = True
 
-
 def is_building():
     if len(sys.argv) < 2:
         return True
@@ -46,13 +45,21 @@ def get_extensions():
     C_COMPILE_ARGS = ["--std=c11"]
     CPP_COMPILE_ARGS = ["--std=c++17"]
     
+    extensions.extend(cythonize(
+        [
+        ],
+        build_dir=f"build/{platform.platform()}"
+    ))
     
     extensions.extend([
         Extension(
             "uel.internal.uelcore_internal_exceptions",
-            sources=["src/uel/internal/uelcore_internal_exceptions.c"]
-        )
+            sources=["src/uel/internal/uelcore_internal_exceptions.c"],
+            extra_compile_args=C_COMPILE_ARGS
+        ),
+        
     ])
+    
 
     return extensions
 
@@ -82,7 +89,7 @@ setup(name = "uel",
     package_data={
         "uel": ["**"]
     },
-    install_requires=["executing"],
+    install_requires=["executing", "objprint"],
     entry_points = {
         'console_scripts': [
             'uel = uel.main:console_main',

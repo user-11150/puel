@@ -20,6 +20,22 @@ class UELIOError(UELError):
     tp_name = "IOError"
 
 
+class UELNameError(UELError):
+    tp_name = "NameError"
+
+
+class UELNotImplementedError(UELError):
+    tp_name = 'NotImplementedError'
+
+
+class UELTypeError(UELError):
+    tp_name = "TypeError"
+
+
+class UELAttributeError(UELError):
+    tp_name = "AttributeError"
+
+
 def _getline(source, target_lineno):
     return source.splitlines()[target_lineno - 1]
 

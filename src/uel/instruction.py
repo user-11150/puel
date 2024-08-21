@@ -7,4 +7,4 @@ class Instruction:
         self.value = value
 
     def __repr__(self):
-        return f"Instruction({self.opcode}({opcode_to_opname(self.opcode)}) {repr(self.value)})"
+        return f"Instruction({opcode_to_opname(self.opcode)}({self.opcode}), {repr(self.value)})"

@@ -16,3 +16,4 @@ SLASH                   '/'
 EQUAL                   '='
 SEMI                    ";"
 ATTR                    "->"
+COMMA                   ','

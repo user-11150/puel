@@ -180,7 +180,6 @@ class GenerateTokenizer:
                             uel_set_error_string(UELSyntaxError, "Anomalous backlash in string", self.source, self.current_position)
                         continue
                     if self.current_char == start:
-                        self.advance()
                         break
                     if self.current_char is None:
                         uel_set_error_string(UELSyntaxError, "unterminated string literal", self.source, self.current_position)
@@ -247,7 +246,7 @@ class GenerateTokenizer:
     def add_token_types(self):
         tmp = "\n".join(map(lambda x: f"{x} = {repr(x)}", self.tokens.keys()))
         keywords = [
-            "import"
+            "import", "function"
         ]
         extras = f"TT_KEYWORDS = {repr(keywords)};" \
                  "TT_KEYWORD = 'TT_KEYWORD';" \
