@@ -1,5 +1,15 @@
---8<-- "docs/history/index.md"
+# Historys of UEL
+No contents
 
----
+# Licenses
+The UEL software and documentation are licensed under the BSD 3-Clause License
 
---8<-- "docs/licenses.md"
+## License for this project
+
+--8<-- "LICENSE"
+
+## Licenses and Acknowledgements for Incorporated Software
+
+This section is an incomplete, but growing list of licenses and acknowledgements
+for third-party software incorporated in the UEL distribution.
+

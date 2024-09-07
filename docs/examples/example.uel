@@ -1,0 +1,21 @@
+import std
+
+number := std->ref(0)
+
+function a(){
+    std->ref(number, number->value + 1)
+    std->print(number->value + 1)
+    std->print("
+")
+    a()
+}
+
+a()
+
+# It's like
+#     i = 0
+#     def a():
+#         global i
+#         i += 1
+#         print(i)
+#     a()

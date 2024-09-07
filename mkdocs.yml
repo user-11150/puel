@@ -3,6 +3,8 @@ site_name: uel
 repo_name: user-11150/puel
 repo_url: https://github.com/user-11150/puel
 
+strict: true
+
 
 markdown_extensions:
   - attr_list
@@ -17,7 +19,6 @@ markdown_extensions:
 
   - toc:
       permalink: true
-      baselevel: 1
   - pymdownx.keys
   - pymdownx.tasklist:
       custom_checkbox: true
@@ -40,16 +41,6 @@ markdown_extensions:
 
 nav:
   - Home: "index.md"
-  - Introduction:
-    - What's UEL and Project Introduction: "introduction/introduction.md"
-    - History and licenses: "history_and_licenses.md"
-    - What our user says?: "introduction/our_user_says.md"
-  - Tutorial: "tutorial.md"
-  - Glossary: "glossary.md"
-  - We planned features: "plans.md"
-  - "What's new": "whatsnew.md"
-  - Developer's Guide: "dev-guide/index.md"
-
 
 not_in_nav: "**/*"
 
@@ -57,9 +48,7 @@ not_in_nav: "**/*"
 theme:
   name: "material"
   custom_dir: docs/_custom_dir
-  font:
-      text: text
-      code: text
+  
   palette:
     - scheme: 'default'
       media: '(prefers-color-scheme: light)'
@@ -76,23 +65,23 @@ theme:
   logo: "assets/images/uel.svg"
   features:
     - navigation.path
-    - navigation.tabs
     - navigation.sections
     - toc.follow
     - toc.integrate
     - navigation.top
+    - code.copy
 
 plugins:
   - search
   - minify:
       minify_html: true
-      minify_js: true
-      minify_css: true
-      cache_safe: true
 
 extra_css:
     - ./assets/stylesheets/extra.css
 
+hooks:
+    - docs/_hooks/check.py
+    - docs/_hooks/auto-add-toc.py
 
 extra:
   social:
