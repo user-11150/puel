@@ -21,7 +21,8 @@ sphinx:
 
 # Enable pdf download on readthedocs
 formats:
-  - text
+  - htmlzip
+  - epub
   - pdf
 
 # Optionally set the version of Python and requirements required to build your docs
