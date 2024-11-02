@@ -54,3 +54,7 @@ html_theme = 'furo'
 html_static_path = []
 html_additional_pages = {}
 html_sidebars = {}
+
+language = "en"
+
+locale_dirs = ["locales"]
