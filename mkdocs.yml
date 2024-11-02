@@ -3,9 +3,6 @@ site_name: uel
 repo_name: user-11150/puel
 repo_url: https://github.com/user-11150/puel
 
-strict: true
-
-
 markdown_extensions:
   - attr_list
   - pymdownx.emoji:
@@ -73,14 +70,11 @@ theme:
 
 plugins:
   - search
-  - minify:
-      minify_html: true
 
 extra_css:
     - ./assets/stylesheets/extra.css
 
 hooks:
-    - docs/_hooks/check.py
     - docs/_hooks/auto-add-toc.py
 
 extra:
