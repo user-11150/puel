@@ -21,7 +21,7 @@ jobs:
                 make singlehtml
                 git clone https://github.com/user-11150/puel.git --branch gh-pages --single-branch gh-pages
                 cd gh-pages
-                git remote set-url https://${GH_TOKEN}@github.com/user-11150/puel.git
+                git remote set-url origin https://${GH_TOKEN}@github.com/user-11150/puel.git
                 cp -r ../build/singlehtml/* ./
                 cd gh-pages
                 touch .nojekyll
