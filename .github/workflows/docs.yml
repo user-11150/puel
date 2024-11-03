@@ -20,7 +20,9 @@ jobs:
                 pip install -r ./requirements.txt
                 make singlehtml
                 git clone https://github.com/user-11150/puel.git --branch gh-pages --single-branch gh-pages
-                cp -r build/singlehtml/* gh-pages/
+                cd gh-pages
+                git remote set-url https://$(GH_TOKEN)@github.com/user-11150/puel.git
+                cp -r ../build/singlehtml/* ./
                 cd gh-pages
                 touch .nojekyll
                 git config --local user.email "3584434540@qq.com"
@@ -29,9 +31,5 @@ jobs:
                 git commit -m "Update documentation" -a || true
                 # The above command will fail if no changes were present, so we ignore
                 # that.
-          - name: Push changes
-            uses: ad-m/github-push-action@master
-            with:
-                  branch: gh-pages
-                  directory: gh-pages
-                  github_token: ${{ secrets.TOKEN }}
+            env:
+                GH_TOKEN: ${{ secrets.TOKEN }}
