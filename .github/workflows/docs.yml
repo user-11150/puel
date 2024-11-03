@@ -28,6 +28,7 @@ jobs:
                 git config --local user.name "user-11150"
                 git add .
                 git commit -m "Update documentation" -a || true
+                git push origin gh-pages
                 # The above command will fail if no changes were present, so we ignore
                 # that.
             env:
