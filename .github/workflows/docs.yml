@@ -17,7 +17,7 @@ jobs:
           - name: Checkout Directory
             run: cd docs
           - name: Install dependency
-            run: pip install -r requirements.txt
+            run: pip install -r ./requirements.txt
           - name: Build Documentation
             run: make singlehtml
           - name: Commit documentation changes
