@@ -1,8 +1,8 @@
 .. _tutorial-index:
 
-######################
+**********************
   The UEL Tutorial
-######################
+**********************
 
 UEL is an easy to learn, powerful programming language. It has efficient
 high-level data structures and a simple but effective approach to
@@ -25,6 +25,6 @@ write UEL modules and programs
 The :ref:`glossary` is also worth going through.
 
 .. toctree::
-   :numbered:
 
    ./appetite.rst
+   ./interpreter.rst
