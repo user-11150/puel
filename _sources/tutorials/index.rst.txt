@@ -4,6 +4,11 @@
   The UEL Tutorial
 **********************
 
+.. figure:: https://source.unsplash.com/200x200/daily?cute+puppy
+    :align: right
+    :figwidth: 200px
+    
+    **Easy to learn**
 UEL is an easy to learn, powerful programming language. It has efficient
 high-level data structures and a simple but effective approach to
 object-oriented programming. UEL's elegant syntax and dynamic typing,
