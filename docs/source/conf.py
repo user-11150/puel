@@ -11,6 +11,8 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import time
+import datetime
+import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
@@ -21,7 +23,19 @@ project = 'UEL'
 copyright = f'2024 - {time.strftime("%Y")}, Xinghao Li'
 author = 'Xinghao Li'
 
-extensions = ['sphinx.ext.autodoc',]
+release = 'unknown'
+init_path = os.path.join(os.path.dirname(__file__), "..", "..", "src", "uel", "version.py")
+with open(init_path) as f:
+    for line in f.readlines():
+        if line.startswith("__version__"):
+            # __version__ = "0.9"
+            delim = '"' if '"' in line else "'"
+            release = line.split(delim)[1]
+            break
+
+print(release)
+
+extensions = []
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['tools/templates']
@@ -49,5 +63,3 @@ html_sidebars = {}
 language = "en"
 
 root_doc = "index"
-
-locales = ["locales"]

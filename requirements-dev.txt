@@ -1,8 +1,5 @@
 wheel
 twine
-GitPython
-mkdocs
-mkdocs-material
 mypy
 yapf
 flake8
